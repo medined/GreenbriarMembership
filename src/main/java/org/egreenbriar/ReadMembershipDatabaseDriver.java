@@ -25,6 +25,8 @@ import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.egreenbriar.model.Block;
+import org.egreenbriar.service.StreetService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class ReadMembershipDatabaseDriver {
 
@@ -40,7 +42,9 @@ public class ReadMembershipDatabaseDriver {
     float upperRightX = PDPage.PAGE_SIZE_LETTER.getUpperRightX();
     float upperRightY = PDPage.PAGE_SIZE_LETTER.getUpperRightY();
 
-    private final Set<String> streets = new TreeSet<>();
+    @Autowired
+    private StreetService streetManager = null;
+    
     private final Map<String, String> captains = new TreeMap<>();
     
     Greenbriar community = new Greenbriar();
@@ -49,24 +53,16 @@ public class ReadMembershipDatabaseDriver {
 
     public static void main(String[] args) throws FileNotFoundException, IOException, COSVisitorException {
         String membershipFile = "2013_Greenbriar_Membership.csv";
-        String streetFile = "greenbriar_streets.csv";
         String captainFile = "2013_greenbriar_block_captains.csv";
 
         ReadMembershipDatabaseDriver driver = new ReadMembershipDatabaseDriver();
-        driver.process(membershipFile, streetFile, captainFile);
+        driver.process(membershipFile, captainFile);
     }
 
-    private void process(final String membershipFile, final String streetFile, final String captainFile) throws FileNotFoundException, IOException, COSVisitorException {
+    private void process(final String membershipFile, final String captainFile) throws FileNotFoundException, IOException, COSVisitorException {
 
         String[] components = null;
 
-        CSVReader streetReader = new CSVReader(new FileReader(streetFile));
-        while ((components = streetReader.readNext()) != null) {
-            String id = components[0];
-            String streetName = components[1];
-            streets.add(streetName);
-        }
-        
         CSVReader captainReader = new CSVReader(new FileReader(captainFile));
         while ((components = captainReader.readNext()) != null) {
             String blockName = components[0];
@@ -95,7 +91,7 @@ public class ReadMembershipDatabaseDriver {
                 String email = components[10];
                 String comment = components[11];
                 
-                if (! streets.contains(streetName)) {
+                if (streetManager.isMissing(streetName)) {
                     System.out.println("Incorrect Street: " + streetName);
                     incorrectStreets++;
                 }

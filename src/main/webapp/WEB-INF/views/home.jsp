@@ -3,10 +3,13 @@
 <html> 
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-        <title>Greenbirar Membership Management</title>
+        <title>Greenbriar Membership Management</title>
     </head>
     <body>
         <h1>Greenbriar Membership Management</h1>
-        <a href='/community'>Community</a>
+        <ul>
+            <li><a href='/community'>Community</a></li>
+            <li><a href='/streets'>Street List</a></li>
+        </ul>
     </body>
 </html>  
