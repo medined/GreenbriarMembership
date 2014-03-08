@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class SteetController {
 
     @Autowired
-    private StreetService streetReader = null;
+    private StreetService streetService = null;
     
     @RequestMapping("/streets")
     public String communityHandler(Model model) throws FileNotFoundException, IOException {
-        model.addAttribute("streets", streetReader.getStreets());
+        model.addAttribute("streets", streetService.getStreets());
         return "streets";
     }
 
@@ -26,6 +26,6 @@ public class SteetController {
      * @param streetReader the streetReader to set
      */
     public void setStreetReader(StreetService streetReader) {
-        this.streetReader = streetReader;
+        this.streetService = streetReader;
     }
 }

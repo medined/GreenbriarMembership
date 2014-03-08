@@ -14,7 +14,14 @@
         <title>Greenbriar Membership Management</title>
     </head>
     <body>
-        <h1>Greenbriar Membership Management</h1>
+        <a href='/'>Home</a><br/>
 
+        <h1>Greenbriar Membership Management</h1>
+        
+        <h2>Block Captains</h2>
+
+        <c:forEach items="${captains.keySet()}" var="blockName">
+            <c:out value="${blockName} ${captains.get(blockName)}"/><br/>
+        </c:forEach>
     </body>
 </html>

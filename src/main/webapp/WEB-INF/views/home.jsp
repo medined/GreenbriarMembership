@@ -10,6 +10,7 @@
         <ul>
             <li><a href='/community'>Community</a></li>
             <li><a href='/streets'>Street List</a></li>
+            <li><a href='/blockcaptains'>Block Captain List</a></li>
         </ul>
     </body>
 </html>  

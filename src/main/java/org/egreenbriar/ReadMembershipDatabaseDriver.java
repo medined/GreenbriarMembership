@@ -25,6 +25,7 @@ import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.egreenbriar.model.Block;
+import org.egreenbriar.service.BlockCaptainService;
 import org.egreenbriar.service.StreetService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -43,9 +44,10 @@ public class ReadMembershipDatabaseDriver {
     float upperRightY = PDPage.PAGE_SIZE_LETTER.getUpperRightY();
 
     @Autowired
-    private StreetService streetManager = null;
+    private StreetService streetService = null;
     
-    private final Map<String, String> captains = new TreeMap<>();
+    @Autowired
+    private BlockCaptainService blockCaptainService = null;
     
     Greenbriar community = new Greenbriar();
 
@@ -53,23 +55,14 @@ public class ReadMembershipDatabaseDriver {
 
     public static void main(String[] args) throws FileNotFoundException, IOException, COSVisitorException {
         String membershipFile = "2013_Greenbriar_Membership.csv";
-        String captainFile = "2013_greenbriar_block_captains.csv";
 
         ReadMembershipDatabaseDriver driver = new ReadMembershipDatabaseDriver();
-        driver.process(membershipFile, captainFile);
+        driver.process(membershipFile);
     }
 
-    private void process(final String membershipFile, final String captainFile) throws FileNotFoundException, IOException, COSVisitorException {
+    private void process(final String membershipFile) throws FileNotFoundException, IOException, COSVisitorException {
 
         String[] components = null;
-
-        CSVReader captainReader = new CSVReader(new FileReader(captainFile));
-        while ((components = captainReader.readNext()) != null) {
-            String blockName = components[0];
-            String lastName = components[1];
-            String firstName = components[2];
-            captains.put(blockName, firstName + " " + lastName);
-        }
 
         new File(pdfFileName).delete();
 
@@ -91,7 +84,7 @@ public class ReadMembershipDatabaseDriver {
                 String email = components[10];
                 String comment = components[11];
                 
-                if (streetManager.isMissing(streetName)) {
+                if (streetService.isMissing(streetName)) {
                     System.out.println("Incorrect Street: " + streetName);
                     incorrectStreets++;
                 }
@@ -245,7 +238,7 @@ public class ReadMembershipDatabaseDriver {
         if (block.getCaptain() == null) {
             drawRedString(document, page, font, fontSize, x + 50, y, "None");
         } else {
-            captainNameA = captains.get(block.getName());
+            captainNameA = blockCaptainService.get(block.getName());
             captainNameB = block.getCaptain() == null ? null : block.getCaptain().getName();
             drawString(document, page, font, fontSize, x + 50, y, block.getCaptain().getName());
         }
@@ -256,7 +249,7 @@ public class ReadMembershipDatabaseDriver {
             System.out.println("1 Spreadsheet [" + captainNameA + "]  BC Sheet [" + captainNameB + "]");
         } else if (captainNameA != null && captainNameB == null) {
             System.out.println("2 Spreadsheet [" + captainNameA + "]  BC Sheet [" + captainNameB + "]");
-        } else if (!captainNameA.equals(captainNameB)) {
+        } else if (captainNameA != null && !captainNameA.equals(captainNameB)) {
             System.out.println("3 Spreadsheet [" + captainNameA + "]  BC Sheet [" + captainNameB + "]");
         }
         
