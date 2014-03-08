@@ -15,6 +15,7 @@
     <context:annotation-config/>
     
     <!-- scans the classpath for @Components to deploy as beans -->
+    <context:component-scan base-package="org.egreenbriar.service" />
     <context:component-scan base-package="org.egreenbriar.web" />
 
     <!-- configures the @Controller programming model. -->

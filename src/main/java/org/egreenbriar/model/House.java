@@ -1,4 +1,4 @@
-package com.affy.greenbriar;
+package org.egreenbriar.model;
 
 import java.util.Set;
 import java.util.TreeSet;
@@ -83,7 +83,7 @@ public class House implements Comparable {
         return this.getHouseNumber().equals(houseNumber) && this.getStreetName().equals(streetName);
     }
 
-    void addYear(Membership year) {
+    public void addYear(Membership year) {
         getYears().add(year);
     }
 

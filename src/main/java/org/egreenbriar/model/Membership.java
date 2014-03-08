@@ -1,4 +1,4 @@
-package com.affy.greenbriar;
+package org.egreenbriar.model;
 
 public class Membership implements Comparable {
     

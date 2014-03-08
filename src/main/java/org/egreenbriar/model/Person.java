@@ -1,4 +1,4 @@
-package com.affy.greenbriar;
+package org.egreenbriar.model;
 
 public class Person implements Comparable {
 
@@ -61,6 +61,7 @@ public class Person implements Comparable {
         return "Person{" + "last=" + getLast() + ", first=" + getFirst() + ", phone=" + getPhone() + ", email=" + getEmail() + ", noList=" + isNoList() + ", unlisted=" + isUnlisted() + ", comment=" + getComment() + '}';
     }
 
+    @Override
     public int compareTo(Object o) {
         int rv = -1;
         if (o != null) {
@@ -81,7 +82,7 @@ public class Person implements Comparable {
         return this.getLast().equals(last) && this.getFirst().equals(first);
     }
 
-    String getName() {
+    public String getName() {
         return getFirst() + " " + getLast();
     }
 

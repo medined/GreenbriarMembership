@@ -1,5 +1,6 @@
-package com.affy.greenbriar;
+package org.egreenbriar.model;
 
+import org.egreenbriar.model.District;
 import java.util.Set;
 import java.util.TreeSet;
 

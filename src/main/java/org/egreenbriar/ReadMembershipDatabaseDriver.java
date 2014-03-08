@@ -1,5 +1,10 @@
-package com.affy.greenbriar;
+package org.egreenbriar;
 
+import org.egreenbriar.model.Person;
+import org.egreenbriar.model.Membership;
+import org.egreenbriar.model.House;
+import org.egreenbriar.model.Greenbriar;
+import org.egreenbriar.model.District;
 import au.com.bytecode.opencsv.CSVReader;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -19,6 +24,7 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.egreenbriar.model.Block;
 
 public class ReadMembershipDatabaseDriver {
 
@@ -34,8 +40,8 @@ public class ReadMembershipDatabaseDriver {
     float upperRightX = PDPage.PAGE_SIZE_LETTER.getUpperRightX();
     float upperRightY = PDPage.PAGE_SIZE_LETTER.getUpperRightY();
 
-    private final Set<String> streets = new TreeSet<String>();
-    private final Map<String, String> captains = new TreeMap<String, String>();
+    private final Set<String> streets = new TreeSet<>();
+    private final Map<String, String> captains = new TreeMap<>();
     
     Greenbriar community = new Greenbriar();
 
@@ -116,44 +122,9 @@ public class ReadMembershipDatabaseDriver {
         
         Gson gson = new GsonBuilder().serializeNulls().create();
         String json = gson.toJson(community);
-//        System.out.println(json);
-        
-        PrintWriter writer = new PrintWriter("greenbriar_membership.json");
-        writer.println(json);
-        writer.close();
-
-        /*
-        System.out.println("Incorrect Streets: " + incorrectStreets);
-        
-        final String title = "GCA Membership; Block Captain Work Sheet";
-
-        Date now = new Date();
-        SimpleDateFormat dataFormat = new SimpleDateFormat("YYYY-MMM-DD");
-
-        PDDocument document = new PDDocument();
-
-        for (District district : community.districts) {
-            for (Block block : district.blocks) {
-                PDPage page = addReportPage(document);
-
-                drawHeader(document, page, title);
-                drawPrintedAt(document, page, dataFormat.format(now));
-                drawDistrictName(document, page, district.getName());
-                drawBlockName(document, page, block.getName());
-                drawBlockCaptain(document, page, block);
-                drawHouseCount(document, page, block.getHouses().size());
-                drawSeparatorLine(document, page);
-
-                float x = 25;
-                float y = PDPage.PAGE_SIZE_LETTER.getUpperRightY() - 100;
-                y = drawHouse(document, page, block.getHouses(), x, y);
-            }
+        try (PrintWriter writer = new PrintWriter("greenbriar_membership.json")) {
+            writer.println(json);
         }
-
-        document.save(pdfFileName);
-
-        document.close();
-        */
     }
 
     private float drawHouse(final PDDocument document, final PDPage page, final Set<House> houses, float x, float y) throws IOException {

@@ -1,4 +1,4 @@
-package com.affy.greenbriar;
+package org.egreenbriar.model;
 
 import java.util.Set;
 import java.util.TreeSet;
@@ -7,7 +7,7 @@ public class Block implements Comparable {
 
     private String name = null;
     private Person captain = null;
-    private Set<House> houses = new TreeSet<House>();
+    private Set<House> houses = new TreeSet<>();
     
     public Block(final String name) {
         this.name = name;
@@ -17,6 +17,7 @@ public class Block implements Comparable {
         return this.getName().equals(name);
     }
     
+    @Override
     public int compareTo(Object o) {
         int rv = -1;
         if (o != null) {
@@ -51,13 +52,10 @@ public class Block implements Comparable {
             return false;
         }
         final Block other = (Block) obj;
-        if ((this.getName() == null) ? (other.getName() != null) : !this.name.equals(other.name)) {
-            return false;
-        }
-        return true;
+        return !((this.getName() == null) ? (other.getName() != null) : !this.name.equals(other.name));
     }
 
-    void addHouse(House _house) {
+    public void addHouse(House _house) {
         for (House house : getHouses()) {
             if (house.equals(_house)) {
                 return;
@@ -77,7 +75,7 @@ public class Block implements Comparable {
         return house;
     }
 
-    void addCaptain(Person person) {
+    public void addCaptain(Person person) {
         setCaptain(person);
     }
 

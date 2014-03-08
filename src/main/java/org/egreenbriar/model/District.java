@@ -1,4 +1,4 @@
-package com.affy.greenbriar;
+package org.egreenbriar.model;
 
 import java.util.Set;
 import java.util.TreeSet;

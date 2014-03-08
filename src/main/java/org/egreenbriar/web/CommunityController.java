@@ -1,5 +1,9 @@
 package org.egreenbriar.web;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import org.egreenbriar.service.StreetReader;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
@@ -11,17 +15,34 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class CommunityController {
 
     @Value("${membership.csv.file}")
-    String membershipFile = "2013_Greenbriar_Membership.csv";
+    String membershipFile = null;
 
     @Value("${streets.csv.file}")
-    String streetFile = "greenbriar_streets.csv";
+    String streetFile = null;
 
     @Value("${blockcaptain.csv.file}")
-    String captainFile = "2013_greenbriar_block_captains.csv";
+    String captainFile = null;
 
+    @Autowired
+    private StreetReader streetReader = null;
+    
     @RequestMapping("/community")
     @ResponseBody
-    public String communityHandler() {
-        return membershipFile;
+    public String communityHandler() throws FileNotFoundException, IOException {
+        return streetReader.getStreetFile();
+    }
+
+    /**
+     * @return the streetReader
+     */
+    public StreetReader getStreetReader() {
+        return streetReader;
+    }
+
+    /**
+     * @param streetReader the streetReader to set
+     */
+    public void setStreetReader(StreetReader streetReader) {
+        this.streetReader = streetReader;
     }
 }
