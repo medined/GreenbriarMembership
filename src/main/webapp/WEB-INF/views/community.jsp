@@ -15,6 +15,10 @@
     </head>
     <body>
         <h1>Greenbriar Membership Management</h1>
+        <h2>Districts</h2>
 
+        <ul>
+            <c:forEach items="${districts}" var="district"><li><a href='/district/${district.name}'><c:out value="${district.name}"/></a></li></c:forEach>
+        </ul>
     </body>
 </html>

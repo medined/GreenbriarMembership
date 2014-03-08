@@ -1,27 +1,33 @@
 package org.egreenbriar.model;
 
-import org.egreenbriar.model.District;
 import java.util.Set;
 import java.util.TreeSet;
 
 public class Greenbriar {
     
-    Set<District> districts = new TreeSet<District>();
+    private final Set<District> districts = new TreeSet<>();
 
     public District addDistrict(final String districtName) {
-        for (District district : districts) {
+        for (District district : getDistricts()) {
             if (district.is(districtName)) {
                 return district;
             }
         }
         District district = new District(districtName);
-        districts.add(district);
+        getDistricts().add(district);
         return district;
     }
 
     @Override
     public String toString() {
-        return "Greenbriar{" + "districts=" + districts + '}';
+        return "Greenbriar{" + "districts=" + getDistricts() + '}';
+    }
+
+    /**
+     * @return the districts
+     */
+    public Set<District> getDistricts() {
+        return districts;
     }
 
 }

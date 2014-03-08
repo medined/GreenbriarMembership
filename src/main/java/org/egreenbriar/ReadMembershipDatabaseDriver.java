@@ -14,10 +14,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
 import org.apache.pdfbox.exceptions.COSVisitorException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -26,6 +23,7 @@ import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.egreenbriar.model.Block;
 import org.egreenbriar.service.BlockCaptainService;
+import org.egreenbriar.service.MembershipService;
 import org.egreenbriar.service.StreetService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -48,69 +46,22 @@ public class ReadMembershipDatabaseDriver {
     
     @Autowired
     private BlockCaptainService blockCaptainService = null;
-    
-    Greenbriar community = new Greenbriar();
 
-    int lineCount = 0;
+    @Autowired
+    private MembershipService membershipService = null;
 
     public static void main(String[] args) throws FileNotFoundException, IOException, COSVisitorException {
-        String membershipFile = "2013_Greenbriar_Membership.csv";
-
         ReadMembershipDatabaseDriver driver = new ReadMembershipDatabaseDriver();
-        driver.process(membershipFile);
+        driver.process();
     }
 
-    private void process(final String membershipFile) throws FileNotFoundException, IOException, COSVisitorException {
-
-        String[] components = null;
+    private void process() throws FileNotFoundException, IOException, COSVisitorException {
 
         new File(pdfFileName).delete();
 
-        int incorrectStreets = 0;
-        
-        CSVReader reader = new CSVReader(new FileReader(membershipFile));
-        while ((components = reader.readNext()) != null) {
-            if (lineCount != 0) {
-                String districtName = components[0];
-                String blockName = components[1];
-                String houseNumber = components[2];
-                String streetName = components[3];
-                String last = components[4];
-                String first = components[5];
-                String phone = components[6];
-                String bc = components[7];
-                String y2012 = components[8];
-                String y2013 = components[9];
-                String email = components[10];
-                String comment = components[11];
-                
-                if (streetService.isMissing(streetName)) {
-                    System.out.println("Incorrect Street: " + streetName);
-                    incorrectStreets++;
-                }
-
-                District district = community.addDistrict(districtName);
-                Block block = district.addBlock(blockName);
-                House house = block.addHouse(houseNumber, streetName);
-                Person person = house.addPerson(last, first, phone, email, comment);
-
-                if (!y2012.isEmpty()) {
-                    house.addYear(YEAR_2012);
-                }
-                if (!y2013.isEmpty()) {
-                    house.addYear(YEAR_2013);
-                }
-
-                if (!bc.isEmpty()) {
-                    block.addCaptain(person);
-                }
-
-            }
-            lineCount++;
-        }
         
         Gson gson = new GsonBuilder().serializeNulls().create();
-        String json = gson.toJson(community);
+        String json = gson.toJson(membershipService.getCommunity());
         try (PrintWriter writer = new PrintWriter("greenbriar_membership.json")) {
             writer.println(json);
         }
@@ -446,5 +397,33 @@ public class ReadMembershipDatabaseDriver {
         }
 
         return texty;
+    }
+
+    /**
+     * @param streetService the streetService to set
+     */
+    public void setStreetService(StreetService streetService) {
+        this.streetService = streetService;
+    }
+
+    /**
+     * @param blockCaptainService the blockCaptainService to set
+     */
+    public void setBlockCaptainService(BlockCaptainService blockCaptainService) {
+        this.blockCaptainService = blockCaptainService;
+    }
+
+    /**
+     * @return the membershipService
+     */
+    public MembershipService getMembershipService() {
+        return membershipService;
+    }
+
+    /**
+     * @param membershipService the membershipService to set
+     */
+    public void setMembershipService(MembershipService membershipService) {
+        this.membershipService = membershipService;
     }
 }
