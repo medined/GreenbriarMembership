@@ -14,6 +14,7 @@
         <title>Greenbriar Membership Management</title>
     </head>
     <body>
+        <a href='/'>Home</a>
         <h1>Greenbriar Membership Management</h1>
         <h2>Districts</h2>
 

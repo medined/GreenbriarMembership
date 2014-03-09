@@ -59,7 +59,7 @@ public class MembershipService {
                 }
 
                 District district = getCommunity().addDistrict(districtName);
-                Block block = district.addBlock(blockName);
+                Block block = district.addBlock(districtName, blockName);
                 House house = block.addHouse(houseNumber, streetName);
                 Person person = house.addPerson(last, first, phone, email, comment);
 
@@ -99,4 +99,13 @@ public class MembershipService {
     public Set<District> getDistricts() {
         return community.getDistricts();
     }
+
+    public District getDistrict(String name) {
+        return community.getDistrict(name);
+    }
+
+    public Block getBlock(String name) {
+        return community.getBlock(name);
+    }
+
 }

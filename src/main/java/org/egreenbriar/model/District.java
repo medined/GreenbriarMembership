@@ -6,12 +6,12 @@ import java.util.TreeSet;
 public class District implements Comparable {
 
     private String name = null;
+    private final Set<Block> blocks = new TreeSet<>();
 
     @Override
     public String toString() {
-        return "District{" + "name=" + getName() + ", blocks=" + blocks + '}';
+        return "District{" + "name=" + getName() + ", blocks=" + getBlocks() + '}';
     }
-    Set<Block> blocks = new TreeSet<Block>();
 
     public District(final String name) {
         this.name = name;
@@ -21,17 +21,19 @@ public class District implements Comparable {
         return this.getName().equals(name);
     }
     
-    public Block addBlock(final String blockName) {
-        for (Block block : blocks) {
+    public Block addBlock(final String districtName, final String blockName) {
+        for (Block block : getBlocks()) {
             if (block.is(blockName)) {
                 return block;
             }
         }
         Block block = new Block(blockName);
-        blocks.add(block);
+        block.setDistrictName(districtName);
+        getBlocks().add(block);
         return block;
     }
 
+    @Override
     public int compareTo(Object o) {
         int rv = -1;
         if (o != null) {
@@ -61,10 +63,7 @@ public class District implements Comparable {
             return false;
         }
         final District other = (District) obj;
-        if ((this.getName() == null) ? (other.getName() != null) : !this.name.equals(other.name)) {
-            return false;
-        }
-        return true;
+        return !((this.getName() == null) ? (other.getName() != null) : !this.name.equals(other.name));
     }
 
     /**
@@ -79,6 +78,13 @@ public class District implements Comparable {
      */
     public void setName(String name) {
         this.name = name;
+    }
+
+    /**
+     * @return the blocks
+     */
+    public Set<Block> getBlocks() {
+        return blocks;
     }
     
 }

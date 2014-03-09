@@ -6,8 +6,8 @@ import java.util.TreeSet;
 public class House implements Comparable {
     private String houseNumber = null;
     private String streetName = null;
-    private Set<Person> people = new TreeSet<Person>();
-    private Set<Membership> years = new TreeSet<Membership>();
+    private final Set<Person> people = new TreeSet<>();
+    private final Set<Membership> years = new TreeSet<>();
 
     public House(final String houseNumber, final String streetName) {
         this.houseNumber = houseNumber;
@@ -39,12 +39,10 @@ public class House implements Comparable {
         if ((this.getHouseNumber() == null) ? (other.getHouseNumber() != null) : !this.houseNumber.equals(other.houseNumber)) {
             return false;
         }
-        if ((this.getStreetName() == null) ? (other.getStreetName() != null) : !this.streetName.equals(other.streetName)) {
-            return false;
-        }
-        return true;
+        return !((this.getStreetName() == null) ? (other.getStreetName() != null) : !this.streetName.equals(other.streetName));
     }
 
+    @Override
     public int compareTo(Object o) {
         int rv = -1;
         if (o != null) {

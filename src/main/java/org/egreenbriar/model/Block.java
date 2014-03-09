@@ -5,16 +5,17 @@ import java.util.TreeSet;
 
 public class Block implements Comparable {
 
-    private String name = null;
+    private String districtName = null;
+    private String blockName = null;
     private Person captain = null;
-    private Set<House> houses = new TreeSet<>();
+    private final Set<House> houses = new TreeSet<>();
     
     public Block(final String name) {
-        this.name = name;
+        this.blockName = name;
     }
 
     public boolean is(final String name) {
-        return this.getName().equals(name);
+        return this.getBlockName().equals(name);
     }
     
     @Override
@@ -25,7 +26,7 @@ public class Block implements Comparable {
             if (this.equals(that)) {
                 rv = 0;
             } else {
-                rv = this.getName().compareTo(that.getName());
+                rv = this.getBlockName().compareTo(that.getBlockName());
             }
         }
         return rv;
@@ -34,13 +35,13 @@ public class Block implements Comparable {
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 53 * hash + (this.getName() != null ? this.getName().hashCode() : 0);
+        hash = 53 * hash + (this.getBlockName() != null ? this.getBlockName().hashCode() : 0);
         return hash;
     }
 
     @Override
     public String toString() {
-        return "Block{" + "name=" + getName() + ", captain=" + getCaptain() + ", houses=" + getHouses() + '}';
+        return "Block{" + "name=" + getBlockName() + ", captain=" + getCaptain() + ", houses=" + getHouses() + '}';
     }
 
     @Override
@@ -52,7 +53,7 @@ public class Block implements Comparable {
             return false;
         }
         final Block other = (Block) obj;
-        return !((this.getName() == null) ? (other.getName() != null) : !this.name.equals(other.name));
+        return !((this.getBlockName() == null) ? (other.getBlockName() != null) : !this.blockName.equals(other.blockName));
     }
 
     public void addHouse(House _house) {
@@ -80,20 +81,6 @@ public class Block implements Comparable {
     }
 
     /**
-     * @return the name
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
      * @return the captain
      */
     public Person getCaptain() {
@@ -115,10 +102,31 @@ public class Block implements Comparable {
     }
 
     /**
-     * @param houses the houses to set
+     * @return the districtName
      */
-    public void setHouses(Set<House> houses) {
-        this.houses = houses;
+    public String getDistrictName() {
+        return districtName;
+    }
+
+    /**
+     * @param districtName the districtName to set
+     */
+    public void setDistrictName(String districtName) {
+        this.districtName = districtName;
+    }
+
+    /**
+     * @return the blockName
+     */
+    public String getBlockName() {
+        return blockName;
+    }
+
+    /**
+     * @param blockName the blockName to set
+     */
+    public void setBlockName(String blockName) {
+        this.blockName = blockName;
     }
     
 }

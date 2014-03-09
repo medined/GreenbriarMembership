@@ -7,19 +7,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 @Component
-public class CommunityController {
+public class DistrictController {
 
     @Autowired
     private MembershipService membershipService = null;
 
-    @RequestMapping("/community")
-    public String communityHandler(Model model) throws FileNotFoundException, IOException {
-        model.addAttribute("districts", membershipService.getDistricts());
-        return "community";
+    @RequestMapping(value="/district/{name}", method=RequestMethod.GET)
+    public String communityHandler(Model model, @PathVariable String name) throws FileNotFoundException, IOException {
+        model.addAttribute("district", membershipService.getDistrict(name));
+        return "district";
     }
 
     /**
