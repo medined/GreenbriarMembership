@@ -12,6 +12,53 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
         <title>Greenbriar Membership Management</title>
+        <style>
+            .editable:hover { 
+                background-color:yellow;
+            }
+
+            .heading {
+  font-size: 10px;
+  vertical-align:text-top;
+  padding-top: 1px;
+  padding-left: 2px;
+  padding-bottom: 2px;
+  background: black;
+  color: yellow;
+  border-right: 1px solid gray;
+}
+
+.value {
+  font-size: 12px;
+  border-right: 1px solid gray;
+  padding-top: 1px;
+  padding-left: 2px;
+  padding-bottom: 2px;
+  text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+  }
+
+.email .value {
+  width: 10em;
+  height: 15px;
+}
+
+.phone .value {
+  width: 8em;
+  height: 15px;
+}
+
+.last .value {
+  width: 15em;
+  height: 15px;
+}
+
+.first .value {
+  width: 15em;
+  height: 15px;
+}
+        </style>
     </head>
     <body>
         <a href='/'>Home</a> : 
@@ -26,27 +73,48 @@
         <table border="0" cellpadding="3" cellspacing="3">
             <c:forEach items="${block.getHouses()}" var="house">
                 <tr height="10px"><td></td></tr>
-            <tr>
+                <tr>
                     <td valign="top"><c:out value="${house.getHouseNumber()}"/> <c:out value="${house.getStreetName()}"/></td>
                     <td>
-                    <c:forEach items="${house.getPeople()}" var="person">
-                        Last: <c:out value="${person.getLast()}"/><br/>
-                        First: <c:out value="${person.getFirst()}"/><br/>
-                        Phone: <c:out value="${person.getPhone()}"/><br/>
-                        Email: <c:out value="${person.getEmail()}"/><br/>
-                        Unlisted Phone: <c:out value="${person.isUnlisted()}"/><br/>
-                        Do Not List: <c:out value="${person.isNoList()}"/><br/>
-                        Comment: <c:out value="${person.getComment()}"/><br/>
-                        <br/>
-                    </c:forEach>
+                        <c:forEach items="${house.getPeople()}" var="person">
+<table cellpadding="0" border="0" cellspacing="0">
+<tr>
+    <c:if test="${person.isListed()}">
+    <td><img height="20px" src="/resources/listed.png" /></td>
+    </c:if>
+    <c:if test="${person.isUnlisted()}">
+    <td><img height="20px" src="/resources/unlisted.png" /></td>
+    </c:if>
+<td class='last'>
+<div class='heading'>Last Name</div>
+<div class='value'><c:out value="${person.getLast()}"/></div>
+</td>
+<td class='first'>
+<div class='heading'>First Name</div>
+<div class='value'><c:out value="${person.getFirst()}"/></div>
+</td>
+<td class='phone'>
+<div class='heading'>Phone</div>
+<div class='value'><c:out value="${person.getPhone()}"/></div>
+</td>
+<td class='email'>
+<div class='heading'>Email</div>
+<div class='value'><c:out value="${person.getEmail()}"/></div>
+</td>
+</tr></table>
+                            Unlisted Phone: <c:out value="${person.isUnlisted()}"/><br/>
+                            Do Not List: <c:out value="${person.isNoList()}"/><br/>
+                            Comment: <c:out value="${person.getComment()}"/><br/>
+                            <br/>
+                        </c:forEach>
                     </td>
                     <td valign="top">
-                    <c:forEach items="${house.getYears()}" var="year">
-                        <c:out value="${year.getYear()}"/><br/>
-                    </c:forEach>
+                        <c:forEach items="${house.getYears()}" var="year">
+                            <c:out value="${year.getYear()}"/><br/>
+                        </c:forEach>
                     </td>
-            </tr>
-        </c:forEach>
+                </tr>
+            </c:forEach>
         </table>
     </body>
 </html>

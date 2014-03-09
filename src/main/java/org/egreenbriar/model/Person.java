@@ -156,11 +156,12 @@ public class Person implements Comparable {
         this.noList = noList;
     }
 
-    /**
-     * @return the unlisted
-     */
     public boolean isUnlisted() {
         return unlisted;
+    }
+
+    public boolean isListed() {
+        return !unlisted;
     }
 
     /**

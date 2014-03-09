@@ -37,6 +37,8 @@ public class MembershipService {
     public void read() throws FileNotFoundException, IOException {
         String[] components = null;
 
+        int badCommentCount = 0;
+        
         CSVReader reader = new CSVReader(new FileReader(membershipFile));
         while ((components = reader.readNext()) != null) {
             if (lineCount != 0) {
@@ -51,11 +53,25 @@ public class MembershipService {
                 String y2012 = components[8];
                 String y2013 = components[9];
                 String email = components[10];
-                String comment = components[11];
+                String listedPhone = components[11];
+                String comment = components[12];
 
                 if (streetService.isMissing(streetName)) {
                     System.out.println("Incorrect Street: " + streetName);
                     incorrectStreets++;
+                }
+
+                if (listedPhone.isEmpty() || listedPhone.equals("Unlisted")) {
+                    // understoond.
+                } else {
+                    System.out.println("Unknown ListedPhone value: " + last + "," + first + " - " + listedPhone);
+                }
+                
+                if (comment.isEmpty() || comment.equals("No List")) {
+                    // understood.
+                } else {
+                    System.out.println("Unknown Comment: " + last + "," + first + " - " + comment);
+                    badCommentCount++;
                 }
 
                 District district = getCommunity().addDistrict(districtName);
@@ -76,7 +92,9 @@ public class MembershipService {
 
             }
             lineCount++;
+            
         }
+        System.out.println("badCommentCount: " + badCommentCount);
     }
 
     /**
