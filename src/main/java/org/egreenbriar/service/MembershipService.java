@@ -56,13 +56,18 @@ public class MembershipService {
                 String listedPhone = components[11];
                 String comment = components[12];
 
+                District district = getCommunity().addDistrict(districtName);
+                Block block = district.addBlock(districtName, blockName);
+                House house = block.addHouse(houseNumber, streetName);
+                Person person = house.addPerson(last, first, phone, email, comment);
+
                 if (streetService.isMissing(streetName)) {
                     System.out.println("Incorrect Street: " + streetName);
                     incorrectStreets++;
                 }
 
                 if (listedPhone.isEmpty() || listedPhone.equals("Unlisted")) {
-                    // understoond.
+                    person.isUnlisted();
                 } else {
                     System.out.println("Unknown ListedPhone value: " + last + "," + first + " - " + listedPhone);
                 }
@@ -73,11 +78,6 @@ public class MembershipService {
                     System.out.println("Unknown Comment: " + last + "," + first + " - " + comment);
                     badCommentCount++;
                 }
-
-                District district = getCommunity().addDistrict(districtName);
-                Block block = district.addBlock(districtName, blockName);
-                House house = block.addHouse(houseNumber, streetName);
-                Person person = house.addPerson(last, first, phone, email, comment);
 
                 if (!y2012.isEmpty()) {
                     house.addYear(YEAR_2012);
