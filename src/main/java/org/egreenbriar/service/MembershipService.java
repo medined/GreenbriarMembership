@@ -37,8 +37,6 @@ public class MembershipService {
     public void read() throws FileNotFoundException, IOException {
         String[] components = null;
 
-        int badCommentCount = 0;
-        
         CSVReader reader = new CSVReader(new FileReader(membershipFile));
         while ((components = reader.readNext()) != null) {
             if (lineCount != 0) {
@@ -54,7 +52,8 @@ public class MembershipService {
                 String y2013 = components[9];
                 String email = components[10];
                 String listedPhone = components[11];
-                String comment = components[12];
+                String noDirectory = components[12];
+                String comment = components[13];
 
                 District district = getCommunity().addDistrict(districtName);
                 Block block = district.addBlock(districtName, blockName);
@@ -66,19 +65,22 @@ public class MembershipService {
                     incorrectStreets++;
                 }
 
-                if (listedPhone.isEmpty() || listedPhone.equals("Unlisted")) {
-                    person.isUnlisted();
+                if (listedPhone.equals("Unlisted")) {
+                    person.setUnlisted(true);
+                } else if (listedPhone.isEmpty()) {
+                    // empty field is ok.
                 } else {
                     System.out.println("Unknown ListedPhone value: " + last + "," + first + " - " + listedPhone);
                 }
                 
-                if (comment.isEmpty() || comment.equals("No List")) {
-                    // understood.
+                if (noDirectory.equals("No List")) {
+                    person.setNoDirectory(true);
+                } else if (noDirectory.isEmpty()) {
+                    // empty field is ok.
                 } else {
-                    System.out.println("Unknown Comment: " + last + "," + first + " - " + comment);
-                    badCommentCount++;
+                    System.out.println("Unknown noDiectory value: " + last + "," + first + " - " + noDirectory);
                 }
-
+                
                 if (!y2012.isEmpty()) {
                     house.addYear(YEAR_2012);
                 }
@@ -92,9 +94,7 @@ public class MembershipService {
 
             }
             lineCount++;
-            
         }
-        System.out.println("badCommentCount: " + badCommentCount);
     }
 
     /**

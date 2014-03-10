@@ -80,11 +80,20 @@
 <table cellpadding="0" border="0" cellspacing="0">
 <tr>
     <c:if test="${person.isListed()}">
-    <td><img height="20px" src="/resources/listed.png" /></td>
+    <td style="padding-right: 5px;"><img height="20px" width="60px" src="/resources/listed.png" /></td>
     </c:if>
     <c:if test="${person.isUnlisted()}">
-    <td><img height="20px" src="/resources/unlisted.png" /></td>
+    <td style="padding: 0px; padding-right: 5px;"><img height="20px" width="60px" src="/resources/unlisted.png" /></td>
     </c:if>
+
+    <c:if test="${person.isNoDirectory()}">
+    <td style="padding-right: 5px;"><img height="20px" width="60px" src="/resources/no_directory.png" /></td>
+    </c:if>
+    <c:if test="${person.inDirectory()}">
+    <td style="padding: 0px; padding-right: 5px;"><img height="20px" width="60px" src="/resources/directory.png" /></td>
+    </c:if>
+
+    <!-- 1cc758 green -->
 <td class='last'>
 <div class='heading'>Last Name</div>
 <div class='value'><c:out value="${person.getLast()}"/></div>
@@ -102,8 +111,6 @@
 <div class='value'><c:out value="${person.getEmail()}"/></div>
 </td>
 </tr></table>
-                            Unlisted Phone: <c:out value="${person.isUnlisted()}"/><br/>
-                            Do Not List: <c:out value="${person.isNoList()}"/><br/>
                             Comment: <c:out value="${person.getComment()}"/><br/>
                             <br/>
                         </c:forEach>

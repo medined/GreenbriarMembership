@@ -8,7 +8,7 @@ public class Person implements Comparable {
     private String first;
     private String phone;
     private String email;
-    private boolean noList = false;
+    private boolean noDirectory = false;
     private boolean unlisted = false;
     private String comment = null;
 
@@ -20,7 +20,7 @@ public class Person implements Comparable {
         if ("Unlisted".equals(comment)) {
             this.unlisted = true;
         } else if ("No List".equals(comment)) {
-            this.noList = true;
+            this.noDirectory = true;
         } else if (comment != null && !comment.isEmpty()) {
             this.comment = comment;
         }
@@ -58,7 +58,7 @@ public class Person implements Comparable {
 
     @Override
     public String toString() {
-        return "Person{" + "last=" + getLast() + ", first=" + getFirst() + ", phone=" + getPhone() + ", email=" + getEmail() + ", noList=" + isNoList() + ", unlisted=" + isUnlisted() + ", comment=" + getComment() + '}';
+        return "Person{" + "last=" + getLast() + ", first=" + getFirst() + ", phone=" + getPhone() + ", email=" + getEmail() + ", noList=" + isNoDirectory() + ", unlisted=" + isUnlisted() + ", comment=" + getComment() + '}';
     }
 
     @Override
@@ -142,18 +142,16 @@ public class Person implements Comparable {
         this.email = email;
     }
 
-    /**
-     * @return the noList
-     */
-    public boolean isNoList() {
-        return noList;
+    public boolean isNoDirectory() {
+        return noDirectory;
     }
 
-    /**
-     * @param noList the noList to set
-     */
-    public void setNoList(boolean noList) {
-        this.noList = noList;
+    public boolean inDirectory() {
+        return !noDirectory;
+    }
+
+    public void setNoDirectory(boolean noList) {
+        this.noDirectory = noList;
     }
 
     public boolean isUnlisted() {
