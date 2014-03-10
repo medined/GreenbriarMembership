@@ -2,6 +2,10 @@ package org.egreenbriar.model;
 
 public class Membership implements Comparable {
     
+    public static final Membership YEAR_2012 = new Membership("2012");
+    public static final Membership YEAR_2013 = new Membership("2013");
+    public static final Membership YEAR_2014 = new Membership("2014");
+
     private String year = null;
     
     public Membership(final String year) {

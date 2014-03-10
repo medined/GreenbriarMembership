@@ -22,6 +22,8 @@ import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.egreenbriar.model.Block;
+import static org.egreenbriar.model.Membership.YEAR_2012;
+import static org.egreenbriar.model.Membership.YEAR_2013;
 import org.egreenbriar.service.BlockCaptainService;
 import org.egreenbriar.service.MembershipService;
 import org.egreenbriar.service.StreetService;
@@ -30,9 +32,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class ReadMembershipDatabaseDriver {
 
     String pdfFileName = "2014_gca_membership_drive.pdf";
-
-    public static final Membership YEAR_2012 = new Membership("2012");
-    public static final Membership YEAR_2013 = new Membership("2013");
 
     // (0,0)      lower left
     // (612, 792) upper right
@@ -114,11 +113,11 @@ public class ReadMembershipDatabaseDriver {
                 content[personIndex][3] = "";
                 content[personIndex][4] = "";
                 if (firstPerson) {
-                    if (house.wasMemberIn(YEAR_2012)) {
+                    if (house.memberIn(YEAR_2012)) {
                         content[personIndex][3] = "X";
                         count2012++;
                     }
-                    if (house.wasMemberIn(YEAR_2013)) {
+                    if (house.memberIn(YEAR_2013)) {
                         content[personIndex][4] = "X";
                         count2013++;
                     }

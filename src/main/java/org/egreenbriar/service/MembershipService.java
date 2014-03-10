@@ -10,7 +10,8 @@ import org.egreenbriar.model.Block;
 import org.egreenbriar.model.District;
 import org.egreenbriar.model.Greenbriar;
 import org.egreenbriar.model.House;
-import org.egreenbriar.model.Membership;
+import static org.egreenbriar.model.Membership.YEAR_2012;
+import static org.egreenbriar.model.Membership.YEAR_2013;
 import org.egreenbriar.model.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,9 +19,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class MembershipService {
-
-    public static final Membership YEAR_2012 = new Membership("2012");
-    public static final Membership YEAR_2013 = new Membership("2013");
 
     @Value("${membership.csv.file}")
     String membershipFile = null;

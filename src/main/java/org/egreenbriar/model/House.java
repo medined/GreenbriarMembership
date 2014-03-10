@@ -127,8 +127,26 @@ public class House implements Comparable {
         return years;
     }
 
-    public boolean wasMemberIn(Membership year) {
+    public boolean memberIn(Membership year) {
         return years.contains(year);
     }
 
+    public boolean memberIn(String year) {
+        boolean rv = false;
+        if (year != null) {
+            switch (year) {
+                case "2012":
+                    rv = years.contains(Membership.YEAR_2012);
+                    break;
+                case "2013":
+                    rv = years.contains(Membership.YEAR_2013);
+                    break;
+            }
+        }
+        return rv;
+    }
+
+    public boolean notMemberIn(String year) {
+        return !memberIn(year);
+    }
 }
