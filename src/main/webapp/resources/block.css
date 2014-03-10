@@ -32,7 +32,7 @@ Colors used for buttons
     height: 15px;
 }
 
-.value:hover {
+.editable:hover {
     background: yellow;
 }
 
@@ -62,7 +62,7 @@ Colors used for buttons
 }
 
 /* This button was generated using CSSButtonGenerator.com */
-.listed {
+.button {
 	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ededed), color-stop(1, #dfdfdf) );
 	background:-moz-linear-gradient( center top, #ededed 5%, #dfdfdf 100% );
 	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#dfdfdf');
@@ -94,16 +94,11 @@ Colors used for buttons
 	text-shadow:1px 1px 0px #ffffff;
 }
 
-.listed:hover {
+.button:hover {
 	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, yellow), color-stop(1, yellow) );
 	background:-moz-linear-gradient( center top, yellow 5%, yellow 100% );
 	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='yellow', endColorstr='yellow');
 	background-color: yellow;
-}
-
-.listed:active {
-	position:relative;
-	top:1px;
 }
 
 .negate {

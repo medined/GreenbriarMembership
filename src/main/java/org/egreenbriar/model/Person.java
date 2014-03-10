@@ -162,23 +162,30 @@ public class Person implements Comparable {
         return !unlisted;
     }
 
-    /**
-     * @param unlisted the unlisted to set
-     */
+    public String listed() {
+        return unlisted ? "Unlisted" : "Listed";
+    }
+
+    public String listedStyle() {
+        return unlisted ? "button negate" : "button";
+    }
+
+    public String directory() {
+        return noDirectory ? "No Directory" : "Directory";
+    }
+
+    public String directoryStyle() {
+        return noDirectory ? "button negate" : "button";
+    }
+
     public void setUnlisted(boolean unlisted) {
         this.unlisted = unlisted;
     }
 
-    /**
-     * @return the comment
-     */
     public String getComment() {
         return comment;
     }
 
-    /**
-     * @param comment the comment to set
-     */
     public void setComment(String comment) {
         this.comment = comment;
     }

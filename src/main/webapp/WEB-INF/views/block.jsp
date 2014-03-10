@@ -36,57 +36,44 @@
                         <c:forEach items="${house.getPeople()}" var="person" varStatus="loop">
                             <table cellpadding="0" border="0" cellspacing="0">
                                 <tr>
-    <c:if test="${person.isListed()}">
-        <td style="padding-right: 5px;"><span class="listed">Listed</span></td>
-    </c:if>
-    <c:if test="${person.isUnlisted()}">
-        <td style="padding-right: 5px;"><span class="listed negate">Unlisted</span></td>
-    </c:if>
-
-                                    <c:if test="${person.isNoDirectory()}">
-        <td style="padding-right: 5px;"><span class="listed negate">No Directory</span></td>
-                                        </c:if>
-                                        <c:if test="${person.inDirectory()}">
-        <td style="padding-right: 5px;"><span class="listed">Directory</span></td>
-                                        </c:if>
-
+                                    <td style="padding-right: 5px;"><span class="<c:out value="${person.listedStyle()}"/>"><c:out value="${person.listed()}"/></span></td>
+                                    <td style="padding-right: 5px;"><span class="<c:out value="${person.directoryStyle()}"/>"><c:out value="${person.directory()}"/></span></td>
 
                                     <td class='last'>
                                         <c:if test="${loop.index == 0}">
                                             <div class='heading'>Last Name</div>
                                         </c:if>
-                                        <div class='value'><c:out value="${person.getLast()}"/></div>
+                                        <div class='value editable'><c:out value="${person.getLast()}"/></div>
                                     </td>
                                     <td class='first'>
                                         <c:if test="${loop.index == 0}">
                                             <div class='heading'>First Name</div>
                                         </c:if>
-                                        <div class='value'><c:out value="${person.getFirst()}"/></div>
+                                        <div class='value editable'><c:out value="${person.getFirst()}"/></div>
                                     </td>
                                     <td class='phone'>
                                         <c:if test="${loop.index == 0}">
                                             <div class='heading'>Phone</div>
                                         </c:if>
-                                        <div class='value'><c:out value="${person.getPhone()}"/></div>
+                                        <div class='value editable'><c:out value="${person.getPhone()}"/></div>
                                     </td>
                                     <td class='email'>
                                         <c:if test="${loop.index == 0}">
                                             <div class='heading'>Email</div>
                                         </c:if>
-                                        <div class='value'><c:out value="${person.getEmail()}"/></div>
+                                        <div class='value editable'><c:out value="${person.getEmail()}"/></div>
                                     </td>
                                     <td class='comment'>
                                         <c:if test="${loop.index == 0}">
                                             <div class='heading'>Comment</div>
                                         </c:if>
-                                        <div class='value'><c:out value="${person.getComment()}"/></div>
+                                        <div class='value editable'><c:out value="${person.getComment()}"/></div>
                                     </td>
                                     <td class='membership'>
                                         <c:if test="${loop.index == 0}">
                                             <div class='heading'>Member</div>
                                         </c:if>
                                         <div class='value'>
-
                                             <!-- only the first person in the house shows the membership status -->
                                             <c:if test="${loop.index == 0}">
                                                 <c:if test='${house.memberInYear("2012")}'>
@@ -107,7 +94,7 @@
                                                     <img height="15px" width="40px" src="/resources/2014_green.png" />
                                                 </c:if>
                                                 <c:if test='${house.notMemberInYear("2014")}'>
-                                                    <img height="15px" width="40px" src="/resources/2014_red.png" />
+                                                    <img class="editable" height="15px" width="40px" src="/resources/2014_red.png" />
                                                 </c:if>
                                             </c:if>
 
