@@ -131,7 +131,7 @@ public class House implements Comparable {
         return years.contains(year);
     }
 
-    public boolean memberIn(String year) {
+    public boolean memberInYear(String year) {
         boolean rv = false;
         if (year != null) {
             switch (year) {
@@ -146,7 +146,7 @@ public class House implements Comparable {
         return rv;
     }
 
-    public boolean notMemberIn(String year) {
-        return !memberIn(year);
+    public boolean notMemberInYear(String year) {
+        return !memberInYear(year);
     }
 }

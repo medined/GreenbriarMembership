@@ -11,64 +11,8 @@
 <html> 
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+        <link rel="stylesheet" type="text/css" href="/resources/block.css">
         <title>Greenbriar Membership Management</title>
-        <style>
-.heading {
-  font-size: 10px;
-  vertical-align:text-top;
-  padding-top: 1px;
-  padding-left: 2px;
-  padding-bottom: 2px;
-  background: grey;
-  color: white;
-  border-right: 1px solid gray;
-}
-
-.value {
-  font-size: 15px;
-  border-right: 1px solid gray;
-  padding-top: 1px;
-  padding-left: 2px;
-  padding-bottom: 2px;
-  text-overflow: ellipsis;
-	white-space: nowrap;
-	overflow: hidden;
-  }
-
-.email .value {
-  width: 10em;
-  height: 15px;
-}
-
-.value:hover {
-  background: yellow;
-}
-
-.phone .value {
-  width: 8em;
-  height: 15px;
-}
-
-.last .value {
-  width: 12em;
-  height: 15px;
-}
-
-.first .value {
-  width: 10em;
-  height: 15px;
-}
-
-.comment .value {
-  width: 5em;
-  height: 15px;
-}
-
-.membership .value {
-  width: 9em;
-  height: 15px;
-}
-</style>
     </head>
     <body>
         <a href='/'>Home</a> : 
@@ -86,93 +30,91 @@
                 <tr>
                     <td valign="top"><c:out value="${house.getHouseNumber()}"/> <c:out value="${house.getStreetName()}"/></td>
                     <td>
-                        
-Add Person
 
-<c:forEach items="${house.getPeople()}" var="person" varStatus="loop">
-<table cellpadding="0" border="0" cellspacing="0">
-<tr>
+                        Add Person
+
+                        <c:forEach items="${house.getPeople()}" var="person" varStatus="loop">
+                            <table cellpadding="0" border="0" cellspacing="0">
+                                <tr>
     <c:if test="${person.isListed()}">
-    <td style="padding-right: 5px;"><img height="20px" width="60px" src="/resources/listed.png" /></td>
+        <td style="padding-right: 5px;"><span class="listed">Listed</span></td>
     </c:if>
     <c:if test="${person.isUnlisted()}">
-    <td style="padding: 0px; padding-right: 5px;"><img height="20px" width="60px" src="/resources/unlisted.png" /></td>
+        <td style="padding-right: 5px;"><span class="listed negate">Unlisted</span></td>
     </c:if>
 
-    <c:if test="${person.isNoDirectory()}">
-    <td style="padding-right: 5px;"><img height="20px" width="60px" src="/resources/no_directory.png" /></td>
-    </c:if>
-    <c:if test="${person.inDirectory()}">
-    <td style="padding: 0px; padding-right: 5px;"><img height="20px" width="60px" src="/resources/directory.png" /></td>
-    </c:if>
-    
-    <!-- 1cc758 green -->
-    <!-- d91f63 red   -->
+                                    <c:if test="${person.isNoDirectory()}">
+        <td style="padding-right: 5px;"><span class="listed negate">No Directory</span></td>
+                                        </c:if>
+                                        <c:if test="${person.inDirectory()}">
+        <td style="padding-right: 5px;"><span class="listed">Directory</span></td>
+                                        </c:if>
 
- <td class='last'>
-    <c:if test="${loop.index == 0}">
-<div class='heading'>Last Name</div>
-    </c:if>
-<div class='value'><c:out value="${person.getLast()}"/></div>
-</td>
-<td class='first'>
-    <c:if test="${loop.index == 0}">
-<div class='heading'>First Name</div>
-    </c:if>
-<div class='value'><c:out value="${person.getFirst()}"/></div>
-</td>
-<td class='phone'>
-    <c:if test="${loop.index == 0}">
-<div class='heading'>Phone</div>
-    </c:if>
-<div class='value'><c:out value="${person.getPhone()}"/></div>
-</td>
-<td class='email'>
-    <c:if test="${loop.index == 0}">
-<div class='heading'>Email</div>
-    </c:if>
-<div class='value'><c:out value="${person.getEmail()}"/></div>
-</td>
-<td class='comment'>
-    <c:if test="${loop.index == 0}">
-<div class='heading'>Comment</div>
-    </c:if>
-<div class='value'><c:out value="${person.getComment()}"/></div>
-</td>
-<td class='membership'>
-    <c:if test="${loop.index == 0}">
-<div class='heading'>Member</div>
-    </c:if>
-<div class='value'>
 
-    <!-- only the first person in the house shows the membership status -->
-    <c:if test="${loop.index == 0}">
-    <c:if test='${house.memberIn("2012")}'>
-    <img height="15px" width="40px" src="/resources/2012_green.png" />
-    </c:if>
-    <c:if test='${house.notMemberIn("2012")}'>
-    <img height="15px" width="40px" src="/resources/2012_red.png" />
-    </c:if>
+                                    <td class='last'>
+                                        <c:if test="${loop.index == 0}">
+                                            <div class='heading'>Last Name</div>
+                                        </c:if>
+                                        <div class='value'><c:out value="${person.getLast()}"/></div>
+                                    </td>
+                                    <td class='first'>
+                                        <c:if test="${loop.index == 0}">
+                                            <div class='heading'>First Name</div>
+                                        </c:if>
+                                        <div class='value'><c:out value="${person.getFirst()}"/></div>
+                                    </td>
+                                    <td class='phone'>
+                                        <c:if test="${loop.index == 0}">
+                                            <div class='heading'>Phone</div>
+                                        </c:if>
+                                        <div class='value'><c:out value="${person.getPhone()}"/></div>
+                                    </td>
+                                    <td class='email'>
+                                        <c:if test="${loop.index == 0}">
+                                            <div class='heading'>Email</div>
+                                        </c:if>
+                                        <div class='value'><c:out value="${person.getEmail()}"/></div>
+                                    </td>
+                                    <td class='comment'>
+                                        <c:if test="${loop.index == 0}">
+                                            <div class='heading'>Comment</div>
+                                        </c:if>
+                                        <div class='value'><c:out value="${person.getComment()}"/></div>
+                                    </td>
+                                    <td class='membership'>
+                                        <c:if test="${loop.index == 0}">
+                                            <div class='heading'>Member</div>
+                                        </c:if>
+                                        <div class='value'>
 
-    <c:if test='${house.memberIn("2013")}'>
-    <img height="15px" width="40px" src="/resources/2013_green.png" />
-    </c:if>
-    <c:if test='${house.notMemberIn("2013")}'>
-    <img height="15px" width="40px" src="/resources/2013_red.png" />
-    </c:if>
+                                            <!-- only the first person in the house shows the membership status -->
+                                            <c:if test="${loop.index == 0}">
+                                                <c:if test='${house.memberInYear("2012")}'>
+                                                    <img height="15px" width="40px" src="/resources/2012_green.png" />
+                                                </c:if>
+                                                <c:if test='${house.notMemberInYear("2012")}'>
+                                                    <img height="15px" width="40px" src="/resources/2012_red.png" />
+                                                </c:if>
 
-    <c:if test='${house.memberIn("2014")}'>
-    <img height="15px" width="40px" src="/resources/2014_green.png" />
-    </c:if>
-    <c:if test='${house.notMemberIn("2014")}'>
-    <img height="15px" width="40px" src="/resources/2014_red.png" />
-    </c:if>
-    </c:if>
+                                                <c:if test='${house.memberInYear("2013")}'>
+                                                    <img height="15px" width="40px" src="/resources/2013_green.png" />
+                                                </c:if>
+                                                <c:if test='${house.notMemberInYear("2013")}'>
+                                                    <img height="15px" width="40px" src="/resources/2013_red.png" />
+                                                </c:if>
 
-</div>
-</td>
-</tr></table>
-                        </c:forEach>
+                                                <c:if test='${house.memberInYear("2014")}'>
+                                                    <img height="15px" width="40px" src="/resources/2014_green.png" />
+                                                </c:if>
+                                                <c:if test='${house.notMemberInYear("2014")}'>
+                                                    <img height="15px" width="40px" src="/resources/2014_red.png" />
+                                                </c:if>
+                                            </c:if>
+
+                                        </div>
+                                    </td>
+                                </tr></table>
+                            </c:forEach>
                     </td>
                 </tr>
             </c:forEach>
