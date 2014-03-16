@@ -51,11 +51,36 @@ public class PersonController {
     @RequestMapping(value="/person/update_first", method = RequestMethod.POST)
     @ResponseBody
     public String updateFirst(@ModelAttribute FormPerson formPerson, Model model) throws FileNotFoundException, IOException {
-        System.out.println("formPerson: " + formPerson);
-        System.out.println("formPerson.first: " + formPerson.getValue());
         Person person = membershipService.getPerson(formPerson.getPk());
         person.setFirst(formPerson.getValue());
         return person.getFirst();
+    }
+    
+    // name=last, value=<new_value>
+    @RequestMapping(value="/person/update_phone", method = RequestMethod.POST)
+    @ResponseBody
+    public String updatePhone(@ModelAttribute FormPerson formPerson, Model model) throws FileNotFoundException, IOException {
+        Person person = membershipService.getPerson(formPerson.getPk());
+        person.setPhone(formPerson.getValue());
+        return person.getPhone();
+    }
+    
+    // name=last, value=<new_value>
+    @RequestMapping(value="/person/update_email", method = RequestMethod.POST)
+    @ResponseBody
+    public String updateEmail(@ModelAttribute FormPerson formPerson, Model model) throws FileNotFoundException, IOException {
+        Person person = membershipService.getPerson(formPerson.getPk());
+        person.setEmail(formPerson.getValue());
+        return person.getEmail();
+    }
+    
+    // name=last, value=<new_value>
+    @RequestMapping(value="/person/update_comment", method = RequestMethod.POST)
+    @ResponseBody
+    public String updateComment(@ModelAttribute FormPerson formPerson, Model model) throws FileNotFoundException, IOException {
+        Person person = membershipService.getPerson(formPerson.getPk());
+        person.setComment(formPerson.getValue());
+        return person.getComment();
     }
     
     /**

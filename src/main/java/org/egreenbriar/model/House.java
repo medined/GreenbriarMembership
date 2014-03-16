@@ -136,11 +136,11 @@ public class House implements Comparable {
     }
 
     public String memberInYear2012Style() {
-        return memberInYear("2012") ? "button" : "button negate";
+        return memberInYear("2012") ? "year_button" : "year_button negate";
     }
     
     public String memberInYear2013Style() {
-        return memberInYear("2013") ? "button" : "button negate";
+        return memberInYear("2013") ? "year_button" : "year_button negate";
     }
     
     public String memberInYear2014Style() {

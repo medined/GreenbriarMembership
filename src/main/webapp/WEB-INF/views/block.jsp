@@ -42,19 +42,44 @@ $(document).ready(function() {
     <c:forEach items="${block.getPeople()}" var="person">
         $('#lastname_<c:out value="${person.getPk()}"/>').editable();
         $('#firstname_<c:out value="${person.getPk()}"/>').editable();
+        $('#phone_<c:out value="${person.getPk()}"/>').editable();
+        $('#email_<c:out value="${person.getPk()}"/>').editable();
+        $('#comment_<c:out value="${person.getPk()}"/>').editable();
     </c:forEach>
 });
 
 </script>
+        <h1>Greenbriar Membership Management</h1>
+
         <a href='/'>Home</a> : 
         <a href='/districts'>Districts</a> :
         <a href='/district/<c:out value="${block.getDistrictName()}"/>'><c:out value="${block.getDistrictName()}"/></a> :
         <c:out value="${block.getBlockName()}"/>
 
-        <h1>Greenbriar Membership Management</h1>
-
-        <h1><c:out value="${block.getHouses().size()}" /> Houses for Block <c:out value="${block.getBlockName()}"/></h1>
-
+        <table cellpadding="5" cellspacing="0" border="1" style="margin-top: 15px; margin-left: 15px;">
+            <tr>
+                <td>Houses</td>
+                <td><c:out value="${block.getHouses().size()}" /></td>
+            </tr>
+            <tr>
+                <td>Percent Membership</td>
+                <td>
+                    <table cellpadding="5" cellspacing="0" border="1" style="margin-top: 15px; margin-left: 15px;">
+                        <tr>
+                            <th>2012</th>
+                            <th>2013</th>
+                            <th>2014</th>
+                        </tr>
+                        <tr>
+                            <td align="right"><c:out value='${block.getPercentMembership("2012")}' />%</td>
+                            <td align="right"><c:out value='${block.getPercentMembership("2013")}' />%</td>
+                            <td align="right"><c:out value='${block.getPercentMembership("2014")}' />%</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        
         <table border="0" cellpadding="3" cellspacing="3">
             <c:forEach items="${block.getHouses()}" var="house">
                 <tr height="10px"><td></td></tr>
@@ -72,8 +97,10 @@ $(document).ready(function() {
                             <table cellpadding="0" border="0" cellspacing="0">
                                 <tr>
                                     <td class='last'>
-                                        <div class='heading'>&nbsp;</div>
-                                        <div>
+                                        <c:if test="${loop.index == 0}">
+                                            <div class='heading'>&nbsp;</div>
+                                        </c:if>
+                                        <div class="editable-click">
                                         <span id="listed_<c:out value="${person.getPk()}"/>" onclick="toggleListed('<c:out value="${person.getPk()}"/>'); return false;" class="<c:out value="${person.listedStyle()}"/>">
                                             <c:out value="${person.listed()}"/>
                                         </span>
@@ -103,25 +130,31 @@ $(document).ready(function() {
                                         <c:if test="${loop.index == 0}">
                                             <div class='heading'>Phone</div>
                                         </c:if>
-                                        <div class='value editable'><c:out value="${person.getPhone()}"/></div>
+                                        <div class='value editable' id='phone_<c:out value="${person.getPk()}"/>' data-type="text" data-url='/person/update_phone' data-pk='<c:out value="${person.getPk()}"/>' data-name='phone'>
+                                            <c:out value="${person.getPhone()}"/>
+                                        </div>
                                     </td>
                                     <td class='email'>
                                         <c:if test="${loop.index == 0}">
                                             <div class='heading'>Email</div>
                                         </c:if>
-                                        <div class='value editable'><c:out value="${person.getEmail()}"/></div>
+                                        <div class='value editable' id='email_<c:out value="${person.getPk()}"/>' data-type="text" data-url='/person/update_email' data-pk='<c:out value="${person.getPk()}"/>' data-name='email'>
+                                            <c:out value="${person.getEmail()}"/>
+                                        </div>
                                     </td>
                                     <td class='comment'>
                                         <c:if test="${loop.index == 0}">
                                             <div class='heading'>Comment</div>
                                         </c:if>
-                                        <div class='value editable'><c:out value="${person.getComment()}"/></div>
+                                        <div class='value editable' id='comment_<c:out value="${person.getPk()}"/>' data-type="text" data-url='/person/update_comment' data-pk='<c:out value="${person.getPk()}"/>' data-name='comment'>
+                                            <c:out value="${person.getComment()}"/>
+                                        </div>
                                     </td>
                                     <td class='membership'>
                                         <c:if test="${loop.index == 0}">
                                             <div class='heading'>Member</div>
                                         </c:if>
-                                        <div>
+                                        <div class="editable-click">
                                             <!-- only the first person in the house shows the membership status -->
                                             <c:if test="${loop.index == 0}">
                                                 <span class='<c:out value="${house.memberInYear2012Style()}"/>' style='width:50px; margin-left: 5px;'>

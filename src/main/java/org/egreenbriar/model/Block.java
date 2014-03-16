@@ -14,6 +14,17 @@ public class Block implements Comparable {
     public Block(final String name) {
         this.blockName = name;
     }
+    
+    public int getPercentMembership(String year) {
+        int numHouses = houses.size();
+        int numMembers = 0;
+        for (House house : houses) {
+            if (house.memberInYear(year)) {
+                numMembers++;
+            }
+        }
+        return (int)(((float)numMembers / (float)numHouses) * 100);
+    }
 
     public boolean is(final String name) {
         return this.getBlockName().equals(name);
