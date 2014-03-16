@@ -39,6 +39,7 @@ function toggle2014Membership( houseUuid ) {
 $.fn.editable.defaults.mode = 'inline';
 
 $(document).ready(function() {
+    $('#captain_<c:out value="${block.getBlockName()}"/>').editable();
     <c:forEach items="${block.getPeople()}" var="person">
         $('#lastname_<c:out value="${person.getPk()}"/>').editable();
         $('#firstname_<c:out value="${person.getPk()}"/>').editable();
@@ -60,6 +61,14 @@ $(document).ready(function() {
             <tr>
                 <td>Houses</td>
                 <td><c:out value="${block.getHouses().size()}" /></td>
+            </tr>
+            <tr>
+                <td>Captain</td>
+                <td>
+                    <div class='value editable' id='captain_<c:out value="${block.getBlockName()}"/>' data-type="text" data-url='/block/update_captain' data-pk='<c:out value="${block.getBlockName()}"/>' data-name='captain'>
+                    <c:out value='${block.getCaptainName()}' />
+                    </div>
+                </td>
             </tr>
             <tr>
                 <td>Percent Membership</td>

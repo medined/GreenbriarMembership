@@ -5,6 +5,21 @@ Colors used for buttons
   d91f63 red
  */
 
+a:link {
+    color: #700000;
+}
+a:visited {
+    color: #700000;
+}
+
+a:hover {
+    color: coral;
+}
+
+a:active {
+    color: #700000;
+}
+
 .heading {
     font-size: 10px;
     vertical-align:text-top;

@@ -30,6 +30,9 @@ public class MembershipService {
     private final Map<String, House> houses = new HashMap<>();
 
     @Autowired
+    private BlockCaptainService captainService = null;
+
+    @Autowired
     private StreetService streetService = null;
 
     int lineCount = 0;
@@ -94,9 +97,8 @@ public class MembershipService {
                     house.addYear(YEAR_2013);
                 }
 
-                if (!bc.isEmpty()) {
-                    block.addCaptain(person);
-                }
+                String captainName = getCaptainService().get(block.getBlockName());
+                block.setCaptainName(captainName);
 
             }
             lineCount++;
@@ -138,6 +140,20 @@ public class MembershipService {
 
     public House getHouse(String houseUuid) {
         return houses.get(houseUuid);
+    }
+
+    /**
+     * @return the captainService
+     */
+    public BlockCaptainService getCaptainService() {
+        return captainService;
+    }
+
+    /**
+     * @param captainService the captainService to set
+     */
+    public void setCaptainService(BlockCaptainService captainService) {
+        this.captainService = captainService;
     }
 
 }

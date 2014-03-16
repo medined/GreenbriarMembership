@@ -1,16 +1,11 @@
 package org.egreenbriar;
 
 import org.egreenbriar.model.Person;
-import org.egreenbriar.model.Membership;
 import org.egreenbriar.model.House;
-import org.egreenbriar.model.Greenbriar;
-import org.egreenbriar.model.District;
-import au.com.bytecode.opencsv.CSVReader;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -185,12 +180,12 @@ public class ReadMembershipDatabaseDriver {
         drawGrayString(document, page, font, fontSize, x, y, "Captain: ");
         String captainNameA = null;
         String captainNameB = null;
-        if (block.getCaptain() == null) {
+        if (block.getCaptainName() == null) {
             drawRedString(document, page, font, fontSize, x + 50, y, "None");
         } else {
             captainNameA = blockCaptainService.get(block.getBlockName());
-            captainNameB = block.getCaptain() == null ? null : block.getCaptain().getName();
-            drawString(document, page, font, fontSize, x + 50, y, block.getCaptain().getName());
+            captainNameB = block.getCaptainName() == null ? null : block.getCaptainName();
+            drawString(document, page, font, fontSize, x + 50, y, block.getCaptainName());
         }
 
         if (captainNameA == null && captainNameB == null) {

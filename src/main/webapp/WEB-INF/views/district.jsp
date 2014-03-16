@@ -11,19 +11,46 @@
 <html> 
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+        <link rel="stylesheet" type="text/css" href="/resources/block.css">
         <title>Greenbriar Membership Management</title>
     </head>
     <body>
+        <h1>Greenbriar Membership Management</h1>
+
         <a href='/'>Home</a> : 
         <a href='/districts'>Districts</a> :
         <c:out value="${district.name}"/>
 
-        <h1>Greenbriar Membership Management</h1>
+        <table cellpadding="5" cellspacing="0" border="1" style="margin-top: 15px; margin-left: 15px;">
+            <tr>
+                <td>Blocks</td>
+                <td><c:out value="${district.getBlocks().size()}" /></td>
+            </tr>
+        </table>
 
-        <h1><c:out value="${district.getBlocks().size()}" /> Blocks for District <c:out value="${district.name}"/></h1>
-        
-        <ul>
-            <c:forEach items="${district.getBlocks()}" var="block"><li><a href='/block/${block.getBlockName()}'><c:out value="${block.getBlockName()}"/></a></li></c:forEach>
-        </ul>
+        <table cellpadding="5" cellspacing="0" border="1" style="margin-top: 15px; margin-left: 15px;">
+            <tr>
+                <th rowspan="2" valign="top">Block</th>
+                <th rowspan="2" valign="top">Captain</th>
+                <th rowspan="2" valign="top">Houses</th>
+                <th colspan="3" valign="top">Membership</th>
+            </tr>
+            <tr>
+                <th>2012</th>
+                <th>2013</th>
+                <th>2014</th>
+            </tr>
+            <c:forEach items="${district.getBlocks()}" var="block">
+                <tr>
+                    <td><a href='/block/${block.getBlockName()}'><c:out value="${block.getBlockName()}"/></a></td>
+                    <td><c:out value='${block.getCaptainName()}' /></td>
+                    <td align="right"><c:out value='${block.getHouses().size()}' /></td>
+                    <td align="right"><c:out value='${block.getPercentMembership("2012")}' />%</td>
+                    <td align="right"><c:out value='${block.getPercentMembership("2013")}' />%</td>
+                    <td align="right"><c:out value='${block.getPercentMembership("2014")}' />%</td>
+                </tr>
+            </c:forEach>
+        </table>
+
     </body>
 </html>

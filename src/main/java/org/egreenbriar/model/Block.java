@@ -7,7 +7,7 @@ public class Block implements Comparable {
 
     private String districtName = null;
     private String blockName = null;
-    private Person captain = null;
+    private String captainName = null;
     private final Set<House> houses = new TreeSet<>();
     private final Set<Person> people = new TreeSet<>();
     
@@ -53,7 +53,7 @@ public class Block implements Comparable {
 
     @Override
     public String toString() {
-        return "Block{" + "name=" + getBlockName() + ", captain=" + getCaptain() + ", houses=" + getHouses() + '}';
+        return "Block{" + "name=" + getBlockName() + ", captain=" + getCaptainName() + ", houses=" + getHouses() + '}';
     }
 
     @Override
@@ -86,24 +86,6 @@ public class Block implements Comparable {
         House house = new House(houseNumber, streetName);
         getHouses().add(house);
         return house;
-    }
-
-    public void addCaptain(Person person) {
-        setCaptain(person);
-    }
-
-    /**
-     * @return the captain
-     */
-    public Person getCaptain() {
-        return captain;
-    }
-
-    /**
-     * @param captain the captain to set
-     */
-    public void setCaptain(Person captain) {
-        this.captain = captain;
     }
 
     /**
@@ -147,5 +129,19 @@ public class Block implements Comparable {
 
     public void addPerson(Person person) {
         people.add(person);
+    }
+
+    /**
+     * @return the captainName
+     */
+    public String getCaptainName() {
+        return captainName;
+    }
+
+    /**
+     * @param captainName the captainName to set
+     */
+    public void setCaptainName(String captainName) {
+        this.captainName = captainName;
     }
 }
