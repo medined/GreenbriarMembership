@@ -5,8 +5,11 @@ import java.util.UUID;
 public class Person implements Comparable {
 
     public static final Person EMPTY = new Person("", "", "", "", "");
+
+    public Person() {
+    }
     
-    private String uuid;
+    private String pk;
     private String last;
     private String first;
     private String phone;
@@ -16,7 +19,7 @@ public class Person implements Comparable {
     private String comment = null;
 
     public Person(final String last, final String first, final String phone, final String email, String comment) {
-        this.uuid = UUID.randomUUID().toString();
+        this.pk = UUID.randomUUID().toString();
         this.last = last;
         this.first = first;
         this.phone = phone;
@@ -62,7 +65,7 @@ public class Person implements Comparable {
 
     @Override
     public String toString() {
-        return "Person{" + "last=" + getLast() + ", first=" + getFirst() + ", phone=" + getPhone() + ", email=" + getEmail() + ", noList=" + isNoDirectory() + ", unlisted=" + isUnlisted() + ", comment=" + getComment() + '}';
+        return "Person{" + "pk=" + getPk() + " last=" + getLast() + ", first=" + getFirst() + ", phone=" + getPhone() + ", email=" + getEmail() + ", noList=" + isNoDirectory() + ", unlisted=" + isUnlisted() + ", comment=" + getComment() + '}';
     }
 
     @Override
@@ -194,8 +197,12 @@ public class Person implements Comparable {
         this.comment = comment;
     }
 
-    public String getUuid() {
-        return uuid;
+    public String getPk() {
+        return pk;
+    }
+
+    public void setPk(String pk) {
+        this.pk = pk;
     }
 
     public void toggleListed() {

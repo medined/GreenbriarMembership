@@ -9,6 +9,7 @@ public class Block implements Comparable {
     private String blockName = null;
     private Person captain = null;
     private final Set<House> houses = new TreeSet<>();
+    private final Set<Person> people = new TreeSet<>();
     
     public Block(final String name) {
         this.blockName = name;
@@ -129,4 +130,11 @@ public class Block implements Comparable {
         this.blockName = blockName;
     }
     
+    public Set<Person> getPeople() {
+        return people;
+    }
+
+    public void addPerson(Person person) {
+        people.add(person);
+    }
 }

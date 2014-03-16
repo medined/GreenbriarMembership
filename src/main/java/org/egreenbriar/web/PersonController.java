@@ -2,14 +2,17 @@ package org.egreenbriar.web;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import org.egreenbriar.form.FormPerson;
 import org.egreenbriar.model.Person;
 import org.egreenbriar.service.MembershipService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -35,6 +38,26 @@ public class PersonController {
         return person.directory();
     }
 
+    // name=last, value=<new_value>
+    @RequestMapping(value="/person/update_last", method = RequestMethod.POST)
+    @ResponseBody
+    public String updateLast(@ModelAttribute FormPerson formPerson, Model model) throws FileNotFoundException, IOException {
+        Person person = membershipService.getPerson(formPerson.getPk());
+        person.setLast(formPerson.getValue());
+        return person.getLast();
+    }
+    
+    // name=last, value=<new_value>
+    @RequestMapping(value="/person/update_first", method = RequestMethod.POST)
+    @ResponseBody
+    public String updateFirst(@ModelAttribute FormPerson formPerson, Model model) throws FileNotFoundException, IOException {
+        System.out.println("formPerson: " + formPerson);
+        System.out.println("formPerson.first: " + formPerson.getValue());
+        Person person = membershipService.getPerson(formPerson.getPk());
+        person.setFirst(formPerson.getValue());
+        return person.getFirst();
+    }
+    
     /**
      * @param membershipService the membershipService to set
      */

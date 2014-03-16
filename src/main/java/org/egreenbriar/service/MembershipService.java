@@ -62,7 +62,8 @@ public class MembershipService {
                 House house = block.addHouse(houseNumber, streetName);
                 Person person = house.addPerson(last, first, phone, email, comment);
                 
-                people.put(person.getUuid(), person);
+                block.addPerson(person);
+                people.put(person.getPk(), person);
                 houses.put(house.getUuid(), house);
 
                 if (streetService.isMissing(streetName)) {

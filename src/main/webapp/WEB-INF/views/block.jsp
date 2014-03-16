@@ -11,6 +11,8 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+        <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/jquery-editable/css/jquery-editable.css" rel="stylesheet"/>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/jquery-editable/js/jquery-editable-poshytip.min.js"></script>
         <link rel="stylesheet" type="text/css" href="/resources/block.css">
         <title>Greenbriar Membership Management</title>
     </head>
@@ -33,6 +35,16 @@ function toggle2014Membership( houseUuid ) {
    $("#2014_" + houseUuid).toggleClass('negate');
   });
 }
+//turn to inline mode
+$.fn.editable.defaults.mode = 'inline';
+
+$(document).ready(function() {
+    <c:forEach items="${block.getPeople()}" var="person">
+        $('#lastname_<c:out value="${person.getPk()}"/>').editable();
+        $('#firstname_<c:out value="${person.getPk()}"/>').editable();
+    </c:forEach>
+});
+
 </script>
         <a href='/'>Home</a> : 
         <a href='/districts'>Districts</a> :
@@ -53,15 +65,19 @@ function toggle2014Membership( houseUuid ) {
                         Add Person
 
                         <c:forEach items="${house.getPeople()}" var="person" varStatus="loop">
+                            
+                            <script>
+                            </script>
+                            
                             <table cellpadding="0" border="0" cellspacing="0">
                                 <tr>
                                     <td class='last'>
                                         <div class='heading'>&nbsp;</div>
                                         <div>
-                                        <span id="listed_<c:out value="${person.getUuid()}"/>" onclick="toggleListed('<c:out value="${person.getUuid()}"/>'); return false;" class="<c:out value="${person.listedStyle()}"/>">
+                                        <span id="listed_<c:out value="${person.getPk()}"/>" onclick="toggleListed('<c:out value="${person.getPk()}"/>'); return false;" class="<c:out value="${person.listedStyle()}"/>">
                                             <c:out value="${person.listed()}"/>
                                         </span>
-                                        <span id="dir_<c:out value="${person.getUuid()}"/>" onclick="toggleDirectory('<c:out value="${person.getUuid()}"/>'); return false;" class="<c:out value="${person.directoryStyle()}"/>">
+                                        <span id="dir_<c:out value="${person.getPk()}"/>" onclick="toggleDirectory('<c:out value="${person.getPk()}"/>'); return false;" class="<c:out value="${person.directoryStyle()}"/>">
                                             <c:out value="${person.directory()}"/>
                                         </span>
                                         </div>
@@ -71,13 +87,17 @@ function toggle2014Membership( houseUuid ) {
                                         <c:if test="${loop.index == 0}">
                                             <div class='heading'>Last Name</div>
                                         </c:if>
-                                        <div class='value editable'><c:out value="${person.getLast()}"/></div>
+                                        <div class='value editable' id='lastname_<c:out value="${person.getPk()}"/>' data-type="text" data-url='/person/update_last' data-pk='<c:out value="${person.getPk()}"/>' data-name='last'>
+                                            <c:out value="${person.getLast()}"/>
+                                        </div>
                                     </td>
                                     <td class='first'>
                                         <c:if test="${loop.index == 0}">
                                             <div class='heading'>First Name</div>
                                         </c:if>
-                                        <div class='value editable'><c:out value="${person.getFirst()}"/></div>
+                                        <div class='value editable' id='firstname_<c:out value="${person.getPk()}"/>' data-type="text" data-url='/person/update_first' data-pk='<c:out value="${person.getPk()}"/>' data-name='first'>
+                                            <c:out value="${person.getFirst()}"/>
+                                        </div>
                                     </td>
                                     <td class='phone'>
                                         <c:if test="${loop.index == 0}">
