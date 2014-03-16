@@ -29,7 +29,7 @@ Colors used for buttons
 
 .email .value {
     width: 10em;
-    height: 15px;
+    height: 17px;
 }
 
 .editable:hover {
@@ -38,27 +38,27 @@ Colors used for buttons
 
 .phone .value {
     width: 8em;
-    height: 15px;
+    height: 17px;
 }
 
 .last .value {
     width: 12em;
-    height: 15px;
+    height: 17px;
 }
 
 .first .value {
     width: 10em;
-    height: 15px;
+    height: 17px;
 }
 
 .comment .value {
     width: 5em;
-    height: 15px;
+    height: 17px;
 }
 
 .membership .value {
     width: 9em;
-    height: 15px;
+    height: 17px;
 }
 
 /* This button was generated using CSSButtonGenerator.com */

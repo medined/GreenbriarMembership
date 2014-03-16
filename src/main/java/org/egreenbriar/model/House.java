@@ -2,14 +2,18 @@ package org.egreenbriar.model;
 
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.UUID;
 
 public class House implements Comparable {
+
+    private String uuid;
     private String houseNumber = null;
     private String streetName = null;
     private final Set<Person> people = new TreeSet<>();
     private final Set<Membership> years = new TreeSet<>();
 
     public House(final String houseNumber, final String streetName) {
+        this.uuid = UUID.randomUUID().toString();
         this.houseNumber = houseNumber;
         this.streetName = streetName;
     }
@@ -131,6 +135,18 @@ public class House implements Comparable {
         return years.contains(year);
     }
 
+    public String memberInYear2012Style() {
+        return memberInYear("2012") ? "button" : "button negate";
+    }
+    
+    public String memberInYear2013Style() {
+        return memberInYear("2013") ? "button" : "button negate";
+    }
+    
+    public String memberInYear2014Style() {
+        return memberInYear("2014") ? "button" : "button negate";
+    }
+    
     public boolean memberInYear(String year) {
         boolean rv = false;
         if (year != null) {
@@ -148,5 +164,17 @@ public class House implements Comparable {
 
     public boolean notMemberInYear(String year) {
         return !memberInYear(year);
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void toggle2014Membership() {
+        if (memberInYear("2014")) {
+            getYears().remove(Membership.YEAR_2014);
+        } else {
+            getYears().add(Membership.YEAR_2014);
+        }
     }
 }

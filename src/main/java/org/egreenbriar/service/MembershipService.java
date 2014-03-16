@@ -4,6 +4,8 @@ import au.com.bytecode.opencsv.CSVReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import javax.annotation.PostConstruct;
 import org.egreenbriar.model.Block;
@@ -24,6 +26,8 @@ public class MembershipService {
     String membershipFile = null;
 
     private final Greenbriar community = new Greenbriar();
+    private final Map<String, Person> people = new HashMap<>();
+    private final Map<String, House> houses = new HashMap<>();
 
     @Autowired
     private StreetService streetService = null;
@@ -57,6 +61,9 @@ public class MembershipService {
                 Block block = district.addBlock(districtName, blockName);
                 House house = block.addHouse(houseNumber, streetName);
                 Person person = house.addPerson(last, first, phone, email, comment);
+                
+                people.put(person.getUuid(), person);
+                houses.put(house.getUuid(), house);
 
                 if (streetService.isMissing(streetName)) {
                     System.out.println("Incorrect Street: " + streetName);
@@ -122,6 +129,14 @@ public class MembershipService {
 
     public Block getBlock(String name) {
         return community.getBlock(name);
+    }
+
+    public Person getPerson(String personUuid) {
+        return people.get(personUuid);
+    }
+
+    public House getHouse(String houseUuid) {
+        return houses.get(houseUuid);
     }
 
 }

@@ -1,9 +1,12 @@
 package org.egreenbriar.model;
 
+import java.util.UUID;
+
 public class Person implements Comparable {
 
     public static final Person EMPTY = new Person("", "", "", "", "");
     
+    private String uuid;
     private String last;
     private String first;
     private String phone;
@@ -13,6 +16,7 @@ public class Person implements Comparable {
     private String comment = null;
 
     public Person(final String last, final String first, final String phone, final String email, String comment) {
+        this.uuid = UUID.randomUUID().toString();
         this.last = last;
         this.first = first;
         this.phone = phone;
@@ -190,4 +194,15 @@ public class Person implements Comparable {
         this.comment = comment;
     }
 
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void toggleListed() {
+        this.unlisted = !this.unlisted;
+    }
+
+    public void toggleDirectory() {
+        this.noDirectory = !this.noDirectory;
+    }
 }

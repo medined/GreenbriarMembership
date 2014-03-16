@@ -6,15 +6,34 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <%@ page import="java.util.Set" %>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html> 
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
         <link rel="stylesheet" type="text/css" href="/resources/block.css">
         <title>Greenbriar Membership Management</title>
     </head>
     <body>
+<script>
+function toggleListed( personUuid ) {
+  $.get( "/person/toggle_listed/" + personUuid, function( data ) {
+   $("#listed_" + personUuid).toggleClass('negate');
+   $("#listed_" + personUuid).html(data);
+  });
+}
+function toggleDirectory( personUuid ) {
+  $.get( "/person/toggle_directory/" + personUuid, function( data ) {
+   $("#dir_" + personUuid).toggleClass('negate');
+   $("#dir_" + personUuid).html(data);
+  });
+}
+function toggle2014Membership( houseUuid ) {
+  $.get( "/house/toggle_2014_membership/" + houseUuid, function( data ) {
+   $("#2014_" + houseUuid).toggleClass('negate');
+  });
+}
+</script>
         <a href='/'>Home</a> : 
         <a href='/districts'>Districts</a> :
         <a href='/district/<c:out value="${block.getDistrictName()}"/>'><c:out value="${block.getDistrictName()}"/></a> :
@@ -36,8 +55,17 @@
                         <c:forEach items="${house.getPeople()}" var="person" varStatus="loop">
                             <table cellpadding="0" border="0" cellspacing="0">
                                 <tr>
-                                    <td style="padding-right: 5px;"><span class="<c:out value="${person.listedStyle()}"/>"><c:out value="${person.listed()}"/></span></td>
-                                    <td style="padding-right: 5px;"><span class="<c:out value="${person.directoryStyle()}"/>"><c:out value="${person.directory()}"/></span></td>
+                                    <td class='last'>
+                                        <div class='heading'>&nbsp;</div>
+                                        <div>
+                                        <span id="listed_<c:out value="${person.getUuid()}"/>" onclick="toggleListed('<c:out value="${person.getUuid()}"/>'); return false;" class="<c:out value="${person.listedStyle()}"/>">
+                                            <c:out value="${person.listed()}"/>
+                                        </span>
+                                        <span id="dir_<c:out value="${person.getUuid()}"/>" onclick="toggleDirectory('<c:out value="${person.getUuid()}"/>'); return false;" class="<c:out value="${person.directoryStyle()}"/>">
+                                            <c:out value="${person.directory()}"/>
+                                        </span>
+                                        </div>
+                                    </td>
 
                                     <td class='last'>
                                         <c:if test="${loop.index == 0}">
@@ -73,31 +101,19 @@
                                         <c:if test="${loop.index == 0}">
                                             <div class='heading'>Member</div>
                                         </c:if>
-                                        <div class='value'>
+                                        <div>
                                             <!-- only the first person in the house shows the membership status -->
                                             <c:if test="${loop.index == 0}">
-                                                <c:if test='${house.memberInYear("2012")}'>
-                                                    <img height="15px" width="40px" src="/resources/2012_green.png" />
-                                                </c:if>
-                                                <c:if test='${house.notMemberInYear("2012")}'>
-                                                    <img height="15px" width="40px" src="/resources/2012_red.png" />
-                                                </c:if>
-
-                                                <c:if test='${house.memberInYear("2013")}'>
-                                                    <img height="15px" width="40px" src="/resources/2013_green.png" />
-                                                </c:if>
-                                                <c:if test='${house.notMemberInYear("2013")}'>
-                                                    <img height="15px" width="40px" src="/resources/2013_red.png" />
-                                                </c:if>
-
-                                                <c:if test='${house.memberInYear("2014")}'>
-                                                    <img height="15px" width="40px" src="/resources/2014_green.png" />
-                                                </c:if>
-                                                <c:if test='${house.notMemberInYear("2014")}'>
-                                                    <img class="editable" height="15px" width="40px" src="/resources/2014_red.png" />
-                                                </c:if>
+                                                <span class='<c:out value="${house.memberInYear2012Style()}"/>' style='width:50px; margin-left: 5px;'>
+                                                    2012
+                                                </span>
+                                                <span class='<c:out value="${house.memberInYear2013Style()}"/>' style='width:50px; margin-left: 5px;'>
+                                                    2013
+                                                </span>
+                                                <span id="2014_<c:out value="${house.getUuid()}"/>" onclick="toggle2014Membership('<c:out value="${house.getUuid()}"/>'); return false;"  class='<c:out value="${house.memberInYear2014Style()}"/>' style='width:50px; margin-left: 5px;'>
+                                                    2014
+                                                </span>
                                             </c:if>
-
                                         </div>
                                     </td>
                                 </tr></table>
