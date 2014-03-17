@@ -48,7 +48,6 @@ $(document).ready(function() {
         $('#comment_<c:out value="${person.getPk()}"/>').editable();
     </c:forEach>
 });
-
 </script>
         <h1>Greenbriar Membership Management</h1>
 

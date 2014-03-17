@@ -35,6 +35,9 @@ public class MembershipService {
     @Autowired
     private StreetService streetService = null;
 
+    @Autowired
+    private OfficierService officierService = null;
+
     int lineCount = 0;
     int incorrectStreets = 0;
 
@@ -64,7 +67,8 @@ public class MembershipService {
                 Block block = district.addBlock(districtName, blockName);
                 House house = block.addHouse(houseNumber, streetName);
                 Person person = house.addPerson(last, first, phone, email, comment);
-                
+
+                district.setRepresentative(officierService.get(district.getName()));
                 block.addPerson(person);
                 people.put(person.getPk(), person);
                 houses.put(house.getUuid(), house);
@@ -154,6 +158,20 @@ public class MembershipService {
      */
     public void setCaptainService(BlockCaptainService captainService) {
         this.captainService = captainService;
+    }
+
+    /**
+     * @return the officierService
+     */
+    public OfficierService getOfficierService() {
+        return officierService;
+    }
+
+    /**
+     * @param officierService the officierService to set
+     */
+    public void setOfficierService(OfficierService officierService) {
+        this.officierService = officierService;
     }
 
 }

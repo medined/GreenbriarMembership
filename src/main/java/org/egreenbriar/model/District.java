@@ -6,6 +6,7 @@ import java.util.TreeSet;
 public class District implements Comparable {
 
     private String name = null;
+    private String representative = null;
     private final Set<Block> blocks = new TreeSet<>();
 
     @Override
@@ -85,6 +86,20 @@ public class District implements Comparable {
      */
     public Set<Block> getBlocks() {
         return blocks;
+    }
+
+    /**
+     * @return the representative
+     */
+    public String getRepresentative() {
+        return representative;
+    }
+
+    /**
+     * @param representative the representative to set
+     */
+    public void setRepresentative(String representative) {
+        this.representative = representative;
     }
     
 }

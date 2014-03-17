@@ -11,10 +11,24 @@
 <html> 
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+        <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/jquery-editable/css/jquery-editable.css" rel="stylesheet"/>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/jquery-editable/js/jquery-editable-poshytip.min.js"></script>
         <link rel="stylesheet" type="text/css" href="/resources/block.css">
         <title>Greenbriar Membership Management</title>
     </head>
     <body>
+        <script>
+//turn to inline mode
+$.fn.editable.defaults.mode = 'inline';
+
+$(document).ready(function() {
+    $('#representative_<c:out value="${district.getName()}"/>').editable();
+    <c:forEach items="${district.getBlocks()}" var="block">
+        $('#captain_<c:out value="${block.getBlockName()}"/>').editable();
+    </c:forEach>
+});            
+        </script>
         <h1>Greenbriar Membership Management</h1>
 
         <a href='/'>Home</a> : 
@@ -25,6 +39,14 @@
             <tr>
                 <td>Blocks</td>
                 <td><c:out value="${district.getBlocks().size()}" /></td>
+            </tr>
+            <tr>
+                <td>Representative</td>
+                <td>
+                    <div class='value editable' id='representative_<c:out value="${district.getName()}"/>' data-type="text" data-url='/district/update_representative' data-pk='<c:out value="${district.getName()}"/>' data-name='representative'>
+                        <c:out value="${district.getRepresentative()}" />
+                    </div>
+                </td>
             </tr>
         </table>
 
@@ -43,7 +65,11 @@
             <c:forEach items="${district.getBlocks()}" var="block">
                 <tr>
                     <td><a href='/block/${block.getBlockName()}'><c:out value="${block.getBlockName()}"/></a></td>
-                    <td><c:out value='${block.getCaptainName()}' /></td>
+                    <td>
+                        <div class='value editable' id='captain_<c:out value="${block.getBlockName()}"/>' data-type="text" data-url='/block/update_captain' data-pk='<c:out value="${block.getBlockName()}"/>' data-name='captain'>
+                        <c:out value='${block.getCaptainName()}' />
+                        </div>
+                    </td>
                     <td align="right"><c:out value='${block.getHouses().size()}' /></td>
                     <td align="right"><c:out value='${block.getPercentMembership("2012")}' />%</td>
                     <td align="right"><c:out value='${block.getPercentMembership("2013")}' />%</td>
