@@ -13,14 +13,15 @@
     <http auto-config="true">
         <intercept-url pattern="/*" access="ROLE_USER" />
         <logout logout-success-url="/" />
+        <session-management invalid-session-url="/" >
+            <concurrency-control max-sessions="1" error-if-maximum-exceeded="true"/>
+        </session-management>
     </http>
  
     <authentication-manager>
         <authentication-provider>
-            <user-service>
-                <user name="user" password="user" authorities="ROLE_USER" />
-            </user-service>
-        </authentication-provider>
+            <user-service id="userDetailsService" properties="/WEB-INF/users.properties"/>
+        </authentication-provider>            
     </authentication-manager>
          
 </beans:beans>
