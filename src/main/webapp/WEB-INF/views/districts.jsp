@@ -11,15 +11,50 @@
 <html> 
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+        <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/jquery-editable/css/jquery-editable.css" rel="stylesheet"/>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/jquery-editable/js/jquery-editable-poshytip.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="/resources/block.css">
         <title>Greenbriar Membership Management</title>
     </head>
     <body>
-        <a href='/'>Home</a>
+<script>
+$.fn.editable.defaults.mode = 'inline';
+$(document).ready(function() {
+    <c:forEach items="${districts}" var="district">
+        $('#representative_<c:out value="${district.getName()}"/>').editable();
+    </c:forEach>
+});            
+</script>
         <h1>Greenbriar Membership Management</h1>
-        <h2>Districts</h2>
+        <a href='/'>Home</a>
 
-        <ul>
-            <c:forEach items="${districts}" var="district"><li><a href='/district/${district.name}'><c:out value="${district.name}"/></a></li></c:forEach>
+        <table cellpadding="5" cellspacing="0" border="1" style="margin-top: 15px; margin-left: 15px;">
+            <tr>
+                <th rowspan="2">Name</th>
+                <th rowspan="2">Representative</th>
+                <th colspan="3" valign="top">Membership</th>
+            </tr>
+            <tr>
+                <th>2012</th>
+                <th>2013</th>
+                <th>2014</th>
+            </tr>
+            <c:forEach items="${districts}" var="district">
+                <tr>
+                    <td>
+                        <a href='/district/${district.name}'><c:out value="${district.name}"/></a>
+                    </td>
+                    <td>
+                        <div class='value editable' id='representative_<c:out value="${district.getName()}"/>' data-type="text" data-url='/district/update_representative' data-pk='<c:out value="${district.getName()}"/>' data-name='representative'>
+                            <c:out value="${district.getRepresentative()}" />
+                        </div>
+                    </td>
+                    <td align="right"><c:out value='${district.getPercentMembership("2012")}' />%</td>
+                    <td align="right"><c:out value='${district.getPercentMembership("2013")}' />%</td>
+                    <td align="right"><c:out value='${district.getPercentMembership("2014")}' />%</td>
+                </tr>
+            </c:forEach>
         </ul>
     </body>
 </html>

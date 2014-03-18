@@ -40,6 +40,7 @@ $.fn.editable.defaults.mode = 'inline';
 
 $(document).ready(function() {
     $('#captain_<c:out value="${block.getBlockName()}"/>').editable();
+    $('#representative_<c:out value="${block.getDistrict().getName()}"/>').editable();
     <c:forEach items="${block.getPeople()}" var="person">
         $('#lastname_<c:out value="${person.getPk()}"/>').editable();
         $('#firstname_<c:out value="${person.getPk()}"/>').editable();
@@ -66,6 +67,14 @@ $(document).ready(function() {
                 <td>
                     <div class='value editable' id='captain_<c:out value="${block.getBlockName()}"/>' data-type="text" data-url='/block/update_captain' data-pk='<c:out value="${block.getBlockName()}"/>' data-name='captain'>
                     <c:out value='${block.getCaptainName()}' />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Representative</td>
+                <td>
+                    <div class='value editable' id='representative_<c:out value="${block.getDistrict().getName()}"/>' data-type="text" data-url='/district/update_representative' data-pk='<c:out value="${block.getDistrict().getName()}"/>' data-name='representative'>
+                    <c:out value='${block.getDistrict().getRepresentative()}' />
                     </div>
                 </td>
             </tr>

@@ -18,18 +18,32 @@ public class District implements Comparable {
         this.name = name;
     }
 
+    public int getPercentMembership(String year) {
+        int numHouses = 0;
+        int numMembers = 0;
+        for (Block block : blocks) {
+            numHouses += block.getHouses().size();
+            for (House house : block.getHouses()) {
+                if (house.memberInYear(year)) {
+                    numMembers++;
+                }
+            }
+        }
+        return (int)(((float)numMembers / (float)numHouses) * 100);
+    }
+
     public boolean is(final String name) {
         return this.getName().equals(name);
     }
     
-    public Block addBlock(final String districtName, final String blockName) {
+    public Block addBlock(final District district, final String blockName) {
         for (Block block : getBlocks()) {
             if (block.is(blockName)) {
                 return block;
             }
         }
         Block block = new Block(blockName);
-        block.setDistrictName(districtName);
+        block.setDistrict(district);
         getBlocks().add(block);
         return block;
     }

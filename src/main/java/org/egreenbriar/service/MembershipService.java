@@ -64,7 +64,7 @@ public class MembershipService {
                 String comment = components[13];
 
                 District district = getCommunity().addDistrict(districtName);
-                Block block = district.addBlock(districtName, blockName);
+                Block block = district.addBlock(district, blockName);
                 House house = block.addHouse(houseNumber, streetName);
                 Person person = house.addPerson(last, first, phone, email, comment);
 

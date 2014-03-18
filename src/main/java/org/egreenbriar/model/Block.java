@@ -5,7 +5,7 @@ import java.util.TreeSet;
 
 public class Block implements Comparable {
 
-    private String districtName = null;
+    private District district = null;
     private String blockName = null;
     private String captainName = null;
     private final Set<House> houses = new TreeSet<>();
@@ -99,14 +99,7 @@ public class Block implements Comparable {
      * @return the districtName
      */
     public String getDistrictName() {
-        return districtName;
-    }
-
-    /**
-     * @param districtName the districtName to set
-     */
-    public void setDistrictName(String districtName) {
-        this.districtName = districtName;
+        return district.getName();
     }
 
     /**
@@ -143,5 +136,19 @@ public class Block implements Comparable {
      */
     public void setCaptainName(String captainName) {
         this.captainName = captainName;
+    }
+
+    /**
+     * @return the district
+     */
+    public District getDistrict() {
+        return district;
+    }
+
+    /**
+     * @param district the district to set
+     */
+    public void setDistrict(District district) {
+        this.district = district;
     }
 }
