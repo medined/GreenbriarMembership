@@ -35,6 +35,9 @@ $(document).ready(function() {
         <a href='/districts'>Districts</a> :
         <c:out value="${district.name}"/>
 
+        <table cellpadding="0" cellspacing="0" border="0">
+            <tr>
+                <td valign="top">
         <table cellpadding="5" cellspacing="0" border="1" style="margin-top: 15px; margin-left: 15px;">
             <tr>
                 <td>Blocks</td>
@@ -49,6 +52,8 @@ $(document).ready(function() {
                 </td>
             </tr>
         </table>
+                </td>
+                <td>
 
         <table cellpadding="5" cellspacing="0" border="1" style="margin-top: 15px; margin-left: 15px;">
             <tr>
@@ -77,6 +82,8 @@ $(document).ready(function() {
                 </tr>
             </c:forEach>
         </table>
-
+                </td>
+            </tr>
+        </table>
     </body>
 </html>

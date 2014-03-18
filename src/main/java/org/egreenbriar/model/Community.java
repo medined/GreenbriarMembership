@@ -3,8 +3,8 @@ package org.egreenbriar.model;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class Greenbriar {
-    
+public class Community {
+
     private final Set<District> districts = new TreeSet<>();
 
     public District addDistrict(final String districtName) {
@@ -18,9 +18,25 @@ public class Greenbriar {
         return district;
     }
 
+    public int getPercentMembership(String year) {
+        int numHouses = 0;
+        int numMembers = 0;
+        for (District district : districts) {
+            for (Block block : district.getBlocks()) {
+                numHouses += block.getHouses().size();
+                for (House house : block.getHouses()) {
+                    if (house.memberInYear(year)) {
+                        numMembers++;
+                    }
+                }
+            }
+        }
+        return (int) (((float) numMembers / (float) numHouses) * 100);
+    }
+
     @Override
     public String toString() {
-        return "Greenbriar{" + "districts=" + getDistricts() + '}';
+        return "Community{" + "districts=" + getDistricts() + '}';
     }
 
     public Set<District> getDistricts() {

@@ -18,7 +18,9 @@ public class DistrictsController {
 
     @RequestMapping("/districts")
     public String communityHandler(Model model) throws FileNotFoundException, IOException {
+        model.addAttribute("community", membershipService.getCommunity());
         model.addAttribute("districts", membershipService.getDistricts());
+        model.addAttribute("houses", membershipService.getHouses());
         return "districts";
     }
 

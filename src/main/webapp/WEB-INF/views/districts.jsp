@@ -29,6 +29,35 @@ $(document).ready(function() {
         <h1>Greenbriar Membership Management</h1>
         <a href='/'>Home</a>
 
+        <table cellpadding="0" cellspacing="0" border="0">
+            <tr>
+                <td valign="top">
+        <table cellpadding="5" cellspacing="0" border="1" style="margin-top: 15px; margin-left: 15px;">
+            <tr>
+                <td>Houses</td>
+                <td><fmt:formatNumber value="${houses.size()}" /></td>
+            </tr>
+            <tr>
+                <td>Total Membership</td>
+                <td>
+                    <table cellpadding="5" cellspacing="0" border="1" style="margin-top: 15px; margin-left: 15px;">
+                        <tr>
+                            <th>2012</th>
+                            <th>2013</th>
+                            <th>2014</th>
+                        </tr>
+                        <tr>
+                            <td align="right"><c:out value='${community.getPercentMembership("2012")}' />%</td>
+                            <td align="right"><c:out value='${community.getPercentMembership("2013")}' />%</td>
+                            <td align="right"><c:out value='${community.getPercentMembership("2014")}' />%</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+                </td>
+                <td>
+            
         <table cellpadding="5" cellspacing="0" border="1" style="margin-top: 15px; margin-left: 15px;">
             <tr>
                 <th rowspan="2">Name</th>
@@ -55,6 +84,9 @@ $(document).ready(function() {
                     <td align="right"><c:out value='${district.getPercentMembership("2014")}' />%</td>
                 </tr>
             </c:forEach>
-        </ul>
+        </table>
+                </td>
+            </tr>
+        </table>
     </body>
 </html>

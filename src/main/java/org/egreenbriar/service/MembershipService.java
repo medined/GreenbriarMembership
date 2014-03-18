@@ -10,7 +10,7 @@ import java.util.Set;
 import javax.annotation.PostConstruct;
 import org.egreenbriar.model.Block;
 import org.egreenbriar.model.District;
-import org.egreenbriar.model.Greenbriar;
+import org.egreenbriar.model.Community;
 import org.egreenbriar.model.House;
 import static org.egreenbriar.model.Membership.YEAR_2012;
 import static org.egreenbriar.model.Membership.YEAR_2013;
@@ -25,7 +25,7 @@ public class MembershipService {
     @Value("${membership.csv.file}")
     String membershipFile = null;
 
-    private final Greenbriar community = new Greenbriar();
+    private final Community community = new Community();
     private final Map<String, Person> people = new HashMap<>();
     private final Map<String, House> houses = new HashMap<>();
 
@@ -71,7 +71,7 @@ public class MembershipService {
                 district.setRepresentative(officierService.get(district.getName()));
                 block.addPerson(person);
                 people.put(person.getPk(), person);
-                houses.put(house.getUuid(), house);
+                getHouses().put(house.getUuid(), house);
 
                 if (streetService.isMissing(streetName)) {
                     System.out.println("Incorrect Street: " + streetName);
@@ -112,7 +112,7 @@ public class MembershipService {
     /**
      * @return the community
      */
-    public Greenbriar getCommunity() {
+    public Community getCommunity() {
         return community;
     }
 
@@ -143,7 +143,7 @@ public class MembershipService {
     }
 
     public House getHouse(String houseUuid) {
-        return houses.get(houseUuid);
+        return getHouses().get(houseUuid);
     }
 
     /**
@@ -172,6 +172,13 @@ public class MembershipService {
      */
     public void setOfficierService(OfficierService officierService) {
         this.officierService = officierService;
+    }
+
+    /**
+     * @return the houses
+     */
+    public Map<String, House> getHouses() {
+        return houses;
     }
 
 }
