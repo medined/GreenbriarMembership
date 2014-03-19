@@ -26,8 +26,7 @@ $(document).ready(function() {
     </c:forEach>
 });            
 </script>
-        <h1>Greenbriar Membership Management</h1>
-        <a href='/'>Home</a>
+    <%@include file="header.jsp" %>
 
         <table cellpadding="0" cellspacing="0" border="0">
             <tr>

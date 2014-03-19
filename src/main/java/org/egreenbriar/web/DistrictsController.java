@@ -21,6 +21,12 @@ public class DistrictsController {
         model.addAttribute("community", membershipService.getCommunity());
         model.addAttribute("districts", membershipService.getDistricts());
         model.addAttribute("houses", membershipService.getHouses());
+        
+        membershipService.getBreadcrumbs().clear();
+        membershipService.getBreadcrumbs().put("Home", "/");
+        membershipService.getBreadcrumbs().put("Logout", "/j_spring_security_logout");        
+        model.addAttribute("breadcrumbs", membershipService.getBreadcrumbs());
+
         return "districts";
     }
 

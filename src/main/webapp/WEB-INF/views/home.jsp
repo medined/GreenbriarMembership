@@ -7,8 +7,7 @@
         <title>Greenbriar Membership Management</title>
     </head>
     <body>
-        <h1>Greenbriar Membership Management</h1>
-        <a href='<c:url value="j_spring_security_logout"/>'>Logout</a>
+        <%@include file="header.jsp" %>
         <ul>
             <li><a href='/districts'>District List</a></li>
             <li><a href='/streets'>Street List</a></li>

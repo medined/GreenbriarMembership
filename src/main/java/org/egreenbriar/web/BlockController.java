@@ -25,7 +25,17 @@ public class BlockController {
 
     @RequestMapping(value="/block/{blockName}", method=RequestMethod.GET)
     public String communityHandler(Model model, @PathVariable String blockName) throws FileNotFoundException, IOException {
-        model.addAttribute("block", membershipService.getBlock(blockName));
+        Block block = membershipService.getBlock(blockName);
+        model.addAttribute("block", block);
+        
+        membershipService.getBreadcrumbs().clear();
+        membershipService.getBreadcrumbs().put("Home", "/");
+        membershipService.getBreadcrumbs().put("Districts", "/districts");
+        membershipService.getBreadcrumbs().put(block.getDistrictName(), "/district/" + block.getDistrictName());
+        membershipService.getBreadcrumbs().put(blockName, "");
+        membershipService.getBreadcrumbs().put("Logout", "/j_spring_security_logout");        
+        model.addAttribute("breadcrumbs", membershipService.getBreadcrumbs());
+
         return "block";
     }
 

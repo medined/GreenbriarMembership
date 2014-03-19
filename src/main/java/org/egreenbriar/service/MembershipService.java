@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import javax.annotation.PostConstruct;
@@ -28,6 +29,7 @@ public class MembershipService {
     private final Community community = new Community();
     private final Map<String, Person> people = new HashMap<>();
     private final Map<String, House> houses = new HashMap<>();
+    private final Map<String, String> breadcrumbs = new LinkedHashMap<>();
 
     @Autowired
     private BlockCaptainService captainService = null;
@@ -179,6 +181,13 @@ public class MembershipService {
      */
     public Map<String, House> getHouses() {
         return houses;
+    }
+
+    /**
+     * @return the breadcrumbs
+     */
+    public Map<String, String> getBreadcrumbs() {
+        return breadcrumbs;
     }
 
 }

@@ -27,6 +27,13 @@ public class DistrictController {
     @RequestMapping(value="/district/{name}", method=RequestMethod.GET)
     public String communityHandler(Model model, @PathVariable String name) throws FileNotFoundException, IOException {
         model.addAttribute("district", membershipService.getDistrict(name));
+        membershipService.getBreadcrumbs().clear();
+        membershipService.getBreadcrumbs().put("Home", "/");
+        membershipService.getBreadcrumbs().put("Districts", "/districts");
+        membershipService.getBreadcrumbs().put(name, "");
+        membershipService.getBreadcrumbs().put("Logout", "/j_spring_security_logout");        
+        model.addAttribute("breadcrumbs", membershipService.getBreadcrumbs());
+
         return "district";
     }
 

@@ -29,11 +29,7 @@ $(document).ready(function() {
     </c:forEach>
 });            
         </script>
-        <h1>Greenbriar Membership Management</h1>
-
-        <a href='/'>Home</a> : 
-        <a href='/districts'>Districts</a> :
-        <c:out value="${district.name}"/>
+    <%@include file="header.jsp" %>
 
         <table cellpadding="0" cellspacing="0" border="0">
             <tr>

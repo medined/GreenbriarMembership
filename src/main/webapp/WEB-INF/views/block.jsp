@@ -50,12 +50,7 @@ $(document).ready(function() {
     </c:forEach>
 });
 </script>
-        <h1>Greenbriar Membership Management</h1>
-
-        <a href='/'>Home</a> : 
-        <a href='/districts'>Districts</a> :
-        <a href='/district/<c:out value="${block.getDistrictName()}"/>'><c:out value="${block.getDistrictName()}"/></a> :
-        <c:out value="${block.getBlockName()}"/>
+    <%@include file="header.jsp" %>
 
         <table cellpadding="5" cellspacing="0" border="1" style="margin-top: 15px; margin-left: 15px;">
             <tr>
