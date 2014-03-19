@@ -183,7 +183,8 @@ public class ReadMembershipDatabaseDriver {
         if (block.getCaptainName() == null) {
             drawRedString(document, page, font, fontSize, x + 50, y, "None");
         } else {
-            captainNameA = blockCaptainService.get(block.getBlockName());
+            Block blockA = membershipService.getBlock(block.getBlockName());
+            captainNameA = blockA.getCaptainName();
             captainNameB = block.getCaptainName() == null ? null : block.getCaptainName();
             drawString(document, page, font, fontSize, x + 50, y, block.getCaptainName());
         }

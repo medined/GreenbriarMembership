@@ -2,7 +2,7 @@ package org.egreenbriar.web;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import org.egreenbriar.service.BlockCaptainService;
+import org.egreenbriar.service.MembershipService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
@@ -14,26 +14,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class BlockCaptainController {
 
     @Autowired
-    private BlockCaptainService blockCaptainService = null;
+    private MembershipService membershipService = null;
     
     @RequestMapping("/blockcaptains")
     public String listHandler(Model model) throws FileNotFoundException, IOException {
-        model.addAttribute("captains", getBlockCaptainService().getCaptains());
+        model.addAttribute("blocks", membershipService.getBlocks());
+
+        membershipService.getBreadcrumbs().clear();
+        membershipService.getBreadcrumbs().put("Home", "/");
+        membershipService.getBreadcrumbs().put("Logout", "/j_spring_security_logout");        
+        model.addAttribute("breadcrumbs", membershipService.getBreadcrumbs());
+        
         return "blockcaptains";
     }
 
-    /**
-     * @return the blockCaptainService
-     */
-    public BlockCaptainService getBlockCaptainService() {
-        return blockCaptainService;
-    }
-
-    /**
-     * @param blockCaptainService the blockCaptainService to set
-     */
-    public void setBlockCaptainService(BlockCaptainService blockCaptainService) {
-        this.blockCaptainService = blockCaptainService;
+    public void setMembershipService(MembershipService membershipService) {
+        this.membershipService = membershipService;
     }
 
 }

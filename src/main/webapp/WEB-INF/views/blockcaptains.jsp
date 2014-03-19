@@ -11,17 +11,40 @@
 <html> 
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+        <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/jquery-editable/css/jquery-editable.css" rel="stylesheet"/>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/jquery-editable/js/jquery-editable-poshytip.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="/resources/block.css">
         <title>Greenbriar Membership Management</title>
     </head>
     <body>
-        <a href='/'>Home</a><br/>
+<script>
+$.fn.editable.defaults.mode = 'inline';
 
-        <h1>Greenbriar Membership Management</h1>
-        
-        <h2>Block Captains</h2>
+$(document).ready(function() {
+    <c:forEach items="${blocks}" var="block">
+    $('#captain_<c:out value="${block.key}"/>').editable();
+    </c:forEach>
+ });
+</script>
+        <%@include file="header.jsp" %>
 
-        <c:forEach items="${captains.keySet()}" var="blockName">
-            <c:out value="${blockName} ${captains.get(blockName)}"/><br/>
-        </c:forEach>
+        <table cellspacing="3" cellpadding="3" border="0">
+            <tr>
+                <th>District</th>
+                <th>Block</th>
+                <th>Captain</th>
+            </tr>
+            <c:forEach items="${blocks}" var="block">
+                <tr>
+                    <td><c:out value="${block.value.getDistrictName()}"/></td>
+                    <td><c:out value="${block.key}"/></td>
+                    <td>
+                        <div class='value editable' id='captain_<c:out value="${block.key}"/>' data-type="text" data-url='/block/update_captain' data-pk='<c:out value="${block.key}"/>' data-name='captain'>
+                        <c:out value="${block.value.getCaptainName()}"/>
+                        </div>
+                    </td>
+                </tr>
+            </c:forEach>
     </body>
 </html>

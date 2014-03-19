@@ -7,16 +7,17 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.TreeMap;
 import javax.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class BlockCaptainService {
 
+    private final Map<String, String> captains = new TreeMap<>();
+
     @Value("${blockcaptain.csv.file}")
     private String captainFile = null;
-
-    private final Map<String, String> captains = new TreeMap<>();
 
     @PostConstruct
     public void read() throws FileNotFoundException, IOException {
@@ -28,21 +29,15 @@ public class BlockCaptainService {
             String blockName = components[0];
             String lastName = components[1];
             String firstName = components[2];
-            captains.put(blockName, firstName + " " + lastName);
+            getCaptains().put(blockName, firstName + " " + lastName);
         }
 
     }
 
-    /**
-     * @return the captainFile
-     */
     public String getCaptainFile() {
         return captainFile;
     }
 
-    /**
-     * @param captainFile the captainFile to set
-     */
     public void setCaptainFile(String captainFile) {
         this.captainFile = captainFile;
     }
@@ -52,10 +47,6 @@ public class BlockCaptainService {
      */
     public Map<String, String> getCaptains() {
         return captains;
-    }
-
-    public String get(String name) {
-        return captains.get(name);
     }
 
 }

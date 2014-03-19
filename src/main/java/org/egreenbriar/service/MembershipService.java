@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import javax.annotation.PostConstruct;
 import org.egreenbriar.model.Block;
 import org.egreenbriar.model.District;
@@ -30,6 +31,7 @@ public class MembershipService {
     private final Map<String, Person> people = new HashMap<>();
     private final Map<String, House> houses = new HashMap<>();
     private final Map<String, String> breadcrumbs = new LinkedHashMap<>();
+    private final Map<String, Block> blocks = new TreeMap<>();
 
     @Autowired
     private BlockCaptainService captainService = null;
@@ -71,6 +73,7 @@ public class MembershipService {
                 Person person = house.addPerson(last, first, phone, email, comment);
 
                 district.setRepresentative(officierService.get(district.getName()));
+                getBlocks().put(blockName, block);
                 block.addPerson(person);
                 people.put(person.getPk(), person);
                 getHouses().put(house.getUuid(), house);
@@ -103,7 +106,7 @@ public class MembershipService {
                     house.addYear(YEAR_2013);
                 }
 
-                String captainName = getCaptainService().get(block.getBlockName());
+                String captainName = captainService.getCaptains().get(block.getBlockName());
                 block.setCaptainName(captainName);
 
             }
@@ -188,6 +191,13 @@ public class MembershipService {
      */
     public Map<String, String> getBreadcrumbs() {
         return breadcrumbs;
+    }
+
+    /**
+     * @return the blocks
+     */
+    public Map<String, Block> getBlocks() {
+        return blocks;
     }
 
 }

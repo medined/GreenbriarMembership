@@ -3,7 +3,6 @@ package org.egreenbriar.web;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import org.egreenbriar.model.House;
-import org.egreenbriar.model.Person;
 import org.egreenbriar.service.MembershipService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
