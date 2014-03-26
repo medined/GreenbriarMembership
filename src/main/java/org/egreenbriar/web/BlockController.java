@@ -4,7 +4,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import org.egreenbriar.form.FormBlock;
 import org.egreenbriar.model.Block;
-import org.egreenbriar.service.MembershipService;
+import org.egreenbriar.service.BreadcrumbService;
+import org.egreenbriar.service.DatabaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
@@ -20,20 +21,23 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class BlockController {
 
     @Autowired
-    private MembershipService membershipService = null;
-
+    private DatabaseService databaseService = null;
+    
+    @Autowired
+    private BreadcrumbService breadcrumbService = null;
+    
     @RequestMapping(value="/block/{blockName}", method=RequestMethod.GET)
     public String communityHandler(Model model, @PathVariable String blockName) throws FileNotFoundException, IOException {
-        Block block = membershipService.getBlock(blockName);
+        Block block = databaseService.getBlock(blockName);
         model.addAttribute("block", block);
         
-        membershipService.getBreadcrumbs().clear();
-        membershipService.getBreadcrumbs().put("Home", "/");
-        membershipService.getBreadcrumbs().put("Districts", "/districts");
-        membershipService.getBreadcrumbs().put(block.getDistrictName(), "/district/" + block.getDistrictName());
-        membershipService.getBreadcrumbs().put(blockName, "");
-        membershipService.getBreadcrumbs().put("Logout", "/j_spring_security_logout");        
-        model.addAttribute("breadcrumbs", membershipService.getBreadcrumbs());
+        breadcrumbService.clear();
+        breadcrumbService.put("Home", "/");
+        breadcrumbService.put("Districts", "/districts");
+        breadcrumbService.put(block.getDistrictName(), "/district/" + block.getDistrictName());
+        breadcrumbService.put(blockName, "");
+        breadcrumbService.put("Logout", "/j_spring_security_logout");        
+        model.addAttribute("breadcrumbs", breadcrumbService.getBreadcrumbs());
 
         return "block";
     }
@@ -42,7 +46,7 @@ public class BlockController {
     @RequestMapping(value="/block/update_captain", method = RequestMethod.POST)
     @ResponseBody
     public String updateCaptain(@ModelAttribute FormBlock formBlock, Model model) throws FileNotFoundException, IOException {
-        Block block = membershipService.getBlock(formBlock.getPk());
+        Block block = databaseService.getBlock(formBlock.getPk());
         if (block == null) {
             throw new RuntimeException("Unable to find block: " + formBlock.getPk());
         }
@@ -50,11 +54,12 @@ public class BlockController {
         return block.getCaptainName();
     }
     
-    /**
-     * @param membershipService the membershipService to set
-     */
-    public void setMembershipService(MembershipService membershipService) {
-        this.membershipService = membershipService;
+    public void setDatabaseService(DatabaseService databaseService) {
+        this.databaseService = databaseService;
+    }
+
+    public void setBreadcrumbService(BreadcrumbService breadcrumbService) {
+        this.breadcrumbService = breadcrumbService;
     }
 
 }

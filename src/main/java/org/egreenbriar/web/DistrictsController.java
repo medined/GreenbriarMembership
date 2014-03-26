@@ -2,7 +2,8 @@ package org.egreenbriar.web;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import org.egreenbriar.service.MembershipService;
+import org.egreenbriar.service.BreadcrumbService;
+import org.egreenbriar.service.DatabaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
@@ -14,27 +15,30 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class DistrictsController {
 
     @Autowired
-    private MembershipService membershipService = null;
+    private DatabaseService databaseService = null;
+    
+    @Autowired
+    private BreadcrumbService breadcrumbService = null;
 
     @RequestMapping("/districts")
     public String communityHandler(Model model) throws FileNotFoundException, IOException {
-        model.addAttribute("community", membershipService.getCommunity());
-        model.addAttribute("districts", membershipService.getDistricts());
-        model.addAttribute("houses", membershipService.getHouses());
+        model.addAttribute("community", databaseService.getCommunity());
+        model.addAttribute("districts", databaseService.getDistricts());
+        model.addAttribute("houses", databaseService.getHouses());
         
-        membershipService.getBreadcrumbs().clear();
-        membershipService.getBreadcrumbs().put("Home", "/");
-        membershipService.getBreadcrumbs().put("Logout", "/j_spring_security_logout");        
-        model.addAttribute("breadcrumbs", membershipService.getBreadcrumbs());
+        breadcrumbService.clear();
+        breadcrumbService.put("Home", "/");
+        breadcrumbService.put("Logout", "/j_spring_security_logout");        
+        model.addAttribute("breadcrumbs", breadcrumbService.getBreadcrumbs());
 
         return "districts";
     }
 
-    /**
-     * @param membershipService the membershipService to set
-     */
-    public void setMembershipService(MembershipService membershipService) {
-        this.membershipService = membershipService;
+    public void setDatabaseService(DatabaseService databaseService) {
+        this.databaseService = databaseService;
     }
 
+    public void setBreadcrumbService(BreadcrumbService breadcrumbService) {
+        this.breadcrumbService = breadcrumbService;
+    }
 }

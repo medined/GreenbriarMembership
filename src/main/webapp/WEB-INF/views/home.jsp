@@ -10,7 +10,6 @@
         <%@include file="header.jsp" %>
         <ul>
             <li><a href='/districts'>District List</a></li>
-            <li><a href='/streets'>Street List</a></li>
             <li><a href='/blockcaptains'>Block Captain List</a></li>
         </ul>
     </body>

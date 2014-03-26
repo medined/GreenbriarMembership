@@ -2,12 +2,9 @@ package org.egreenbriar;
 
 import org.egreenbriar.model.Person;
 import org.egreenbriar.model.House;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 import java.util.Set;
 import org.apache.pdfbox.exceptions.COSVisitorException;
@@ -19,9 +16,7 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.egreenbriar.model.Block;
 import static org.egreenbriar.model.Membership.YEAR_2012;
 import static org.egreenbriar.model.Membership.YEAR_2013;
-import org.egreenbriar.service.BlockCaptainService;
-import org.egreenbriar.service.MembershipService;
-import org.egreenbriar.service.StreetService;
+import org.egreenbriar.service.DatabaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class ReadMembershipDatabaseDriver {
@@ -36,14 +31,8 @@ public class ReadMembershipDatabaseDriver {
     float upperRightY = PDPage.PAGE_SIZE_LETTER.getUpperRightY();
 
     @Autowired
-    private StreetService streetService = null;
+    private DatabaseService databaseService = null;
     
-    @Autowired
-    private BlockCaptainService blockCaptainService = null;
-
-    @Autowired
-    private MembershipService membershipService = null;
-
     public static void main(String[] args) throws FileNotFoundException, IOException, COSVisitorException {
         ReadMembershipDatabaseDriver driver = new ReadMembershipDatabaseDriver();
         driver.process();
@@ -52,13 +41,12 @@ public class ReadMembershipDatabaseDriver {
     private void process() throws FileNotFoundException, IOException, COSVisitorException {
 
         new File(pdfFileName).delete();
-
         
-        Gson gson = new GsonBuilder().serializeNulls().create();
-        String json = gson.toJson(membershipService.getCommunity());
-        try (PrintWriter writer = new PrintWriter("greenbriar_membership.json")) {
-            writer.println(json);
-        }
+        //Gson gson = new GsonBuilder().serializeNulls().create();
+        //String json = gson.toJson(membershipService.getCommunity());
+        //try (PrintWriter writer = new PrintWriter("greenbriar_membership.json")) {
+        //    writer.println(json);
+        //}
     }
 
     private float drawHouse(final PDDocument document, final PDPage page, final Set<House> houses, float x, float y) throws IOException {
@@ -183,8 +171,8 @@ public class ReadMembershipDatabaseDriver {
         if (block.getCaptainName() == null) {
             drawRedString(document, page, font, fontSize, x + 50, y, "None");
         } else {
-            Block blockA = membershipService.getBlock(block.getBlockName());
-            captainNameA = blockA.getCaptainName();
+//            Block blockA = databaseService.getBlock(block.getBlockName());
+//            captainNameA = blockA.getCaptainName();
             captainNameB = block.getCaptainName() == null ? null : block.getCaptainName();
             drawString(document, page, font, fontSize, x + 50, y, block.getCaptainName());
         }
@@ -395,30 +383,17 @@ public class ReadMembershipDatabaseDriver {
     }
 
     /**
-     * @param streetService the streetService to set
+     * @return the databaseService
      */
-    public void setStreetService(StreetService streetService) {
-        this.streetService = streetService;
+    public DatabaseService getDatabaseService() {
+        return databaseService;
     }
 
     /**
-     * @param blockCaptainService the blockCaptainService to set
+     * @param databaseService the databaseService to set
      */
-    public void setBlockCaptainService(BlockCaptainService blockCaptainService) {
-        this.blockCaptainService = blockCaptainService;
+    public void setDatabaseService(DatabaseService databaseService) {
+        this.databaseService = databaseService;
     }
 
-    /**
-     * @return the membershipService
-     */
-    public MembershipService getMembershipService() {
-        return membershipService;
-    }
-
-    /**
-     * @param membershipService the membershipService to set
-     */
-    public void setMembershipService(MembershipService membershipService) {
-        this.membershipService = membershipService;
-    }
 }

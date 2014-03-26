@@ -4,7 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import org.egreenbriar.form.FormPerson;
 import org.egreenbriar.model.Person;
-import org.egreenbriar.service.MembershipService;
+import org.egreenbriar.service.DatabaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
@@ -20,12 +20,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class PersonController {
 
     @Autowired
-    private MembershipService membershipService = null;
+    private DatabaseService databaseService = null;
     
     @RequestMapping("/person/toggle_listed/{personUuid}")
     @ResponseBody
     public String toggleListed(Model model, @PathVariable String personUuid) throws FileNotFoundException, IOException {
-        Person person = membershipService.getPerson(personUuid);
+        Person person = databaseService.getPerson(personUuid);
         person.toggleListed();
         return person.listed();
     }
@@ -33,7 +33,7 @@ public class PersonController {
     @RequestMapping("/person/toggle_directory/{personUuid}")
     @ResponseBody
     public String toggleDirectory(Model model, @PathVariable String personUuid) throws FileNotFoundException, IOException {
-        Person person = membershipService.getPerson(personUuid);
+        Person person = databaseService.getPerson(personUuid);
         person.toggleDirectory();
         return person.directory();
     }
@@ -42,7 +42,7 @@ public class PersonController {
     @RequestMapping(value="/person/update_last", method = RequestMethod.POST)
     @ResponseBody
     public String updateLast(@ModelAttribute FormPerson formPerson, Model model) throws FileNotFoundException, IOException {
-        Person person = membershipService.getPerson(formPerson.getPk());
+        Person person = databaseService.getPerson(formPerson.getPk());
         person.setLast(formPerson.getValue());
         return person.getLast();
     }
@@ -51,7 +51,7 @@ public class PersonController {
     @RequestMapping(value="/person/update_first", method = RequestMethod.POST)
     @ResponseBody
     public String updateFirst(@ModelAttribute FormPerson formPerson, Model model) throws FileNotFoundException, IOException {
-        Person person = membershipService.getPerson(formPerson.getPk());
+        Person person = databaseService.getPerson(formPerson.getPk());
         person.setFirst(formPerson.getValue());
         return person.getFirst();
     }
@@ -60,7 +60,7 @@ public class PersonController {
     @RequestMapping(value="/person/update_phone", method = RequestMethod.POST)
     @ResponseBody
     public String updatePhone(@ModelAttribute FormPerson formPerson, Model model) throws FileNotFoundException, IOException {
-        Person person = membershipService.getPerson(formPerson.getPk());
+        Person person = databaseService.getPerson(formPerson.getPk());
         person.setPhone(formPerson.getValue());
         return person.getPhone();
     }
@@ -69,7 +69,7 @@ public class PersonController {
     @RequestMapping(value="/person/update_email", method = RequestMethod.POST)
     @ResponseBody
     public String updateEmail(@ModelAttribute FormPerson formPerson, Model model) throws FileNotFoundException, IOException {
-        Person person = membershipService.getPerson(formPerson.getPk());
+        Person person = databaseService.getPerson(formPerson.getPk());
         person.setEmail(formPerson.getValue());
         return person.getEmail();
     }
@@ -78,15 +78,13 @@ public class PersonController {
     @RequestMapping(value="/person/update_comment", method = RequestMethod.POST)
     @ResponseBody
     public String updateComment(@ModelAttribute FormPerson formPerson, Model model) throws FileNotFoundException, IOException {
-        Person person = membershipService.getPerson(formPerson.getPk());
+        Person person = databaseService.getPerson(formPerson.getPk());
         person.setComment(formPerson.getValue());
         return person.getComment();
     }
     
-    /**
-     * @param membershipService the membershipService to set
-     */
-    public void setMembershipService(MembershipService membershipService) {
-        this.membershipService = membershipService;
+    public void setDatabaseService(DatabaseService databaseService) {
+        this.databaseService = databaseService;
     }
+
 }

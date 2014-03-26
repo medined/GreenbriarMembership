@@ -2,6 +2,8 @@ package org.egreenbriar.model;
 
 import java.util.Set;
 import java.util.TreeSet;
+import org.egreenbriar.service.DatabaseService;
+import org.neo4j.graphdb.Node;
 
 public class Block implements Comparable {
 
@@ -13,6 +15,13 @@ public class Block implements Comparable {
     
     public Block(final String name) {
         this.blockName = name;
+    }
+    
+    public Block(final Node node) {
+        String _blockName = (String)node.getProperty(DatabaseService.EQUALITY_PROPERTY);
+        String _captainName = (String)node.getProperty("captain");
+        this.blockName = _blockName;
+        this.captainName = _captainName;
     }
     
     public int getPercentMembership(String year) {

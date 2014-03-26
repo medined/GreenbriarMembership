@@ -20,7 +20,6 @@ public class NeoDriver {
 
         Node community = databaseService.getCommunity();
         Node districts = databaseService.getDistricts();
-        Node blocks = databaseService.getBlocks();
         Node houses = databaseService.getHouses();
         Node people = databaseService.getPeople();
 

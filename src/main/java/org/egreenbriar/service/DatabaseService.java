@@ -1,10 +1,16 @@
 package org.egreenbriar.service;
 
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.UUID;
 import javax.annotation.PostConstruct;
 import org.apache.log4j.Logger;
 import org.egreenbriar.graph.NodeTypes;
 import org.egreenbriar.graph.RelationshipTypes;
+import org.egreenbriar.model.Block;
+import org.egreenbriar.model.District;
+import org.egreenbriar.model.House;
+import org.egreenbriar.model.Person;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.NotFoundException;
@@ -40,6 +46,17 @@ public class DatabaseService {
     public void initialize() {
         setGraphService(new GraphDatabaseFactory().newEmbeddedDatabase(getDatabaseDirectory()));
         registerShutdownHook(getGraphService());
+        try (Transaction tx = graphService.beginTx()) {
+            root = graphService.getNodeById(0);
+            tx.success();
+        } catch (NotFoundException e) {
+            root = create(NodeTypes.ROOT, "root");
+        }
+        community = uniqueChild(root, "community", NodeTypes.COMMUNITY, RelationshipTypes.HAS_COMMUNITY);
+        setDistricts(uniqueChild(community, "districts", NodeTypes.DISTRICTS, RelationshipTypes.HAS_DISTRICTS));
+        blocks = uniqueChild(community, "blocks", NodeTypes.BLOCKS, RelationshipTypes.HAS_BLOCKS);
+        houses = uniqueChild(community, "houses", NodeTypes.HOUSES, RelationshipTypes.HAS_HOUSES);
+        people = uniqueChild(community, "people", NodeTypes.PEOPLE, RelationshipTypes.HAS_PEOPLE);
     }
 
     private void registerShutdownHook(final GraphDatabaseService graphDb) {
@@ -82,21 +99,10 @@ public class DatabaseService {
     }
 
     public Node getRoot() {
-        try (Transaction tx = graphService.beginTx()) {
-            root = graphService.getNodeById(0);
-            tx.success();
-        } catch (NotFoundException e) {
-            root = create(NodeTypes.ROOT, "root");
-        }
         return root;
     }
-
+    
     public Node getCommunity() {
-        community = uniqueChild(getRoot(), "community", NodeTypes.COMMUNITY, RelationshipTypes.HAS_COMMUNITY);
-        setDistricts(uniqueChild(community, "districts", NodeTypes.DISTRICTS, RelationshipTypes.HAS_DISTRICTS));
-        blocks = uniqueChild(community, "blocks", NodeTypes.BLOCKS, RelationshipTypes.HAS_BLOCKS);
-        houses = uniqueChild(community, "houses", NodeTypes.HOUSES, RelationshipTypes.HAS_HOUSES);
-        people = uniqueChild(community, "people", NodeTypes.PEOPLE, RelationshipTypes.HAS_PEOPLE);
         return community;
     }
 
@@ -112,7 +118,7 @@ public class DatabaseService {
     public Node createBlock(final Node owner, final String name, final String captain) {
         Node block = uniqueChild(owner, name, NodeTypes.BLOCK, RelationshipTypes.HAS_BLOCK);
         try (Transaction tx = graphService.beginTx()) {
-            uniqueRelationship(getBlocks(), RelationshipTypes.HAS_BLOCK, block);
+            uniqueRelationship(blocks, RelationshipTypes.HAS_BLOCK, block);
             block.setProperty("captain", captain);
             tx.success();
         }
@@ -202,16 +208,6 @@ public class DatabaseService {
         this.districts = districts;
     }
 
-    /**
-     * @return the blocks
-     */
-    public Node getBlocks() {
-        return blocks;
-    }
-
-    /**
-     * @return the houses
-     */
     public Node getHouses() {
         return houses;
     }
@@ -292,6 +288,47 @@ public class DatabaseService {
             log.info(String.format("%s %s %s %s %s", equality(start), direction, name, direction, equality(end)));
             tx.success();
         }
+    }
+
+    public Map<String, Block> getBlocks() {
+        Map<String, Block> _blocks = new TreeMap<>();
+        try (Transaction tx = graphService.beginTx()) {
+            for (Relationship relationship : blocks.getRelationships(RelationshipTypes.HAS_BLOCK)) {
+                log(relationship.getEndNode());
+                Block block = new Block(relationship.getEndNode());
+                _blocks.put(block.getBlockName(), block);
+            }
+            tx.success();
+        }
+        return _blocks;
+    }
+
+    public Block getBlock(String blockName) {
+        Block block = null;
+        try (Transaction tx = graphService.beginTx()) {
+            for (Relationship relationship : blocks.getRelationships(RelationshipTypes.HAS_BLOCK)) {
+                Node endNode = relationship.getEndNode();
+                String endName = equality(endNode);
+                if (blockName.equals(endName)) {
+                    block = new Block(endNode);
+                    break;
+                }
+            }
+            tx.success();
+        }
+        return block;
+    }
+
+    public District getDistrict(String name) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public House getHouse(String houseUuid) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public Person getPerson(String personUuid) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
