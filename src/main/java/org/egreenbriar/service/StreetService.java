@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.Set;
 import java.util.TreeSet;
 import javax.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,9 @@ public class StreetService {
 
     private final Set<String> streets = new TreeSet<>();
     
+    @Autowired
+    private DatabaseService databaseService = null;
+
     @PostConstruct
     public void read() throws FileNotFoundException, IOException {
         String[] components = null;

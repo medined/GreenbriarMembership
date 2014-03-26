@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.TreeMap;
 import javax.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 

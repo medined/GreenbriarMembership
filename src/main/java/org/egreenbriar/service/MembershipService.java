@@ -17,6 +17,7 @@ import org.egreenbriar.model.House;
 import static org.egreenbriar.model.Membership.YEAR_2012;
 import static org.egreenbriar.model.Membership.YEAR_2013;
 import org.egreenbriar.model.Person;
+import org.neo4j.graphdb.Node;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -42,11 +43,15 @@ public class MembershipService {
     @Autowired
     private OfficierService officierService = null;
 
+    @Autowired
+    private DatabaseService databaseService = null;
+
     int lineCount = 0;
     int incorrectStreets = 0;
 
     @PostConstruct
     public void read() throws FileNotFoundException, IOException {
+
         String[] components = null;
 
         CSVReader reader = new CSVReader(new FileReader(membershipFile));
@@ -108,6 +113,11 @@ public class MembershipService {
 
                 String captainName = captainService.getCaptains().get(block.getBlockName());
                 block.setCaptainName(captainName);
+
+                Node districtNode = databaseService.createDistrict(districtName, officierService.get(district.getName()));
+                Node blockNode = databaseService.createBlock(districtNode, blockName, captainName);
+                Node houseNode = databaseService.createHouse(blockNode, houseNumber, streetName, y2012.isEmpty(), y2013.isEmpty());
+                Node personNode = databaseService.createPerson(houseNode, last, first, phone, email, comment, listedPhone.equals("Unlisted"), noDirectory.equals("No List"));
 
             }
             lineCount++;
