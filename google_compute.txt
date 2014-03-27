@@ -1,0 +1,57 @@
+* clone vagrant-google
+* bundle
+* bundle exec rake
+* fix errors
+* rake build
+* vagrant plugin install pkg/vagrant-google-0.1.1.gem
+* vagrant box add gce https://github.com/mitchellh/vagrant-google/raw/master/google.box
+
+rvm use ruby-2.1.1
+rvm gemset default
+
+gcutil getproject --project=greenbriar-member-management --cache_flag_values
+gcutil listmachinetypes
+gcutil listimages
+
+gcutil addinstance my-first-instance --machine_type=f1-micro --image=debian-7 --zone=us-central1-a --wait_until_running --auto_delete_boot_disk
+
+gcutil addfirewall http2 --description="Incoming http allowed." --allowed="tcp:http"
+
+gcutil ssh my-first-instance
+
+cd /Users/davidmedinets/Dropbox/eGreenbriar/membership
+gcutil push my-first-instance *.csv /home/davidmedinets/data
+gcutil push my-first-instance /Users/davidmedinets/NetBeansProjects/GreenbriarMembership/src/main/webapp/WEB-INF/users.properties /home/davidmedinets/GreenbriarMembership/src/main/webapp/WEB-INF
+
+project name: Greenbriar Member Management
+project id: greenbriar-member-management
+Project Number:  277875355454
+
+Service Account:
+  password: notasecret
+
+
+Client ID:	                277875355454-lpgvvcksc61al63eksauuahbv8a3s4s5.apps.googleusercontent.com
+Email address:	            277875355454-lpgvvcksc61al63eksauuahbv8a3s4s5@developer.gserviceaccount.com
+Public key fingerprints:	0724afe52f91e8327eb80d12176cd15588e48cf4
+
+/Users/davidmedinets/NetBeansProjects/GoogleServiceAccount/0724afe52f91e8327eb80d12176cd15588e48cf4-privatekey.p12
+
++-------------------+---------------+-----------------+---------------+---------+
+| name              | network-ip    | external-ip     | zone          | status  |
++-------------------+---------------+-----------------+---------------+---------+
+| my-first-instance | 10.240.147.35 | 173.255.114.193 | us-central1-a | RUNNING |
++-------------------+---------------+-----------------+---------------+---------+
+
+http://173.255.114.193
+
+
+sudo apt-get install -y git-core
+git clone https://github.com/medined/GreenbriarMembership.git
+echo "deb http://ppa.launchpad.net/natecarlson/maven3/ubuntu precise main" | sudo tee -a /etc/apt/sources.list
+echo "deb-src http://ppa.launchpad.net/natecarlson/maven3/ubuntu precise main" | sudo tee -a /etc/apt/sources.list
+sudo apt-get update
+sudo apt-get -y --force-yes install maven3
+sudo ln -s /usr/share/maven3/bin/mvn /usr/bin/mvn
+sudo apt-get install -y openjdk-7-jdk
+
