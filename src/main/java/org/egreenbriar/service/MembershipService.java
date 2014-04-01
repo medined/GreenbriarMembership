@@ -34,7 +34,7 @@ public class MembershipService {
     private final Map<String, Block> blocks = new TreeMap<>();
 
     @Autowired
-    private BlockCaptainService captainService = null;
+    private BlockCaptainService blockCaptainService = null;
 
     @Autowired
     private StreetService streetService = null;
@@ -106,12 +106,13 @@ public class MembershipService {
                     house.addYear(YEAR_2013);
                 }
 
-                String captainName = captainService.getCaptains().get(block.getBlockName());
+                String captainName = getBlockCaptainService().getCaptains().get(block.getBlockName());
                 block.setCaptainName(captainName);
 
             }
             lineCount++;
         }
+        
     }
 
     /**
@@ -152,20 +153,6 @@ public class MembershipService {
     }
 
     /**
-     * @return the captainService
-     */
-    public BlockCaptainService getCaptainService() {
-        return captainService;
-    }
-
-    /**
-     * @param captainService the captainService to set
-     */
-    public void setCaptainService(BlockCaptainService captainService) {
-        this.captainService = captainService;
-    }
-
-    /**
      * @return the officierService
      */
     public OfficierService getOfficierService() {
@@ -198,6 +185,20 @@ public class MembershipService {
      */
     public Map<String, Block> getBlocks() {
         return blocks;
+    }
+
+    /**
+     * @return the blockCaptainService
+     */
+    public BlockCaptainService getBlockCaptainService() {
+        return blockCaptainService;
+    }
+
+    /**
+     * @param blockCaptainService the blockCaptainService to set
+     */
+    public void setBlockCaptainService(BlockCaptainService blockCaptainService) {
+        this.blockCaptainService = blockCaptainService;
     }
 
 }

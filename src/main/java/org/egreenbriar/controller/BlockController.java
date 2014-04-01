@@ -4,6 +4,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import org.egreenbriar.form.FormBlock;
 import org.egreenbriar.model.Block;
+import org.egreenbriar.service.BlockCaptainService;
+import org.egreenbriar.service.ChangeService;
 import org.egreenbriar.service.MembershipService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,6 +23,12 @@ public class BlockController {
 
     @Autowired
     private MembershipService membershipService = null;
+
+    @Autowired
+    private BlockCaptainService blockCaptainService = null;
+
+    @Autowired
+    private ChangeService changeService = null;
 
     @RequestMapping(value="/block/{blockName}", method=RequestMethod.GET)
     public String communityHandler(Model model, @PathVariable String blockName) throws FileNotFoundException, IOException {
@@ -46,15 +54,23 @@ public class BlockController {
         if (block == null) {
             throw new RuntimeException("Unable to find block: " + formBlock.getPk());
         }
+        String message = String.format("block(%s) old(%s) new(%s)", block.getBlockName(), block.getCaptainName(), formBlock.getValue());
+        changeService.logChange("update_captin", message);
         block.setCaptainName(formBlock.getValue());
+        blockCaptainService.write(membershipService.getBlocks());
         return block.getCaptainName();
     }
     
-    /**
-     * @param membershipService the membershipService to set
-     */
     public void setMembershipService(MembershipService membershipService) {
         this.membershipService = membershipService;
+    }
+
+    public void setBlockCaptainService(BlockCaptainService blockCaptainService) {
+        this.blockCaptainService = blockCaptainService;
+    }
+
+    public void setChangeService(ChangeService changeService) {
+        this.changeService = changeService;
     }
 
 }

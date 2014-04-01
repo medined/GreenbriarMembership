@@ -4,9 +4,11 @@ import au.com.bytecode.opencsv.CSVReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Map;
 import java.util.TreeMap;
 import javax.annotation.PostConstruct;
+import org.egreenbriar.model.Block;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,9 @@ public class BlockCaptainService {
 
     @Value("${blockcaptain.csv.file}")
     private String captainFile = null;
+    
+    @Autowired
+    private ChangeService changeService = null;
 
     @PostConstruct
     public void read() throws FileNotFoundException, IOException {
@@ -27,11 +32,18 @@ public class BlockCaptainService {
         
         while ((components = cvsReader.readNext()) != null) {
             String blockName = components[0];
-            String lastName = components[1];
-            String firstName = components[2];
-            getCaptains().put(blockName, firstName + " " + lastName);
+            String captainName = components[1];
+            getCaptains().put(blockName, captainName);
         }
 
+    }
+    
+    public synchronized void write(final Map<String, Block> blocks) throws FileNotFoundException {
+        try (PrintWriter writer = new PrintWriter(captainFile)) {
+            for (Map.Entry<String, Block> entry : blocks.entrySet()) {
+                writer.printf("%s,%s\n", entry.getKey(), entry.getValue().getCaptainName());
+            }
+        }
     }
 
     public String getCaptainFile() {
@@ -47,6 +59,13 @@ public class BlockCaptainService {
      */
     public Map<String, String> getCaptains() {
         return captains;
+    }
+
+    /**
+     * @param changeService the changeService to set
+     */
+    public void setChangeService(ChangeService changeService) {
+        this.changeService = changeService;
     }
 
 }
