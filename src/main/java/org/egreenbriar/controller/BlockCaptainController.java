@@ -1,4 +1,4 @@
-package org.egreenbriar.web;
+package org.egreenbriar.controller;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -11,28 +11,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @Component
-public class DistrictsController {
+public class BlockCaptainController {
 
     @Autowired
     private MembershipService membershipService = null;
+    
+    @RequestMapping("/blockcaptains")
+    public String listHandler(Model model) throws FileNotFoundException, IOException {
+        model.addAttribute("blocks", membershipService.getBlocks());
 
-    @RequestMapping("/districts")
-    public String communityHandler(Model model) throws FileNotFoundException, IOException {
-        model.addAttribute("community", membershipService.getCommunity());
-        model.addAttribute("districts", membershipService.getDistricts());
-        model.addAttribute("houses", membershipService.getHouses());
-        
         membershipService.getBreadcrumbs().clear();
         membershipService.getBreadcrumbs().put("Home", "/");
         membershipService.getBreadcrumbs().put("Logout", "/j_spring_security_logout");        
         model.addAttribute("breadcrumbs", membershipService.getBreadcrumbs());
-
-        return "districts";
+        
+        return "blockcaptains";
     }
 
-    /**
-     * @param membershipService the membershipService to set
-     */
     public void setMembershipService(MembershipService membershipService) {
         this.membershipService = membershipService;
     }

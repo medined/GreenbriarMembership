@@ -1,9 +1,9 @@
-package org.egreenbriar.web;
+package org.egreenbriar.controller;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import org.egreenbriar.form.FormBlock;
-import org.egreenbriar.model.Block;
+import org.egreenbriar.form.FormDistrict;
+import org.egreenbriar.model.District;
 import org.egreenbriar.service.MembershipService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,37 +17,31 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @Component
-public class BlockController {
+public class DistrictController {
 
     @Autowired
     private MembershipService membershipService = null;
 
-    @RequestMapping(value="/block/{blockName}", method=RequestMethod.GET)
-    public String communityHandler(Model model, @PathVariable String blockName) throws FileNotFoundException, IOException {
-        Block block = membershipService.getBlock(blockName);
-        model.addAttribute("block", block);
-        
+    @RequestMapping(value="/district/{name}", method=RequestMethod.GET)
+    public String communityHandler(Model model, @PathVariable String name) throws FileNotFoundException, IOException {
+        model.addAttribute("district", membershipService.getDistrict(name));
         membershipService.getBreadcrumbs().clear();
         membershipService.getBreadcrumbs().put("Home", "/");
         membershipService.getBreadcrumbs().put("Districts", "/districts");
-        membershipService.getBreadcrumbs().put(block.getDistrictName(), "/district/" + block.getDistrictName());
-        membershipService.getBreadcrumbs().put(blockName, "");
+        membershipService.getBreadcrumbs().put(name, "");
         membershipService.getBreadcrumbs().put("Logout", "/j_spring_security_logout");        
         model.addAttribute("breadcrumbs", membershipService.getBreadcrumbs());
 
-        return "block";
+        return "district";
     }
 
     // name=last, value=<new_value>
-    @RequestMapping(value="/block/update_captain", method = RequestMethod.POST)
+    @RequestMapping(value="/district/update_representative", method = RequestMethod.POST)
     @ResponseBody
-    public String updateCaptain(@ModelAttribute FormBlock formBlock, Model model) throws FileNotFoundException, IOException {
-        Block block = membershipService.getBlock(formBlock.getPk());
-        if (block == null) {
-            throw new RuntimeException("Unable to find block: " + formBlock.getPk());
-        }
-        block.setCaptainName(formBlock.getValue());
-        return block.getCaptainName();
+    public String updateRepresentative(@ModelAttribute FormDistrict formDistrict, Model model) throws FileNotFoundException, IOException {
+        District district = membershipService.getDistrict(formDistrict.getPk());
+        district.setRepresentative(formDistrict.getValue());
+        return district.getRepresentative();
     }
     
     /**
