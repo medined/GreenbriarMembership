@@ -4,9 +4,12 @@ import au.com.bytecode.opencsv.CSVReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Map;
 import java.util.TreeMap;
 import javax.annotation.PostConstruct;
+import org.egreenbriar.model.Block;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -22,44 +25,37 @@ public class OfficierService {
     public void read() throws FileNotFoundException, IOException {
         String[] components = null;
         
-        CSVReader cvsReader = new CSVReader(new FileReader(getOfficierFile()));
+        CSVReader cvsReader = new CSVReader(new FileReader(officierFile));
         
         while ((components = cvsReader.readNext()) != null) {
             String title = components[0];
             String name = components[1];
-            getOfficiers().put(title, name);
+            officiers.put(title, name);
         }
 
+    }
+
+    public synchronized void write() throws FileNotFoundException {
+        try (PrintWriter writer = new PrintWriter(officierFile)) {
+            writer.println("Title,Person");
+            for (Map.Entry<String, String> entry : officiers.entrySet()) {
+                writer.printf("%s,%s\n", entry.getKey(), entry.getValue());
+            }
+        }
+    }
+    
+    public void updateDistrictRepresentative(final String districtName, final String representativeName) {
+        officiers.put(districtName, representativeName);
     }
 
     public String get(String title) {
         return officiers.get(title);
     }
 
-    /**
-     * @return the officierFile
-     */
-    public String getOfficierFile() {
-        return officierFile;
-    }
-
-    /**
-     * @param officierFile the officierFile to set
-     */
     public void setOfficierFile(String officierFile) {
         this.officierFile = officierFile;
     }
 
-    /**
-     * @return the officiers
-     */
-    public Map<String, String> getOfficiers() {
-        return officiers;
-    }
-
-    /**
-     * @param officiers the officiers to set
-     */
     public void setOfficiers(Map<String, String> officiers) {
         this.officiers = officiers;
     }

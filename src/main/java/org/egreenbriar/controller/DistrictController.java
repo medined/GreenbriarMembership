@@ -4,7 +4,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import org.egreenbriar.form.FormDistrict;
 import org.egreenbriar.model.District;
+import org.egreenbriar.service.ChangeService;
 import org.egreenbriar.service.MembershipService;
+import org.egreenbriar.service.OfficierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
@@ -21,6 +23,12 @@ public class DistrictController {
 
     @Autowired
     private MembershipService membershipService = null;
+
+    @Autowired
+    private ChangeService changeService = null;
+
+    @Autowired
+    private OfficierService officierService = null;
 
     @RequestMapping(value="/district/{name}", method=RequestMethod.GET)
     public String communityHandler(Model model, @PathVariable String name) throws FileNotFoundException, IOException {
@@ -40,15 +48,24 @@ public class DistrictController {
     @ResponseBody
     public String updateRepresentative(@ModelAttribute FormDistrict formDistrict, Model model) throws FileNotFoundException, IOException {
         District district = membershipService.getDistrict(formDistrict.getPk());
+        String message = String.format("district(%s) old(%s) new(%s)", district.getName(), district.getRepresentative(), formDistrict.getValue());
+        changeService.logChange("update_representative", message);
+        officierService.updateDistrictRepresentative(district.getName(), formDistrict.getValue());
         district.setRepresentative(formDistrict.getValue());
+        officierService.write();
         return district.getRepresentative();
     }
     
-    /**
-     * @param membershipService the membershipService to set
-     */
     public void setMembershipService(MembershipService membershipService) {
         this.membershipService = membershipService;
+    }
+
+    public void setChangeService(ChangeService changeService) {
+        this.changeService = changeService;
+    }
+
+    public void setOfficierService(OfficierService officierService) {
+        this.officierService = officierService;
     }
 
 }

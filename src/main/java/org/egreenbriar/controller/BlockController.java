@@ -55,7 +55,7 @@ public class BlockController {
             throw new RuntimeException("Unable to find block: " + formBlock.getPk());
         }
         String message = String.format("block(%s) old(%s) new(%s)", block.getBlockName(), block.getCaptainName(), formBlock.getValue());
-        changeService.logChange("update_captin", message);
+        changeService.logChange("update_captain", message);
         block.setCaptainName(formBlock.getValue());
         blockCaptainService.write(membershipService.getBlocks());
         return block.getCaptainName();
