@@ -11,6 +11,7 @@
         <ul>
             <li><a href='/districts'>District List</a></li>
             <li><a href='/blockcaptains'>Block Captain List</a></li>
+            <li><a href='/noblockcaptains'>Blocks without Captain List</a></li>
         </ul>
     </body>
 </html>  

@@ -13,6 +13,7 @@
     <http auto-config="true">
         <intercept-url pattern="/districts" access="ROLE_ADMIN" />
         <intercept-url pattern="/blockcaptains" access="ROLE_ADMIN" />
+        <intercept-url pattern="/noblockcaptains" access="ROLE_ADMIN" />
         <logout logout-success-url="/" />
         <session-management invalid-session-url="/" >
             <concurrency-control max-sessions="1" error-if-maximum-exceeded="true"/>

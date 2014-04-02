@@ -7,12 +7,13 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 import javax.annotation.PostConstruct;
 import org.egreenbriar.model.Block;
-import org.egreenbriar.model.District;
 import org.egreenbriar.model.Community;
+import org.egreenbriar.model.District;
 import org.egreenbriar.model.House;
 import static org.egreenbriar.model.Membership.YEAR_2012;
 import static org.egreenbriar.model.Membership.YEAR_2013;
@@ -183,6 +184,18 @@ public class MembershipService {
      */
     public void setBlockCaptainService(BlockCaptainService blockCaptainService) {
         this.blockCaptainService = blockCaptainService;
+    }
+
+    public Map<String, Block> getBlocksWithoutCaptains() {
+        Map<String, Block> blocksWithoutCaptain = new TreeMap<>();
+        for (Entry<String, Block> entry : blocks.entrySet()) {
+            Block block = entry.getValue();
+            String captainName = block.getCaptainName().trim();
+            if (captainName.isEmpty()) {
+                blocksWithoutCaptain.put(entry.getKey(), block);
+            }
+        }
+        return blocksWithoutCaptain;
     }
 
 }
