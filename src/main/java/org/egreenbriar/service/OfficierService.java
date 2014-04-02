@@ -46,8 +46,8 @@ public class OfficierService {
         officiers.put(districtName, representativeName);
     }
 
-    public String get(String title) {
-        return officiers.get(title);
+    public String getDistrictRepresentative(final String districtName) {
+        return officiers.get(districtName);
     }
 
     public void setOfficierFile(String officierFile) {

@@ -1,10 +1,10 @@
 package org.egreenbriar.service;
 
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeSet;
 import javax.annotation.PostConstruct;
-import org.egreenbriar.model.Block;
 import org.egreenbriar.model.District;
 import org.egreenbriar.model.House;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,16 +26,27 @@ public class DistrictService {
         }
     }
 
-    public int getPercentMembership(String year) {
+    public int getPercentMembership(final String year) {
+        int numHouses = houseService.getHouses().size();
+        int numMembers = 0;
+        for (Entry<String, House> entry : houseService.getHouses().entrySet()) {
+            House house = entry.getValue();
+            if (house.memberInYear(year)) {
+                numMembers++;
+            }
+        }
+        return (int) (((float) numMembers / (float) numHouses) * 100);
+    }
+
+    public int getPercentMembership(final String districtName, final String year) {
         int numHouses = 0;
         int numMembers = 0;
-        for (District district : districts) {
-            for (Block block : district.getBlocks()) {
-                numHouses += block.getHouses().size();
-                for (House house : block.getHouses()) {
-                    if (house.memberInYear(year)) {
-                        numMembers++;
-                    }
+        for (Entry<String, House> entry : houseService.getHouses().entrySet()) {
+            House house = entry.getValue();
+            if (house.getDistrictName().equals(districtName)) {
+                numHouses++;
+                if (house.memberInYear(year)) {
+                    numMembers++;
                 }
             }
         }

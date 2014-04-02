@@ -75,12 +75,12 @@ $(document).ready(function() {
                     </td>
                     <td>
                         <div class='value editable' id='representative_<c:out value="${district.getName()}"/>' data-type="text" data-url='/district/update_representative' data-pk='<c:out value="${district.getName()}"/>' data-name='representative'>
-                            <c:out value="${district.getRepresentative()}" />
+                            <c:out value="${officierService.getDistrictRepresentative(district.name)}" />
                         </div>
                     </td>
-                    <td align="right"><c:out value='${district.getPercentMembership("2012")}' />%</td>
-                    <td align="right"><c:out value='${district.getPercentMembership("2013")}' />%</td>
-                    <td align="right"><c:out value='${district.getPercentMembership("2014")}' />%</td>
+                    <td align="right"><c:out value='${districtService.getPercentMembership(district.name, "2012")}' />%</td>
+                    <td align="right"><c:out value='${districtService.getPercentMembership(district.name, "2013")}' />%</td>
+                    <td align="right"><c:out value='${districtService.getPercentMembership(district.name, "2014")}' />%</td>
                 </tr>
             </c:forEach>
         </table>
