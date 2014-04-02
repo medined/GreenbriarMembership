@@ -6,18 +6,16 @@ import java.util.UUID;
 
 public class House implements Comparable {
 
-    private String uuid;
+    private String uuid = UUID.randomUUID().toString();
+    private String districtName = null;
+    private String blockName = null;
     private String houseNumber = null;
     private String streetName = null;
     private final Set<Person> people = new TreeSet<>();
-    private final Set<Membership> years = new TreeSet<>();
-
-    public House(final String houseNumber, final String streetName) {
-        this.uuid = UUID.randomUUID().toString();
-        this.houseNumber = houseNumber;
-        this.streetName = streetName;
-    }
-
+    private boolean member2012 = false;
+    private boolean member2013 = false;
+    private boolean member2014 = false;
+    
     @Override
     public int hashCode() {
         int hash = 5;
@@ -28,7 +26,7 @@ public class House implements Comparable {
 
     @Override
     public String toString() {
-        return "House{" + "houseNumber=" + getHouseNumber() + ", streetName=" + getStreetName() + ", people=" + getPeople() + ", years=" + getYears() + '}';
+        return "House{" + "houseNumber=" + getHouseNumber() + ", streetName=" + getStreetName() + ", people=" + getPeople() + "}";
     }
 
     @Override
@@ -85,10 +83,6 @@ public class House implements Comparable {
         return this.getHouseNumber().equals(houseNumber) && this.getStreetName().equals(streetName);
     }
 
-    public void addYear(Membership year) {
-        getYears().add(year);
-    }
-
     /**
      * @return the houseNumber
      */
@@ -124,17 +118,6 @@ public class House implements Comparable {
         return people;
     }
 
-    /**
-     * @return the years
-     */
-    public Set<Membership> getYears() {
-        return years;
-    }
-
-    public boolean memberIn(Membership year) {
-        return years.contains(year);
-    }
-
     public String memberInYear2012Style() {
         return memberInYear("2012") ? "year_button" : "year_button negate";
     }
@@ -152,10 +135,13 @@ public class House implements Comparable {
         if (year != null) {
             switch (year) {
                 case "2012":
-                    rv = years.contains(Membership.YEAR_2012);
+                    rv = isMember2012();
                     break;
                 case "2013":
-                    rv = years.contains(Membership.YEAR_2013);
+                    rv = isMember2013();
+                    break;
+                case "2014":
+                    rv = isMember2014();
                     break;
             }
         }
@@ -171,10 +157,76 @@ public class House implements Comparable {
     }
 
     public void toggle2014Membership() {
-        if (memberInYear("2014")) {
-            getYears().remove(Membership.YEAR_2014);
-        } else {
-            getYears().add(Membership.YEAR_2014);
-        }
+        setMember2014(!isMember2014());
+    }
+
+    /**
+     * @return the member2012
+     */
+    public boolean isMember2012() {
+        return member2012;
+    }
+
+    /**
+     * @param member2012 the member2012 to set
+     */
+    public void setMember2012(boolean member2012) {
+        this.member2012 = member2012;
+    }
+
+    /**
+     * @return the member2013
+     */
+    public boolean isMember2013() {
+        return member2013;
+    }
+
+    /**
+     * @param member2013 the member2013 to set
+     */
+    public void setMember2013(boolean member2013) {
+        this.member2013 = member2013;
+    }
+
+    /**
+     * @return the member2014
+     */
+    public boolean isMember2014() {
+        return member2014;
+    }
+
+    /**
+     * @param member2014 the member2014 to set
+     */
+    public void setMember2014(boolean member2014) {
+        this.member2014 = member2014;
+    }
+
+    /**
+     * @return the districtName
+     */
+    public String getDistrictName() {
+        return districtName;
+    }
+
+    /**
+     * @param districtName the districtName to set
+     */
+    public void setDistrictName(String districtName) {
+        this.districtName = districtName;
+    }
+
+    /**
+     * @return the blockName
+     */
+    public String getBlockName() {
+        return blockName;
+    }
+
+    /**
+     * @param blockName the blockName to set
+     */
+    public void setBlockName(String blockName) {
+        this.blockName = blockName;
     }
 }

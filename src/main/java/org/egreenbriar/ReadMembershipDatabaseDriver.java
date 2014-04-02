@@ -17,8 +17,6 @@ import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.egreenbriar.model.Block;
-import static org.egreenbriar.model.Membership.YEAR_2012;
-import static org.egreenbriar.model.Membership.YEAR_2013;
 import org.egreenbriar.service.BlockCaptainService;
 import org.egreenbriar.service.MembershipService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,6 +77,7 @@ public class ReadMembershipDatabaseDriver {
 
         int count2012 = 0;
         int count2013 = 0;
+        int count2014 = 0;
 
         for (House house : houses) {
             String housePlace = house.getHouseNumber() + " " + house.getStreetName();
@@ -103,14 +102,19 @@ public class ReadMembershipDatabaseDriver {
                 content[personIndex][2] = person.getPhone();
                 content[personIndex][3] = "";
                 content[personIndex][4] = "";
+                content[personIndex][5] = "";
                 if (firstPerson) {
-                    if (house.memberIn(YEAR_2012)) {
+                    if (house.memberInYear("2012")) {
                         content[personIndex][3] = "X";
                         count2012++;
                     }
-                    if (house.memberIn(YEAR_2013)) {
+                    if (house.memberInYear("2013")) {
                         content[personIndex][4] = "X";
                         count2013++;
+                    }
+                    if (house.memberInYear("2014")) {
+                        content[personIndex][5] = "X";
+                        count2014++;
                     }
                 }
                 content[personIndex][5] = "";

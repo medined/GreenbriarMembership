@@ -83,7 +83,9 @@ public class Block implements Comparable {
                 return house;
             }
         }
-        House house = new House(houseNumber, streetName);
+        House house = new House();
+        house.setHouseNumber(houseNumber);
+        house.setStreetName(streetName);
         getHouses().add(house);
         return house;
     }

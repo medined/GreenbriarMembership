@@ -4,6 +4,7 @@ import au.com.bytecode.opencsv.CSVReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -15,8 +16,6 @@ import org.egreenbriar.model.Block;
 import org.egreenbriar.model.Community;
 import org.egreenbriar.model.District;
 import org.egreenbriar.model.House;
-import static org.egreenbriar.model.Membership.YEAR_2012;
-import static org.egreenbriar.model.Membership.YEAR_2013;
 import org.egreenbriar.model.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,6 +26,9 @@ public class MembershipService {
 
     @Value("${membership.csv.file}")
     String membershipFile = null;
+
+    @Value("${houses.csv.file}")
+    String housesFile = null;
 
     private final Community community = new Community();
     private final Map<String, Person> people = new HashMap<>();
@@ -56,13 +58,12 @@ public class MembershipService {
                 String last = components[4];
                 String first = components[5];
                 String phone = components[6];
-                String bc = components[7];
-                String y2012 = components[8];
-                String y2013 = components[9];
-                String email = components[10];
-                String listedPhone = components[11];
-                String noDirectory = components[12];
-                String comment = components[13];
+                String y2012 = components[7];
+                String y2013 = components[8];
+                String email = components[9];
+                String listedPhone = components[10];
+                String noDirectory = components[11];
+                String comment = components[12];
 
                 District district = getCommunity().addDistrict(districtName);
                 Block block = district.addBlock(district, blockName);
@@ -82,7 +83,7 @@ public class MembershipService {
                 } else {
                     System.out.println("Unknown ListedPhone value: " + last + "," + first + " - " + listedPhone);
                 }
-                
+
                 if (noDirectory.equals("No List")) {
                     person.setNoDirectory(true);
                 } else if (noDirectory.isEmpty()) {
@@ -90,21 +91,21 @@ public class MembershipService {
                 } else {
                     System.out.println("Unknown noDiectory value: " + last + "," + first + " - " + noDirectory);
                 }
-                
+
                 if (!y2012.isEmpty()) {
-                    house.addYear(YEAR_2012);
+                    house.setMember2012(true);
                 }
                 if (!y2013.isEmpty()) {
-                    house.addYear(YEAR_2013);
+                    house.setMember2013(true);
                 }
 
-                String captainName = getBlockCaptainService().getCaptains().get(block.getBlockName());
+                String captainName = blockCaptainService.getCaptains().get(block.getBlockName());
                 block.setCaptainName(captainName);
 
             }
             lineCount++;
         }
-        
+
     }
 
     /**
@@ -137,46 +138,20 @@ public class MembershipService {
         return getHouses().get(houseUuid);
     }
 
-    /**
-     * @return the officierService
-     */
-    public OfficierService getOfficierService() {
-        return officierService;
-    }
-
-    /**
-     * @param officierService the officierService to set
-     */
     public void setOfficierService(OfficierService officierService) {
         this.officierService = officierService;
     }
 
-    /**
-     * @return the houses
-     */
     public Map<String, House> getHouses() {
         return houses;
     }
 
-    /**
-     * @return the breadcrumbs
-     */
     public Map<String, String> getBreadcrumbs() {
         return breadcrumbs;
     }
 
-    /**
-     * @return the blocks
-     */
     public Map<String, Block> getBlocks() {
         return blocks;
-    }
-
-    /**
-     * @return the blockCaptainService
-     */
-    public BlockCaptainService getBlockCaptainService() {
-        return blockCaptainService;
     }
 
     /**
@@ -196,6 +171,45 @@ public class MembershipService {
             }
         }
         return blocksWithoutCaptain;
+    }
+
+    public void write() throws FileNotFoundException {
+        try (PrintWriter writer = new PrintWriter(housesFile)) {
+            writer.println("District,Block,HouseNumber,StreetName,2012,2013,2014");
+            for (District district : community.getDistricts()) {
+                final String districtName = district.getName();
+                for (Block block : district.getBlocks()) {
+                    final String blockName = block.getBlockName();
+                    for (House house : block.getHouses()) {
+                        final String houseNumber = house.getHouseNumber();
+                        final String streetName = house.getStreetName();
+                        final boolean member2012 = house.isMember2012();
+                        final boolean member2013 = house.isMember2013();
+                        final boolean member2014 = house.isMember2014();
+                        StringBuilder buffer = new StringBuilder();
+                        buffer.append(districtName).append(",");
+                        buffer.append(blockName).append(",");
+                        buffer.append(houseNumber).append(",");
+                        buffer.append(streetName).append(",");
+                        buffer.append(member2012).append(",");
+                        buffer.append(member2013).append(",");
+                        buffer.append(member2014);
+                        writer.println(buffer.toString());
+                        /*
+                        for (Person person : house.getPeople()) {
+                            final String lastName = person.getLast();
+                            final String firstName = person.getFirst();
+                            final String phone = person.getPhone();
+                            final String email = person.getEmail();
+                            final boolean unlisted = person.isUnlisted();
+                            final boolean noDirectory = person.isNoDirectory();
+                            final String comment = person.getComment();
+                        }
+                        */
+                    }
+                }
+            }
+        }
     }
 
 }
