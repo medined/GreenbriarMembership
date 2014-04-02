@@ -4,12 +4,14 @@ import java.util.UUID;
 
 public class Person implements Comparable {
 
-    public static final Person EMPTY = new Person("", "", "", "", "");
-
     public Person() {
     }
     
     private String pk;
+    private String districtName = null;
+    private String blockName = null;
+    private String houseNumber = null;
+    private String streetName = null;
     private String last;
     private String first;
     private String phone;
@@ -18,21 +20,6 @@ public class Person implements Comparable {
     private boolean unlisted = false;
     private String comment = null;
 
-    public Person(final String last, final String first, final String phone, final String email, String comment) {
-        this.pk = UUID.randomUUID().toString();
-        this.last = last;
-        this.first = first;
-        this.phone = phone;
-        this.email = email;
-        if ("Unlisted".equals(comment)) {
-            this.unlisted = true;
-        } else if ("No List".equals(comment)) {
-            this.noDirectory = true;
-        } else if (comment != null && !comment.isEmpty()) {
-            this.comment = comment;
-        }
-    }
-    
     public boolean isEmpty() {
         return getLast().isEmpty() && getFirst().isEmpty() && getPhone().isEmpty() & getEmail().isEmpty();
     }
@@ -211,5 +198,61 @@ public class Person implements Comparable {
 
     public void toggleDirectory() {
         this.noDirectory = !this.noDirectory;
+    }
+
+    /**
+     * @return the districtName
+     */
+    public String getDistrictName() {
+        return districtName;
+    }
+
+    /**
+     * @param districtName the districtName to set
+     */
+    public void setDistrictName(String districtName) {
+        this.districtName = districtName;
+    }
+
+    /**
+     * @return the blockName
+     */
+    public String getBlockName() {
+        return blockName;
+    }
+
+    /**
+     * @param blockName the blockName to set
+     */
+    public void setBlockName(String blockName) {
+        this.blockName = blockName;
+    }
+
+    /**
+     * @return the houseNumber
+     */
+    public String getHouseNumber() {
+        return houseNumber;
+    }
+
+    /**
+     * @param houseNumber the houseNumber to set
+     */
+    public void setHouseNumber(String houseNumber) {
+        this.houseNumber = houseNumber;
+    }
+
+    /**
+     * @return the streetName
+     */
+    public String getStreetName() {
+        return streetName;
+    }
+
+    /**
+     * @param streetName the streetName to set
+     */
+    public void setStreetName(String streetName) {
+        this.streetName = streetName;
     }
 }

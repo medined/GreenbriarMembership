@@ -1,13 +1,8 @@
 package org.egreenbriar;
 
-import org.egreenbriar.model.Person;
-import org.egreenbriar.model.House;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 import java.util.Set;
 import org.apache.pdfbox.exceptions.COSVisitorException;
@@ -17,8 +12,11 @@ import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.egreenbriar.model.Block;
+import org.egreenbriar.model.House;
+import org.egreenbriar.model.Person;
 import org.egreenbriar.service.BlockCaptainService;
-import org.egreenbriar.service.MembershipService;
+import org.egreenbriar.service.HouseService;
+import org.egreenbriar.service.PeopleService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class ReadMembershipDatabaseDriver {
@@ -36,7 +34,10 @@ public class ReadMembershipDatabaseDriver {
     private BlockCaptainService blockCaptainService = null;
 
     @Autowired
-    private MembershipService membershipService = null;
+    private PeopleService peopleService = null;
+
+    @Autowired
+    private HouseService houseService = null;
 
     public static void main(String[] args) throws FileNotFoundException, IOException, COSVisitorException {
         ReadMembershipDatabaseDriver driver = new ReadMembershipDatabaseDriver();
@@ -46,13 +47,12 @@ public class ReadMembershipDatabaseDriver {
     private void process() throws FileNotFoundException, IOException, COSVisitorException {
 
         new File(pdfFileName).delete();
-
         
-        Gson gson = new GsonBuilder().serializeNulls().create();
-        String json = gson.toJson(membershipService.getCommunity());
-        try (PrintWriter writer = new PrintWriter("greenbriar_membership.json")) {
-            writer.println(json);
-        }
+        //Gson gson = new GsonBuilder().serializeNulls().create();
+        //String json = gson.toJson(peopleService.getCommunity());
+        //try (PrintWriter writer = new PrintWriter("greenbriar_membership.json")) {
+        //    writer.println(json);
+        //}
     }
 
     private float drawHouse(final PDDocument document, final PDPage page, final Set<House> houses, float x, float y) throws IOException {
@@ -183,8 +183,7 @@ public class ReadMembershipDatabaseDriver {
         if (block.getCaptainName() == null) {
             drawRedString(document, page, font, fontSize, x + 50, y, "None");
         } else {
-            Block blockA = membershipService.getBlock(block.getBlockName());
-            captainNameA = blockA.getCaptainName();
+            captainNameA = blockCaptainService.getCaptainName(block.getBlockName());
             captainNameB = block.getCaptainName() == null ? null : block.getCaptainName();
             drawString(document, page, font, fontSize, x + 50, y, block.getCaptainName());
         }
@@ -311,8 +310,8 @@ public class ReadMembershipDatabaseDriver {
 
     private void reviewAllPages(final PDDocument document) {
         List pages = document.getDocumentCatalog().getAllPages();
-        for (int i = 0; i < pages.size(); i++) {
-            PDPage page = ((PDPage) pages.get(i));
+        for (Object page1 : pages) {
+            PDPage page = (PDPage) page1;
         }
     }
 
@@ -368,7 +367,7 @@ public class ReadMembershipDatabaseDriver {
                     if (i != 1) {
                         contentStream.drawString(cell);
                     } else {
-                        if (cell.indexOf("_") != -1) {
+                        if (cell.contains("_")) {
                             // handle email with person's name.
                             String[] components = cell.split("_");
                             String name = components[0];
@@ -394,24 +393,11 @@ public class ReadMembershipDatabaseDriver {
         return texty;
     }
 
-    /**
-     * @param blockCaptainService the blockCaptainService to set
-     */
     public void setBlockCaptainService(BlockCaptainService blockCaptainService) {
         this.blockCaptainService = blockCaptainService;
     }
 
-    /**
-     * @return the membershipService
-     */
-    public MembershipService getMembershipService() {
-        return membershipService;
-    }
-
-    /**
-     * @param membershipService the membershipService to set
-     */
-    public void setMembershipService(MembershipService membershipService) {
-        this.membershipService = membershipService;
+    public void setHouseService(HouseService houseService) {
+        this.houseService = houseService;
     }
 }

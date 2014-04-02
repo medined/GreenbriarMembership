@@ -5,8 +5,9 @@ import java.io.IOException;
 import org.egreenbriar.form.FormBlock;
 import org.egreenbriar.model.Block;
 import org.egreenbriar.service.BlockCaptainService;
+import org.egreenbriar.service.BlockService;
+import org.egreenbriar.service.BreadcrumbService;
 import org.egreenbriar.service.ChangeService;
-import org.egreenbriar.service.MembershipService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
@@ -22,8 +23,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class BlockController {
 
     @Autowired
-    private MembershipService membershipService = null;
-
+    private BreadcrumbService breadcrumbService = null;
+    
+    @Autowired
+    private BlockService blockService = null;
+    
     @Autowired
     private BlockCaptainService blockCaptainService = null;
 
@@ -32,16 +36,16 @@ public class BlockController {
 
     @RequestMapping(value="/block/{blockName}", method=RequestMethod.GET)
     public String communityHandler(Model model, @PathVariable String blockName) throws FileNotFoundException, IOException {
-        Block block = membershipService.getBlock(blockName);
+        Block block = blockService.getBlock(blockName);
         model.addAttribute("block", block);
         
-        membershipService.getBreadcrumbs().clear();
-        membershipService.getBreadcrumbs().put("Home", "/");
-        membershipService.getBreadcrumbs().put("Districts", "/districts");
-        membershipService.getBreadcrumbs().put(block.getDistrictName(), "/district/" + block.getDistrictName());
-        membershipService.getBreadcrumbs().put(blockName, "");
-        membershipService.getBreadcrumbs().put("Logout", "/j_spring_security_logout");        
-        model.addAttribute("breadcrumbs", membershipService.getBreadcrumbs());
+        breadcrumbService.clear();
+        breadcrumbService.put("Home", "/");
+        breadcrumbService.put("Districts", "/districts");
+        breadcrumbService.put(block.getDistrictName(), "/district/" + block.getDistrictName());
+        breadcrumbService.put(blockName, "");
+        breadcrumbService.put("Logout", "/j_spring_security_logout");        
+        model.addAttribute("breadcrumbs", breadcrumbService.getBreadcrumbs());
 
         return "block";
     }
@@ -49,28 +53,26 @@ public class BlockController {
     // name=last, value=<new_value>
     @RequestMapping(value="/block/update_captain", method = RequestMethod.POST)
     @ResponseBody
-    public String updateCaptain(@ModelAttribute FormBlock formBlock, Model model) throws FileNotFoundException, IOException {
-        Block block = membershipService.getBlock(formBlock.getPk());
-        if (block == null) {
-            throw new RuntimeException("Unable to find block: " + formBlock.getPk());
-        }
-        String message = String.format("block(%s) old(%s) new(%s)", block.getBlockName(), block.getCaptainName(), formBlock.getValue());
+    public void updateCaptain(@ModelAttribute FormBlock formBlock, Model model) throws FileNotFoundException, IOException {
+        String captainName = blockCaptainService.getCaptainName(formBlock.getPk());
+        String message = String.format("block(%s) old(%s) new(%s)", formBlock.getPk(), captainName, formBlock.getValue());
         changeService.logChange("update_captain", message);
-        block.setCaptainName(formBlock.getValue());
-        blockCaptainService.write(membershipService.getBlocks());
-        return block.getCaptainName();
+        blockCaptainService.update(formBlock.getPk(), formBlock.getValue());
     }
     
-    public void setMembershipService(MembershipService membershipService) {
-        this.membershipService = membershipService;
-    }
-
     public void setBlockCaptainService(BlockCaptainService blockCaptainService) {
         this.blockCaptainService = blockCaptainService;
     }
 
     public void setChangeService(ChangeService changeService) {
         this.changeService = changeService;
+    }
+
+    /**
+     * @param blockService the blockService to set
+     */
+    public void setBlockService(BlockService blockService) {
+        this.blockService = blockService;
     }
 
 }

@@ -2,11 +2,10 @@ package org.egreenbriar.model;
 
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.UUID;
 
 public class House implements Comparable {
 
-    private String uuid = UUID.randomUUID().toString();
+    private String id = null;
     private String districtName = null;
     private String blockName = null;
     private String houseNumber = null;
@@ -62,9 +61,6 @@ public class House implements Comparable {
     }
 
     public Person addPerson(final String last, final String first, final String phone, final String email, final String comment) {
-        if (last.isEmpty() && first.isEmpty()) {
-            return Person.EMPTY;
-        }
         Person rv = null;
         for (Person person : getPeople()) {
             if (person.is(last, first)) {
@@ -73,7 +69,19 @@ public class House implements Comparable {
             }
         }
         if (rv == null) {
-            rv = new Person(last, first, phone, email, comment);
+            rv = new Person();
+            //rv.setBlockName("");
+            rv.setComment(comment);
+            //rv.setDistrictName("");
+            rv.setEmail(email);
+            rv.setFirst(first);
+            //rv.setHouseNumber("");
+            rv.setLast(last);
+            //rv.setNoDirectory(false);
+            rv.setPhone(phone);
+            //rv.setPk("");
+            //rv.setStreetNumber("");
+            //rv.setUnlisted(false);
             getPeople().add(rv);
         }
         return rv;
@@ -119,15 +127,15 @@ public class House implements Comparable {
     }
 
     public String memberInYear2012Style() {
-        return memberInYear("2012") ? "year_button" : "year_button negate";
+        return member2012 ? "year_button" : "year_button negate";
     }
     
     public String memberInYear2013Style() {
-        return memberInYear("2013") ? "year_button" : "year_button negate";
+        return member2013 ? "year_button" : "year_button negate";
     }
     
     public String memberInYear2014Style() {
-        return memberInYear("2014") ? "button" : "button negate";
+        return member2014 ? "button" : "button negate";
     }
     
     public boolean memberInYear(String year) {
@@ -150,10 +158,6 @@ public class House implements Comparable {
 
     public boolean notMemberInYear(String year) {
         return !memberInYear(year);
-    }
-
-    public String getUuid() {
-        return uuid;
     }
 
     public void toggle2014Membership() {
@@ -228,5 +232,19 @@ public class House implements Comparable {
      */
     public void setBlockName(String blockName) {
         this.blockName = blockName;
+    }
+
+    /**
+     * @return the id
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(String id) {
+        this.id = id;
     }
 }

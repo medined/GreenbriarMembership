@@ -46,9 +46,9 @@ $(document).ready(function() {
                             <th>2014</th>
                         </tr>
                         <tr>
-                            <td align="right"><c:out value='${community.getPercentMembership("2012")}' />%</td>
-                            <td align="right"><c:out value='${community.getPercentMembership("2013")}' />%</td>
-                            <td align="right"><c:out value='${community.getPercentMembership("2014")}' />%</td>
+                            <td align="right"><c:out value='${districtService.getPercentMembership("2012")}' />%</td>
+                            <td align="right"><c:out value='${districtService.getPercentMembership("2013")}' />%</td>
+                            <td align="right"><c:out value='${districtService.getPercentMembership("2014")}' />%</td>
                         </tr>
                     </table>
                 </td>

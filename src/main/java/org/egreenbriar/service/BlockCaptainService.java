@@ -6,9 +6,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 import javax.annotation.PostConstruct;
-import org.egreenbriar.model.Block;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -33,15 +34,27 @@ public class BlockCaptainService {
         while ((components = cvsReader.readNext()) != null) {
             String blockName = components[0];
             String captainName = components[1];
-            getCaptains().put(blockName, captainName);
+            captains.put(blockName, captainName);
         }
 
     }
     
-    public synchronized void write(final Map<String, Block> blocks) throws FileNotFoundException {
+    public Set<String> getBlocksWithoutCaptains() {
+        Set<String> blocksWithoutCaptain = new TreeSet<>();
+        for (Map.Entry<String, String> entry : captains.entrySet()) {
+            String blockName = entry.getKey();
+            String captainName = entry.getValue().trim();
+            if (captainName.isEmpty()) {
+                blocksWithoutCaptain.add(blockName);
+            }
+        }
+        return blocksWithoutCaptain;
+    }
+
+    private synchronized void write() throws FileNotFoundException {
         try (PrintWriter writer = new PrintWriter(captainFile)) {
-            for (Map.Entry<String, Block> entry : blocks.entrySet()) {
-                writer.printf("%s,%s\n", entry.getKey(), entry.getValue().getCaptainName());
+            for (Map.Entry<String, String> entry : captains.entrySet()) {
+                writer.printf("%s,%s\n", entry.getKey(), entry.getValue());
             }
         }
     }
@@ -54,18 +67,21 @@ public class BlockCaptainService {
         this.captainFile = captainFile;
     }
 
-    /**
-     * @return the captains
-     */
     public Map<String, String> getCaptains() {
         return captains;
     }
 
-    /**
-     * @param changeService the changeService to set
-     */
     public void setChangeService(ChangeService changeService) {
         this.changeService = changeService;
+    }
+
+    public void update(final String blockName, final String captainName) throws FileNotFoundException {
+        captains.put(blockName, captainName);
+        write();
+    }
+
+    public String getCaptainName(String blockName) {
+        return captains.get(blockName);
     }
 
 }

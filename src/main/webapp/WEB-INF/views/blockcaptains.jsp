@@ -22,7 +22,7 @@
 $.fn.editable.defaults.mode = 'inline';
 
 $(document).ready(function() {
-    <c:forEach items="${blocks}" var="block">
+    <c:forEach items="${captains}" var="block">
     $('#captain_<c:out value="${block.key}"/>').editable();
     </c:forEach>
  });
@@ -35,13 +35,13 @@ $(document).ready(function() {
                 <th>Block</th>
                 <th>Captain</th>
             </tr>
-            <c:forEach items="${blocks}" var="block">
+            <c:forEach items="${captains}" var="block">
                 <tr>
-                    <td><c:out value="${block.value.getDistrictName()}"/></td>
+                    <td><c:out value="${blockService.getDistrictName(block.key)}"/></td>
                     <td><c:out value="${block.key}"/></td>
                     <td>
                         <div class='value editable' id='captain_<c:out value="${block.key}"/>' data-type="text" data-url='/block/update_captain' data-pk='<c:out value="${block.key}"/>' data-name='captain'>
-                        <c:out value="${block.value.getCaptainName()}"/>
+                        <c:out value="${block.value}"/>
                         </div>
                     </td>
                 </tr>

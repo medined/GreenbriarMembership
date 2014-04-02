@@ -29,15 +29,17 @@ public class HouseService {
         CSVReader reader = new CSVReader(new FileReader(housesFile));
         while ((components = reader.readNext()) != null) {
             if (lineCount != 0) {
-                String districtName = components[0];
-                String blockName = components[1];
-                String houseNumber = components[2];
-                String streetName = components[3];
-                String y2012 = components[4];
-                String y2013 = components[5];
-                String y2014 = components[6];
+                String id = components[0];
+                String districtName = components[1];
+                String blockName = components[2];
+                String houseNumber = components[3];
+                String streetName = components[4];
+                String y2012 = components[5];
+                String y2013 = components[6];
+                String y2014 = components[7];
 
                 House house = new House();
+                house.setId(id);
                 house.setDistrictName(districtName);
                 house.setBlockName(blockName);
                 house.setHouseNumber(houseNumber);
@@ -45,13 +47,11 @@ public class HouseService {
                 house.setMember2012(Boolean.parseBoolean(y2012));
                 house.setMember2013(Boolean.parseBoolean(y2013));
                 house.setMember2014(Boolean.parseBoolean(y2014));
-                houses.put(house.getUuid(), house);
+                houses.put(id, house);
             }
             lineCount++;
         }
         
-        System.out.println("houses: " + houses);
-
     }
 
     public House getHouse(String houseUuid) {
@@ -64,9 +64,10 @@ public class HouseService {
 
     public void write() throws FileNotFoundException {
         try (PrintWriter writer = new PrintWriter(housesFile)) {
-            writer.println("District,Block,HouseNumber,StreetName,2012,2013,2014");
+            writer.println("HouseId,DistrictName,BlockName,HouseNumber,StreetName,2012,2013,2014");
             for (Entry<String, House> entry : houses.entrySet()) {
                 House house = entry.getValue();
+                final String id = house.getId();
                 final String districtName = house.getDistrictName();
                 final String blockName = house.getBlockName();
                 final String houseNumber = house.getHouseNumber();
@@ -75,6 +76,7 @@ public class HouseService {
                 final boolean member2013 = house.isMember2013();
                 final boolean member2014 = house.isMember2014();
                 StringBuilder buffer = new StringBuilder();
+                buffer.append(id).append(",");
                 buffer.append(districtName).append(",");
                 buffer.append(blockName).append(",");
                 buffer.append(houseNumber).append(",");
