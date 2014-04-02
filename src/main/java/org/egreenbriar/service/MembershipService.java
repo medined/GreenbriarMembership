@@ -37,13 +37,9 @@ public class MembershipService {
     private BlockCaptainService blockCaptainService = null;
 
     @Autowired
-    private StreetService streetService = null;
-
-    @Autowired
     private OfficierService officierService = null;
 
     int lineCount = 0;
-    int incorrectStreets = 0;
 
     @PostConstruct
     public void read() throws FileNotFoundException, IOException {
@@ -77,11 +73,6 @@ public class MembershipService {
                 block.addPerson(person);
                 people.put(person.getPk(), person);
                 getHouses().put(house.getUuid(), house);
-
-                if (streetService.isMissing(streetName)) {
-                    System.out.println("Incorrect Street: " + streetName);
-                    incorrectStreets++;
-                }
 
                 if (listedPhone.equals("Unlisted")) {
                     person.setUnlisted(true);
@@ -120,13 +111,6 @@ public class MembershipService {
      */
     public Community getCommunity() {
         return community;
-    }
-
-    /**
-     * @param streetService the streetService to set
-     */
-    public void setStreetService(StreetService streetService) {
-        this.streetService = streetService;
     }
 
     /**

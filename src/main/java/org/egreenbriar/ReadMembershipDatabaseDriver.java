@@ -21,7 +21,6 @@ import static org.egreenbriar.model.Membership.YEAR_2012;
 import static org.egreenbriar.model.Membership.YEAR_2013;
 import org.egreenbriar.service.BlockCaptainService;
 import org.egreenbriar.service.MembershipService;
-import org.egreenbriar.service.StreetService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class ReadMembershipDatabaseDriver {
@@ -35,9 +34,6 @@ public class ReadMembershipDatabaseDriver {
     float upperRightX = PDPage.PAGE_SIZE_LETTER.getUpperRightX();
     float upperRightY = PDPage.PAGE_SIZE_LETTER.getUpperRightY();
 
-    @Autowired
-    private StreetService streetService = null;
-    
     @Autowired
     private BlockCaptainService blockCaptainService = null;
 
@@ -392,13 +388,6 @@ public class ReadMembershipDatabaseDriver {
         }
 
         return texty;
-    }
-
-    /**
-     * @param streetService the streetService to set
-     */
-    public void setStreetService(StreetService streetService) {
-        this.streetService = streetService;
     }
 
     /**
