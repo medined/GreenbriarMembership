@@ -24,6 +24,10 @@ public class Person implements Comparable {
         return getLast().isEmpty() && getFirst().isEmpty() && getPhone().isEmpty() & getEmail().isEmpty();
     }
 
+    public boolean inHouse(final String houseNumber, final String streetName) {
+        return this.houseNumber.equals(houseNumber) && this.streetName.equals(streetName);
+    }
+    
     @Override
     public int hashCode() {
         int hash = 3;

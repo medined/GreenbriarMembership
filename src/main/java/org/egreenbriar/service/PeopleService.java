@@ -8,9 +8,12 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import org.egreenbriar.model.House;
 import org.egreenbriar.model.Person;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -75,6 +78,28 @@ public class PeopleService {
 
     public Person getPerson(String personUuid) {
         return people.get(personUuid);
+    }
+    
+    public Set<Person> getPeopleInBlock(final String blockName) {
+        Set<Person> peopleInBlock = new TreeSet<>();
+        for (Entry<String, Person> entry : people.entrySet()) {
+            Person person = entry.getValue();
+            if (person.getBlockName().equals(blockName)) {
+                peopleInBlock.add(person);
+            }
+        }
+        return peopleInBlock;
+    }
+
+    public Set<Person> getPeopleInHouse(final String houseNumber, final String streetName) {
+        Set<Person> peopleInHouse = new TreeSet<>();
+        for (Entry<String, Person> entry : people.entrySet()) {
+            Person person = entry.getValue();
+            if (person.inHouse(houseNumber, streetName)) {
+                peopleInHouse.add(person);
+            }
+        }
+        return peopleInHouse;
     }
 
     public void write() throws FileNotFoundException {

@@ -8,6 +8,9 @@ import org.egreenbriar.service.BlockCaptainService;
 import org.egreenbriar.service.BlockService;
 import org.egreenbriar.service.BreadcrumbService;
 import org.egreenbriar.service.ChangeService;
+import org.egreenbriar.service.HouseService;
+import org.egreenbriar.service.OfficierService;
+import org.egreenbriar.service.PeopleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
@@ -32,10 +35,32 @@ public class BlockController {
     private BlockCaptainService blockCaptainService = null;
 
     @Autowired
+    private HouseService houseService = null;
+
+    @Autowired
+    private OfficierService officierService = null;
+
+    @Autowired
+    private PeopleService peopleService = null;
+
+    @Autowired
     private ChangeService changeService = null;
 
     @RequestMapping(value="/block/{blockName}", method=RequestMethod.GET)
     public String communityHandler(Model model, @PathVariable String blockName) throws FileNotFoundException, IOException {
+        model.addAttribute("blockService", blockService);
+        model.addAttribute("blockCaptainService", blockCaptainService);
+        model.addAttribute("houseService", houseService);
+        model.addAttribute("officierService", officierService);
+        model.addAttribute("peopleService", peopleService);
+        
+        final String districtName = blockService.getDistrictName(blockName);
+
+        model.addAttribute("blockName", blockName);
+        model.addAttribute("districtName", districtName);
+        model.addAttribute("blockCaptain", blockCaptainService.getCaptainName(blockName));
+        model.addAttribute("districtRepresentative", officierService.getDistrictRepresentative(districtName));
+
         Block block = blockService.getBlock(blockName);
         model.addAttribute("block", block);
         
@@ -73,6 +98,27 @@ public class BlockController {
      */
     public void setBlockService(BlockService blockService) {
         this.blockService = blockService;
+    }
+
+    /**
+     * @param houseService the houseService to set
+     */
+    public void setHouseService(HouseService houseService) {
+        this.houseService = houseService;
+    }
+
+    /**
+     * @param officierService the officierService to set
+     */
+    public void setOfficierService(OfficierService officierService) {
+        this.officierService = officierService;
+    }
+
+    /**
+     * @param peopleService the peopleService to set
+     */
+    public void setPeopleService(PeopleService peopleService) {
+        this.peopleService = peopleService;
     }
 
 }

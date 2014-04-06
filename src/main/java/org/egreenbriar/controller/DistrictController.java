@@ -3,12 +3,10 @@ package org.egreenbriar.controller;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import org.egreenbriar.form.FormDistrict;
-import org.egreenbriar.model.District;
 import org.egreenbriar.service.BlockCaptainService;
 import org.egreenbriar.service.BlockService;
 import org.egreenbriar.service.BreadcrumbService;
 import org.egreenbriar.service.ChangeService;
-import org.egreenbriar.service.DistrictService;
 import org.egreenbriar.service.HouseService;
 import org.egreenbriar.service.OfficierService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,9 +31,6 @@ public class DistrictController {
 
     @Autowired
     private BlockCaptainService blockCaptainService = null;
-
-    @Autowired
-    private DistrictService districtService = null;
 
     @Autowired
     private HouseService houseService = null;

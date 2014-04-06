@@ -18,7 +18,7 @@
     </head>
     <body>
 <script>
-function toggleListed( personUuid ) {
+ function toggleListed( personUuid ) {
   $.get( "/person/toggle_listed/" + personUuid, function( data ) {
    $("#listed_" + personUuid).toggleClass('negate');
    $("#listed_" + personUuid).html(data);
@@ -39,9 +39,9 @@ function toggle2014Membership( houseUuid ) {
 $.fn.editable.defaults.mode = 'inline';
 
 $(document).ready(function() {
-    $('#captain_<c:out value="${block.getBlockName()}"/>').editable();
-    $('#representative_<c:out value="${block.getDistrict().getName()}"/>').editable();
-    <c:forEach items="${block.getPeople()}" var="person">
+    $('#captain_<c:out value="${blockName}"/>').editable();
+    $('#representative_<c:out value="${districtName}"/>').editable();
+    <c:forEach items="${peopleService.getPeopleInBlock(blockName)}" var="person">
         $('#lastname_<c:out value="${person.getPk()}"/>').editable();
         $('#firstname_<c:out value="${person.getPk()}"/>').editable();
         $('#phone_<c:out value="${person.getPk()}"/>').editable();
@@ -55,21 +55,21 @@ $(document).ready(function() {
         <table cellpadding="5" cellspacing="0" border="1" style="margin-top: 15px; margin-left: 15px;">
             <tr>
                 <td>Houses</td>
-                <td><c:out value="${block.getHouses().size()}" /></td>
+                <td><c:out value="${houseService.getHousesInBlock(blockName).size()}" /></td>
             </tr>
             <tr>
                 <td>Captain</td>
                 <td>
-                    <div class='value editable' id='captain_<c:out value="${block.getBlockName()}"/>' data-type="text" data-url='/block/update_captain' data-pk='<c:out value="${block.getBlockName()}"/>' data-name='captain'>
-                    <c:out value='${block.getCaptainName()}' />
+                    <div class='value editable' id='captain_<c:out value="${blockName}"/>' data-type="text" data-url='/block/update_captain' data-pk='<c:out value="${blockName}"/>' data-name='captain'>
+                    <c:out value='${blockCaptain}' />
                     </div>
                 </td>
             </tr>
             <tr>
                 <td>Representative</td>
                 <td>
-                    <div class='value editable' id='representative_<c:out value="${block.getDistrict().getName()}"/>' data-type="text" data-url='/district/update_representative' data-pk='<c:out value="${block.getDistrict().getName()}"/>' data-name='representative'>
-                    <c:out value='${block.getDistrict().getRepresentative()}' />
+                    <div class='value editable' id='representative_<c:out value="$districtName}"/>' data-type="text" data-url='/district/update_representative' data-pk='<c:out value="${districtName}"/>' data-name='representative'>
+                    <c:out value='${districtRepresentative}' />
                     </div>
                 </td>
             </tr>
@@ -83,9 +83,9 @@ $(document).ready(function() {
                             <th>2014</th>
                         </tr>
                         <tr>
-                            <td align="right"><c:out value='${block.getPercentMembership("2012")}' />%</td>
-                            <td align="right"><c:out value='${block.getPercentMembership("2013")}' />%</td>
-                            <td align="right"><c:out value='${block.getPercentMembership("2014")}' />%</td>
+                            <td align="right"><c:out value='${houseService.getPercentMembership(block.getBlockName(), "2012")}' />%</td>
+                            <td align="right"><c:out value='${houseService.getPercentMembership(block.getBlockName(), "2013")}' />%</td>
+                            <td align="right"><c:out value='${houseService.getPercentMembership(block.getBlockName(), "2014")}' />%</td>
                         </tr>
                     </table>
                 </td>
@@ -93,7 +93,7 @@ $(document).ready(function() {
         </table>
         
         <table border="0" cellpadding="3" cellspacing="3">
-            <c:forEach items="${block.getHouses()}" var="house">
+            <c:forEach items="${houseService.getHousesInBlock(blockName)}" var="house">
                 <tr height="10px"><td></td></tr>
                 <tr>
                     <td valign="top"><c:out value="${house.getHouseNumber()}"/> <c:out value="${house.getStreetName()}"/></td>
@@ -101,7 +101,7 @@ $(document).ready(function() {
 
                         Add Person
 
-                        <c:forEach items="${house.getPeople()}" var="person" varStatus="loop">
+                        <c:forEach items="${peopleService.getPeopleInHouse(house.getHouseNumber(), house.getStreetName())}" var="person" varStatus="loop">
                             
                             <script>
                             </script>
@@ -175,7 +175,7 @@ $(document).ready(function() {
                                                 <span class='<c:out value="${house.memberInYear2013Style()}"/>' style='width:50px; margin-left: 5px;'>
                                                     2013
                                                 </span>
-                                                <span id="2014_<c:out value="${house.getUuid()}"/>" onclick="toggle2014Membership('<c:out value="${house.getUuid()}"/>'); return false;"  class='<c:out value="${house.memberInYear2014Style()}"/>' style='width:50px; margin-left: 5px;'>
+                                                <span id="2014_<c:out value="${house.getId()}"/>" onclick="toggle2014Membership('<c:out value="${house.getId()}"/>'); return false;"  class='<c:out value="${house.memberInYear2014Style()}"/>' style='width:50px; margin-left: 5px;'>
                                                     2014
                                                 </span>
                                             </c:if>

@@ -28,6 +28,10 @@ public class House implements Comparable {
         return "House{" + "houseNumber=" + getHouseNumber() + ", streetName=" + getStreetName() + ", people=" + getPeople() + "}";
     }
 
+    public boolean is(final String houseNumber, final String streetName) {
+        return this.houseNumber.equals(houseNumber) && this.streetName.equals(streetName);
+    }
+    
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
