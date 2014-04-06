@@ -8,7 +8,10 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.TreeSet;
 import javax.annotation.PostConstruct;
+import org.egreenbriar.model.Block;
 import org.egreenbriar.model.House;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -60,6 +63,29 @@ public class HouseService {
 
     public Map<String, House> getHouses() {
         return houses;
+    }
+
+    public Set<House> getHousesInBlock(final String blockName) {
+        Set<House> rv = new TreeSet<>();
+        for (Entry<String, House> entry : houses.entrySet()) {
+            House house = entry.getValue();
+            if (house.getBlockName().equals(blockName)) {
+                rv.add(house);
+            }
+        }
+        return rv;
+    }
+
+    public int getPercentMembership(final String blockName, String year) {
+        Set<House> housesInBlock = getHousesInBlock(blockName);
+        int numHouses = housesInBlock.size();
+        int numMembers = 0;
+        for (House house : housesInBlock) {
+            if (house.memberInYear(year)) {
+                numMembers++;
+            }
+        }
+        return (int)(((float)numMembers / (float)numHouses) * 100);
     }
 
     public void write() throws FileNotFoundException {

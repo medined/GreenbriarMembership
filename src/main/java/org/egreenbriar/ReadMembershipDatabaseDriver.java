@@ -180,6 +180,7 @@ public class ReadMembershipDatabaseDriver {
         drawGrayString(document, page, font, fontSize, x, y, "Captain: ");
         String captainNameA = null;
         String captainNameB = null;
+        /*
         if (block.getCaptainName() == null) {
             drawRedString(document, page, font, fontSize, x + 50, y, "None");
         } else {
@@ -187,7 +188,7 @@ public class ReadMembershipDatabaseDriver {
             captainNameB = block.getCaptainName() == null ? null : block.getCaptainName();
             drawString(document, page, font, fontSize, x + 50, y, block.getCaptainName());
         }
-
+        */
         if (captainNameA == null && captainNameB == null) {
             // both empty
         } else if (captainNameA == null && captainNameB != null) {

@@ -1,53 +1,22 @@
 package org.egreenbriar.model;
 
-import java.util.Set;
-import java.util.TreeSet;
-
 public class District implements Comparable {
 
     private String name = null;
-    private String representative = null;
-    private final Set<Block> blocks = new TreeSet<>();
 
     @Override
     public String toString() {
-        return "District{" + "name=" + getName() + ", blocks=" + getBlocks() + '}';
+        return "District{" + "name=" + getName() + '}';
     }
 
     public District(final String name) {
         this.name = name;
     }
 
-    public int getPercentMembership(String year) {
-        int numHouses = 0;
-        int numMembers = 0;
-        for (Block block : blocks) {
-            numHouses += block.getHouses().size();
-            for (House house : block.getHouses()) {
-                if (house.memberInYear(year)) {
-                    numMembers++;
-                }
-            }
-        }
-        return (int)(((float)numMembers / (float)numHouses) * 100);
-    }
-
     public boolean is(final String name) {
         return this.getName().equals(name);
     }
     
-    public Block addBlock(final District district, final String blockName) {
-        for (Block block : getBlocks()) {
-            if (block.is(blockName)) {
-                return block;
-            }
-        }
-        Block block = new Block(blockName);
-        block.setDistrict(district);
-        getBlocks().add(block);
-        return block;
-    }
-
     @Override
     public int compareTo(Object o) {
         int rv = -1;
@@ -93,27 +62,6 @@ public class District implements Comparable {
      */
     public void setName(String name) {
         this.name = name;
-    }
-
-    /**
-     * @return the blocks
-     */
-    public Set<Block> getBlocks() {
-        return blocks;
-    }
-
-    /**
-     * @return the representative
-     */
-    public String getRepresentative() {
-        return representative;
-    }
-
-    /**
-     * @param representative the representative to set
-     */
-    public void setRepresentative(String representative) {
-        this.representative = representative;
     }
     
 }

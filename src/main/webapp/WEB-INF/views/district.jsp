@@ -19,17 +19,17 @@
     </head>
     <body>
         <script>
-//turn to inline mode
-$.fn.editable.defaults.mode = 'inline';
+        //turn to inline mode
+        $.fn.editable.defaults.mode = 'inline';
 
-$(document).ready(function() {
-    $('#representative_<c:out value="${district.getName()}"/>').editable();
-    <c:forEach items="${district.getBlocks()}" var="block">
-        $('#captain_<c:out value="${block.getBlockName()}"/>').editable();
-    </c:forEach>
-});            
+        $(document).ready(function() {
+            $('#representative_<c:out value="${districtName}"/>').editable();
+            <c:forEach items="${blockService.getBlocks(districtName)}" var="block">
+                $('#captain_<c:out value="${block.getBlockName()}"/>').editable();
+            </c:forEach>
+        });            
         </script>
-    <%@include file="header.jsp" %>
+        <%@include file="header.jsp" %>
 
         <table cellpadding="0" cellspacing="0" border="0">
             <tr>
@@ -37,13 +37,13 @@ $(document).ready(function() {
         <table cellpadding="5" cellspacing="0" border="1" style="margin-top: 15px; margin-left: 15px;">
             <tr>
                 <td>Blocks</td>
-                <td><c:out value="${district.getBlocks().size()}" /></td>
+                <td><c:out value="${blockService.getBlocks().size()}" /></td>
             </tr>
             <tr>
                 <td>Representative</td>
                 <td>
-                    <div class='value editable' id='representative_<c:out value="${district.getName()}"/>' data-type="text" data-url='/district/update_representative' data-pk='<c:out value="${district.getName()}"/>' data-name='representative'>
-                        <c:out value="${district.getRepresentative()}" />
+                    <div class='value editable' id='representative_<c:out value="${districtName}"/>' data-type="text" data-url='/district/update_representative' data-pk='<c:out value="${districtName}"/>' data-name='representative'>
+                        <c:out value="${districtRepresentative}" />
                     </div>
                 </td>
             </tr>
@@ -63,18 +63,18 @@ $(document).ready(function() {
                 <th>2013</th>
                 <th>2014</th>
             </tr>
-            <c:forEach items="${district.getBlocks()}" var="block">
+            <c:forEach items="${blockService.getBlocks(districtName)}" var="block">
                 <tr>
                     <td><a href='/block/${block.getBlockName()}'><c:out value="${block.getBlockName()}"/></a></td>
                     <td>
                         <div class='value editable' id='captain_<c:out value="${block.getBlockName()}"/>' data-type="text" data-url='/block/update_captain' data-pk='<c:out value="${block.getBlockName()}"/>' data-name='captain'>
-                        <c:out value='${block.getCaptainName()}' />
+                        <c:out value='${blockCaptainService.getCaptainName(block.getBlockName())}' />
                         </div>
                     </td>
-                    <td align="right"><c:out value='${block.getHouses().size()}' /></td>
-                    <td align="right"><c:out value='${block.getPercentMembership("2012")}' />%</td>
-                    <td align="right"><c:out value='${block.getPercentMembership("2013")}' />%</td>
-                    <td align="right"><c:out value='${block.getPercentMembership("2014")}' />%</td>
+                    <td align="right"><c:out value='${houseService.getHousesInBlock(block.getBlockName()).size()}' /></td>
+                    <td align="right"><c:out value='${houseService.getPercentMembership(block.getBlockName(), "2012")}' />%</td>
+                    <td align="right"><c:out value='${houseService.getPercentMembership(block.getBlockName(), "2013")}' />%</td>
+                    <td align="right"><c:out value='${houseService.getPercentMembership(block.getBlockName(), "2014")}' />%</td>
                 </tr>
             </c:forEach>
         </table>
