@@ -27,7 +27,7 @@ public class HouseController {
     @ResponseBody
     public void toggle2014Membership(Model model, @PathVariable String houseUuid) throws FileNotFoundException, IOException {
         House house = houseService.getHouse(houseUuid);
-        String message = String.format("houseNumber(%s) streetName(%s) old(%b) new(%b)", house.getHouseNumber(), house.getStreetName(), house.isMember2014(), !house.isMember2014());
+        String message = String.format("houseNumber(%s) streetName(%s) current(%b) new(%b)", house.getHouseNumber(), house.getStreetName(), house.isMember2014());
         changeService.logChange("toggle_2014_membership", message);
         house.toggle2014Membership();
         houseService.write();

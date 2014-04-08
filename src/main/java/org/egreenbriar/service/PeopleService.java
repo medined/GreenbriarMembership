@@ -13,7 +13,6 @@ import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import org.egreenbriar.model.House;
 import org.egreenbriar.model.Person;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -101,7 +100,7 @@ public class PeopleService {
         }
         return peopleInHouse;
     }
-
+    
     public void write() throws FileNotFoundException {
         try (PrintWriter writer = new PrintWriter(peopleFile)) {
             writer.println("PersonID, District,Block,HouseNumber,StreetName,LastName,FirstName,PhoneNumber,EmailAddress,UnlistedPhone,NoDirectory,Comments");

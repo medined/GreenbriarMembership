@@ -68,7 +68,7 @@ $(document).ready(function() {
             <tr>
                 <td>Representative</td>
                 <td>
-                    <div class='value editable' id='representative_<c:out value="$districtName}"/>' data-type="text" data-url='/district/update_representative' data-pk='<c:out value="${districtName}"/>' data-name='representative'>
+                    <div class='value editable' id='representative_<c:out value="${districtName}"/>' data-type="text" data-url='/district/update_representative' data-pk='<c:out value="${districtName}"/>' data-name='representative'>
                     <c:out value='${districtRepresentative}' />
                     </div>
                 </td>

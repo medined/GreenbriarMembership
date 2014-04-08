@@ -23,77 +23,100 @@ public class PersonController {
 
     @Autowired
     private BreadcrumbService breadcrumbService = null;
-        
+
     @Autowired
     private PeopleService peopleService = null;
 
     @Autowired
     private ChangeService changeService = null;
 
-    @RequestMapping("/person/toggle_listed/{personUuid}")
+    @RequestMapping("/person/toggle_listed/{personId}")
     @ResponseBody
-    public String toggleListed(Model model, @PathVariable String personUuid) throws FileNotFoundException, IOException {
-        Person person = peopleService.getPerson(personUuid);
-        //String message = String.format("houseNumber(%s) streetName(%s) old(%b) new(%b)", house.getHouseNumber(), house.getStreetName(), house.isMember2014(), !house.isMember2014());
-        //changeService.logChange("toggle_listed", message);
+    public String toggleListed(Model model, @PathVariable String personId) throws FileNotFoundException, IOException {
+        Person person = peopleService.getPerson(personId);
+        String message = String.format("person(%s) current(%s)", personId, person.isListed());
+        changeService.logChange("toggle_listed", message);
         person.toggleListed();
         peopleService.write();
         return person.listed();
     }
 
-    @RequestMapping("/person/toggle_directory/{personUuid}")
+    @RequestMapping("/person/toggle_directory/{personId}")
     @ResponseBody
-    public String toggleDirectory(Model model, @PathVariable String personUuid) throws FileNotFoundException, IOException {
-        Person person = peopleService.getPerson(personUuid);
+    public String toggleDirectory(Model model, @PathVariable String personId) throws FileNotFoundException, IOException {
+        Person person = peopleService.getPerson(personId);
+        String message = String.format("person(%s) current(%s)", personId, person.isNoDirectory());
+        changeService.logChange("toggle_directory", message);
         person.toggleDirectory();
+        peopleService.write();
         return person.directory();
     }
 
     // name=last, value=<new_value>
-    @RequestMapping(value="/person/update_last", method = RequestMethod.POST)
+    @RequestMapping(value = "/person/update_last", method = RequestMethod.POST)
     @ResponseBody
     public String updateLast(@ModelAttribute FormPerson formPerson, Model model) throws FileNotFoundException, IOException {
-        Person person = peopleService.getPerson(formPerson.getPk());
+        String personId = formPerson.getPk();
+        Person person = peopleService.getPerson(personId);
+        String message = String.format("person(%s) old(%s) new(%s)", personId, person.getLast(), formPerson.getValue());
+        changeService.logChange("update_last", message);
         person.setLast(formPerson.getValue());
+        peopleService.write();
         return person.getLast();
     }
-    
+
     // name=last, value=<new_value>
-    @RequestMapping(value="/person/update_first", method = RequestMethod.POST)
+    @RequestMapping(value = "/person/update_first", method = RequestMethod.POST)
     @ResponseBody
     public String updateFirst(@ModelAttribute FormPerson formPerson, Model model) throws FileNotFoundException, IOException {
-        Person person = peopleService.getPerson(formPerson.getPk());
+        String personId = formPerson.getPk();
+        Person person = peopleService.getPerson(personId);
+        String message = String.format("person(%s) old(%s) new(%s)", personId, person.getFirst(), formPerson.getValue());
+        changeService.logChange("update_first", message);
         person.setFirst(formPerson.getValue());
+        peopleService.write();
         return person.getFirst();
     }
-    
+
     // name=last, value=<new_value>
-    @RequestMapping(value="/person/update_phone", method = RequestMethod.POST)
+    @RequestMapping(value = "/person/update_phone", method = RequestMethod.POST)
     @ResponseBody
     public String updatePhone(@ModelAttribute FormPerson formPerson, Model model) throws FileNotFoundException, IOException {
-        Person person = peopleService.getPerson(formPerson.getPk());
+        String personId = formPerson.getPk();
+        Person person = peopleService.getPerson(personId);
+        String message = String.format("person(%s) old(%s) new(%s)", personId, person.getPhone(), formPerson.getValue());
+        changeService.logChange("update_phone", message);
         person.setPhone(formPerson.getValue());
+        peopleService.write();
         return person.getPhone();
     }
-    
+
     // name=last, value=<new_value>
-    @RequestMapping(value="/person/update_email", method = RequestMethod.POST)
+    @RequestMapping(value = "/person/update_email", method = RequestMethod.POST)
     @ResponseBody
     public String updateEmail(@ModelAttribute FormPerson formPerson, Model model) throws FileNotFoundException, IOException {
-        Person person = peopleService.getPerson(formPerson.getPk());
+        String personId = formPerson.getPk();
+        Person person = peopleService.getPerson(personId);
+        String message = String.format("person(%s) old(%s) new(%s)", personId, person.getEmail(), formPerson.getValue());
+        changeService.logChange("update_email", message);
         person.setEmail(formPerson.getValue());
+        peopleService.write();
         return person.getEmail();
     }
-    
+
     // name=last, value=<new_value>
-    @RequestMapping(value="/person/update_comment", method = RequestMethod.POST)
+    @RequestMapping(value = "/person/update_comment", method = RequestMethod.POST)
     @ResponseBody
     public String updateComment(@ModelAttribute FormPerson formPerson, Model model) throws FileNotFoundException, IOException {
-        Person person = peopleService.getPerson(formPerson.getPk());
+        String personId = formPerson.getPk();
+        Person person = peopleService.getPerson(personId);
+        String message = String.format("person(%s) old(%s) new(%s)", personId, person.getComment(), formPerson.getValue());
+        changeService.logChange("update_comment", message);
         person.setComment(formPerson.getValue());
+        peopleService.write();
         return person.getComment();
     }
-    
+
     public void setChangeService(ChangeService changeService) {
         this.changeService = changeService;
     }
