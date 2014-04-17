@@ -22,9 +22,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class PersonController {
 
     @Autowired
-    private BreadcrumbService breadcrumbService = null;
-
-    @Autowired
     private PeopleService peopleService = null;
 
     @Autowired
@@ -123,10 +120,6 @@ public class PersonController {
 
     public void setPeopleService(PeopleService peopleService) {
         this.peopleService = peopleService;
-    }
-
-    public BreadcrumbService getBreadcrumbService() {
-        return breadcrumbService;
     }
 
 }

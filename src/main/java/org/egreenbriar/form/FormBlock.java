@@ -5,6 +5,15 @@ public class FormBlock {
     private String pk = null;
     private String name = null;
     private String value = null;
+    private String blockName = null;
+    
+    public void setBlockName(final String blockName) {
+        this.blockName = blockName;
+    }
+    
+    public String getBlockName() {
+        return this.blockName;
+    }
     
     public FormBlock() {
     }

@@ -74,6 +74,10 @@ public class PeopleService {
         }
         reader.close();
     }
+    
+    public void addPerson(final Person person) {
+        people.put(person.getPk(), person);
+    }
 
     public Person getPerson(String personUuid) {
         return people.get(personUuid);

@@ -99,7 +99,7 @@ $(document).ready(function() {
                     <td valign="top"><c:out value="${house.getHouseNumber()}"/> <c:out value="${house.getStreetName()}"/></td>
                     <td>
 
-                        Add Person
+                        <div style="height: 20px;"><a href="/house/add_person/<c:out value="${house.getId()}"/>">Add Person</a></div>
 
                         <c:forEach items="${peopleService.getPeopleInHouse(house.getHouseNumber(), house.getStreetName())}" var="person" varStatus="loop">
                             
@@ -113,6 +113,7 @@ $(document).ready(function() {
                                             <div class='heading'>&nbsp;</div>
                                         </c:if>
                                         <div class="editable-click">
+<img src="/resources/remove-icon.png" height="15" width="25">
                                         <span id="listed_<c:out value="${person.getPk()}"/>" onclick="toggleListed('<c:out value="${person.getPk()}"/>'); return false;" class="<c:out value="${person.listedStyle()}"/>">
                                             <c:out value="${person.listed()}"/>
                                         </span>
