@@ -1,0 +1,52 @@
+#!/bin/bash
+
+source setup.sh
+
+##########
+# Before this script is called have your system do:
+#
+# apt-get -y install git
+# git clone https://github.com/medined/accumulo_stackscript.git
+
+if [ ! -f sysctl.conf ];
+then
+echo "PLEASE USE git clone to get the whole project from github."
+  exit
+fi
+
+echo "- START ------------"
+date +"%Y/%m/%d %H:%M:%S"
+
+# Store the host key fingerprint to avoid a question when
+# using SSH for the first time.
+result=`grep "ssh-dss" /etc/ssh/ssh_known_hosts | wc -l`
+if [ "$result" == "0" ];
+then
+ssh-keyscan -t dsa localhost >> /etc/ssh/ssh_known_hosts
+  ssh-keyscan -t dsa `hostname -f` >> /etc/ssh/ssh_known_hosts
+  ssh-keyscan -t dsa `hostname` >> /etc/ssh/ssh_known_hosts
+fi
+result=`grep "ssh-rsa" /etc/ssh/ssh_known_hosts | wc -l`
+if [ "$result" == "0" ];
+then
+ssh-keyscan -t rsa localhost >> /etc/ssh/ssh_known_hosts
+  ssh-keyscan -t rsa `hostname -f` >> /etc/ssh/ssh_known_hosts
+  ssh-keyscan -t rsa `hostname` >> /etc/ssh/ssh_known_hosts
+fi
+
+add_a_user greenbriar
+
+echo "deb http://ppa.launchpad.net/natecarlson/maven3/ubuntu precise main" >> /etc/apt/sources.list
+echo "deb-src http://ppa.launchpad.net/natecarlson/maven3/ubuntu precise main" >> /etc/apt/sources.list
+apt-get update
+
+apt-get -y install curl
+apt-get -y install openjdk-6-jdk
+apt-get -y --force-yes install maven3
+
+# remove the symbolic link to maven2. You can still access it via /usr/share/maven2/bin/mvn
+rm /usr/bin/mvn
+ln -s /usr/share/maven3/bin/mvn /usr/bin/mvn
+
+date +"%Y/%m/%d %H:%M:%S"
+echo "- END ------------"
