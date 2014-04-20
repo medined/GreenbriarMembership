@@ -27,6 +27,32 @@ public class PersonController {
     @Autowired
     private ChangeService changeService = null;
 
+    @RequestMapping("/person/delete/{personId}")
+    public String deletePerson(Model model, @PathVariable String personId) throws FileNotFoundException, IOException {
+        Person person = peopleService.getPerson(personId);
+        
+        StringBuilder buffer = new StringBuilder();
+        buffer.append(String.format("person(%s)", personId));
+        buffer.append(String.format(" district(%s)", person.getDistrictName()));
+        buffer.append(String.format(" block(%s)", person.getBlockName()));
+        buffer.append(String.format(" houseNumber(%s)", person.getHouseNumber()));
+        buffer.append(String.format(" streetName(%s)", person.getStreetName()));
+        buffer.append(String.format(" first(%s)", person.getFirst()));
+        buffer.append(String.format(" last(%s)", person.getLast()));
+        buffer.append(String.format(" phone(%s)", person.getPhone()));
+        buffer.append(String.format(" email(%s)", person.getEmail()));
+        buffer.append(String.format(" comment(%s)", person.getComment()));
+        buffer.append(String.format(" unlisted(%s)", person.isUnlisted()));
+        buffer.append(String.format(" comment(%s)", person.getComment()));
+
+        changeService.logChange("deletePerson", buffer.toString());
+        peopleService.deletePerson(person);
+        peopleService.write();
+        model.addAttribute("blockName", person.getBlockName());
+        
+        return "redirect:/block";
+    }
+
     @RequestMapping("/person/toggle_listed/{personId}")
     @ResponseBody
     public String toggleListed(Model model, @PathVariable String personId) throws FileNotFoundException, IOException {

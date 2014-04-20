@@ -113,7 +113,7 @@ $(document).ready(function() {
                                             <div class='heading'>&nbsp;</div>
                                         </c:if>
                                         <div class="editable-click">
-<img src="/resources/remove-icon.png" height="15" width="25">
+<a href="/person/delete/<c:out value="${person.getPk()}"/>"><img src="/resources/remove-icon.png" height="15" width="25"></a>
                                         <span id="listed_<c:out value="${person.getPk()}"/>" onclick="toggleListed('<c:out value="${person.getPk()}"/>'); return false;" class="<c:out value="${person.listedStyle()}"/>">
                                             <c:out value="${person.listed()}"/>
                                         </span>

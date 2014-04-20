@@ -140,4 +140,8 @@ public class PeopleService {
         }
     }
 
+    public void deletePerson(Person person) {
+        people.remove(person.getPk());
+    }
+
 }
