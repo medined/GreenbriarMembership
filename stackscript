@@ -40,6 +40,7 @@ echo "deb http://ppa.launchpad.net/natecarlson/maven3/ubuntu precise main" >> /e
 echo "deb-src http://ppa.launchpad.net/natecarlson/maven3/ubuntu precise main" >> /etc/apt/sources.list
 apt-get update
 
+apt-get -y install iptables
 apt-get -y install curl
 apt-get -y install openjdk-6-jdk
 apt-get -y --force-yes install maven3
