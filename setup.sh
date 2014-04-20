@@ -6,8 +6,6 @@ echo "You must be root to run this script. Aborting...";
    exit 1;
 fi
 
-source versions.sh
-
 export CDIR=`pwd`
 export LOGFILE=/root/build.log
 export PASSWORD=`openssl passwd -1 password`

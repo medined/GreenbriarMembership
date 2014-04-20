@@ -6,13 +6,7 @@ source setup.sh
 # Before this script is called have your system do:
 #
 # apt-get -y install git
-# git clone https://github.com/medined/accumulo_stackscript.git
-
-if [ ! -f sysctl.conf ];
-then
-echo "PLEASE USE git clone to get the whole project from github."
-  exit
-fi
+# git clone https://github.com/medined/GreenbriarMembership.git
 
 echo "- START ------------"
 date +"%Y/%m/%d %H:%M:%S"
