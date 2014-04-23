@@ -98,29 +98,7 @@ public class HouseController {
         peopleService.addPerson(person);
         peopleService.write();
 
-        //model.addAttribute("blockService", blockService);
-        //model.addAttribute("blockCaptainService", blockCaptainService);
-        //model.addAttribute("houseService", houseService);
-        //model.addAttribute("officierService", officierService);
-        //model.addAttribute("peopleService", peopleService);
-        
-        //final String districtName = blockService.getDistrictName(blockName);
-
         model.addAttribute("blockName", blockName);
-        //model.addAttribute("districtName", districtName);
-        //model.addAttribute("blockCaptain", blockCaptainService.getCaptainName(blockName));
-        //model.addAttribute("districtRepresentative", officierService.getDistrictRepresentative(districtName));
-
-        //Block block = blockService.getBlock(blockName);
-        //model.addAttribute("block", block);
-        
-        //breadcrumbService.clear();
-        //breadcrumbService.put("Home", "/");
-        //breadcrumbService.put("Districts", "/districts");
-        //breadcrumbService.put(block.getDistrictName(), "/district/" + block.getDistrictName());
-        //breadcrumbService.put(blockName, "");
-        //breadcrumbService.put("Logout", "/j_spring_security_logout");        
-        //model.addAttribute("breadcrumbs", breadcrumbService.getBreadcrumbs());
         
         return "redirect:/block";
     }
