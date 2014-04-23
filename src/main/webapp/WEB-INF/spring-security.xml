@@ -11,7 +11,7 @@
       http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
  
     <http auto-config="true">
-        <!--intercept-url pattern="/districts" access="ROLE_ADMIN" /-->
+        <intercept-url pattern="/districts" access="ROLE_ADMIN" />
         <intercept-url pattern="/blockcaptains" access="ROLE_ADMIN" />
         <intercept-url pattern="/noblockcaptains" access="ROLE_ADMIN" />
         <logout logout-success-url="/" />
