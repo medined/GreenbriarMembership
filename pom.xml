@@ -142,16 +142,18 @@
             <version>${jetty.version}</version>
         </dependency>    
         <!-- JSP and JSTL SUPPORT -->
+<!--
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-jsp</artifactId>
             <version>${jetty.jsp.version}</version>
         </dependency>    
+-->
         <dependency>
-            <groupId>javax.servlet</groupId>
+            <groupId>jstl</groupId>
             <artifactId>jstl</artifactId>
             <version>1.2</version>
-            <scope>provided</scope>
+<scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
