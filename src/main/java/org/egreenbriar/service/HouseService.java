@@ -11,9 +11,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeSet;
 import javax.annotation.PostConstruct;
-import org.egreenbriar.model.Block;
 import org.egreenbriar.model.House;
-import org.egreenbriar.model.Person;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 

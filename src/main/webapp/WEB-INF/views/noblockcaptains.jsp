@@ -18,6 +18,7 @@
         <title>Greenbriar Membership Management</title>
     </head>
     <body>
+        <%@include file="header.jsp" %>
 
         <h1><fmt:formatNumber value="${blocks.size()}" /> Blocks Without Captains</h1>
 
@@ -29,17 +30,17 @@
                 <th>Block</th>
                 <th>Houses</th>
             </tr>
-            <c:forEach items="${blocks}" var="block">
+            <c:forEach items="${blocks}" var="blockName">
                 <tr>
-                    <td valign='top'><c:out value="${block.value.getDistrictName()}"/></td>
-                    <td valign='top'><c:out value="${block.key}"/></td>
+                    <td valign='top'><a href="/district/<c:out value="${blockService.getDistrictName(blockName)}"/>"><c:out value="${blockService.getDistrictName(blockName)}"/></a></td>
+                    <td valign='top'><a href="/block/<c:out value="${blockName}"/>"><c:out value="${blockName}"/></a></td>
                     <td valign='top'>
-                        <ul>
-                        <c:forEach items="${block.value.getHouses()}" var="house">
-                            <li><c:out value="${house.getHouseNumber()}"/> <c:out value="${house.getStreetName()}"/></li>
-                        </c:forEach>
-                        </ul>
-                    </td>
+                         <ul>
+                         <c:forEach items="${houseService.getHousesInBlock(blockName)}" var="house">
+                             <li><c:out value="${house.getHouseNumber()}"/> <c:out value="${house.getStreetName()}"/></li>
+                         </c:forEach>
+                         </ul>
+                     </td>
                 </tr>
             </c:forEach>
     </body>

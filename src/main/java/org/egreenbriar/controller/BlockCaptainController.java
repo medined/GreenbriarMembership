@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.egreenbriar.service.BlockCaptainService;
 import org.egreenbriar.service.BlockService;
 import org.egreenbriar.service.BreadcrumbService;
+import org.egreenbriar.service.HouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,9 @@ public class BlockCaptainController {
     
     @Autowired
     private BlockCaptainService blockCaptainService = null;
+
+    @Autowired
+    private HouseService houseService = null;
 
     @Autowired
     private BlockService blockService = null;
@@ -39,6 +43,8 @@ public class BlockCaptainController {
 
     @RequestMapping("/noblockcaptains")
     public String noBlockCaptainHandler(Model model) throws FileNotFoundException, IOException {
+        model.addAttribute("blockService", blockService);
+        model.addAttribute("houseService", houseService);
         model.addAttribute("blocks", blockCaptainService.getBlocksWithoutCaptains());
 
         breadcrumbService.getBreadcrumbs().clear();
@@ -59,6 +65,10 @@ public class BlockCaptainController {
 
     public void setBlockService(BlockService blockService) {
         this.blockService = blockService;
+    }
+
+    public void setHouseService(HouseService houseService) {
+        this.houseService = houseService;
     }
 
 }

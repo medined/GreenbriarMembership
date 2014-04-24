@@ -4,13 +4,10 @@ import au.com.bytecode.opencsv.CSVReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import javax.annotation.PostConstruct;
 import org.egreenbriar.model.Block;
-import org.egreenbriar.model.House;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
