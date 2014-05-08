@@ -4,6 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <%@ page import="java.util.Set" %>
 
@@ -18,8 +19,8 @@
         <title>Greenbriar Membership Management</title>
     </head>
     <body>
+        <sec:authorize access="hasRole('ROLE_ADMIN')">  
         <script>
-        //turn to inline mode
         $.fn.editable.defaults.mode = 'inline';
 
         $(document).ready(function() {
@@ -29,6 +30,7 @@
             </c:forEach>
         });            
         </script>
+        </sec:authorize>
         <%@include file="header.jsp" %>
 
         <table cellpadding="0" cellspacing="0" border="0">

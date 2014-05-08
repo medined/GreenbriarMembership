@@ -2,6 +2,9 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <div class="username">
+    <sec:authorize access="hasRole('ROLE_USER')">
+        Read-Only 
+    </sec:authorize>
     <sec:authorize access="isAuthenticated()">  
         User: <strong><sec:authentication property="principal.username"/></strong>
     </sec:authorize>

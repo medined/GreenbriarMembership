@@ -4,6 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <%@ page import="java.util.Set" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -17,6 +18,7 @@
         <title>Greenbriar Membership Management</title>
     </head>
     <body>
+<sec:authorize access="hasRole('ROLE_ADMIN')">  
 <script>
  function toggleListed( personUuid ) {
   $.get( "/person/toggle_listed/" + personUuid, function( data ) {
@@ -35,7 +37,7 @@ function toggle2014Membership( houseUuid ) {
    $("#2014_" + houseUuid).toggleClass('negate');
   });
 }
-//turn to inline mode
+
 $.fn.editable.defaults.mode = 'inline';
 
 $(document).ready(function() {
@@ -50,6 +52,7 @@ $(document).ready(function() {
     </c:forEach>
 });
 </script>
+</sec:authorize>
     <%@include file="header.jsp" %>
 
         <table cellpadding="5" cellspacing="0" border="1" style="margin-top: 15px; margin-left: 15px;">
@@ -99,7 +102,9 @@ $(document).ready(function() {
                     <td valign="top"><c:out value="${house.getHouseNumber()}"/> <c:out value="${house.getStreetName()}"/></td>
                     <td>
 
+<sec:authorize access="hasRole('ROLE_ADMIN')">  
                         <div style="height: 20px;"><a href="/house/add_person/<c:out value="${house.getId()}"/>">Add Person</a></div>
+</sec:authorize>
 
                         <c:forEach items="${peopleService.getPeopleInHouse(house.getHouseNumber(), house.getStreetName())}" var="person" varStatus="loop">
                             
@@ -113,7 +118,9 @@ $(document).ready(function() {
                                             <div class='heading'>&nbsp;</div>
                                         </c:if>
                                         <div class="editable-click">
-<a href="/person/delete/<c:out value="${person.getPk()}"/>"><img src="/resources/remove-icon.png" height="15" width="25"></a>
+<sec:authorize access="hasRole('ROLE_ADMIN')">  
+<a onclick="return confirm('Do you really want to remove [<c:out value="${person.getFirst()}"/> <c:out value="${person.getLast()}"/>]?')" href="/person/delete/<c:out value="${person.getPk()}"/>"><img src="/resources/remove-icon.png" height="15" width="25"></a>
+</sec:authorize>
                                         <span id="listed_<c:out value="${person.getPk()}"/>" onclick="toggleListed('<c:out value="${person.getPk()}"/>'); return false;" class="<c:out value="${person.listedStyle()}"/>">
                                             <c:out value="${person.listed()}"/>
                                         </span>
@@ -144,7 +151,17 @@ $(document).ready(function() {
                                             <div class='heading'>Phone</div>
                                         </c:if>
                                         <div class='value editable' id='phone_<c:out value="${person.getPk()}"/>' data-type="text" data-url='/person/update_phone' data-pk='<c:out value="${person.getPk()}"/>' data-name='phone'>
-                                            <c:out value="${person.getPhone()}"/>
+                                            <sec:authorize access="hasRole('ROLE_USER')">  
+                                                <c:if test="${person.listed().equals('Listed') == false}">
+                                                    UNLISTED
+                                                </c:if>
+                                                <c:if test="${person.listed().equals('Listed')}">
+                                                    <c:out value="${person.getPhone()}"/>
+                                                </c:if>
+                                            </sec:authorize>
+                                            <sec:authorize access="hasRole('ROLE_ADMIN')">  
+                                                <c:out value="${person.getPhone()}"/>
+                                            </sec:authorize>
                                         </div>
                                     </td>
                                     <td class='email'>
