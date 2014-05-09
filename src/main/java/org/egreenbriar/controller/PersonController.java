@@ -123,9 +123,10 @@ public class PersonController {
     public String updateLast(@ModelAttribute FormPerson formPerson, Model model) throws FileNotFoundException, IOException {
         String personId = formPerson.getPk();
         Person person = peopleService.getPerson(personId);
-        String message = String.format("person(%s) old(%s) new(%s)", personId, person.getLast(), formPerson.getValue());
+        String lastName = formPerson.getValue().replaceAll(",", "&");
+        String message = String.format("person(%s) old(%s) new(%s)", personId, person.getLast(), lastName);
         changeService.logChange("update_last", message);
-        person.setLast(formPerson.getValue());
+        person.setLast(lastName);
         peopleService.write();
         return person.getLast();
     }
@@ -136,9 +137,10 @@ public class PersonController {
     public String updateFirst(@ModelAttribute FormPerson formPerson, Model model) throws FileNotFoundException, IOException {
         String personId = formPerson.getPk();
         Person person = peopleService.getPerson(personId);
-        String message = String.format("person(%s) old(%s) new(%s)", personId, person.getFirst(), formPerson.getValue());
+        String firstName = formPerson.getValue().replaceAll(",", "&");
+        String message = String.format("person(%s) old(%s) new(%s)", personId, person.getFirst(), firstName);
         changeService.logChange("update_first", message);
-        person.setFirst(formPerson.getValue());
+        person.setFirst(firstName);
         peopleService.write();
         return person.getFirst();
     }
@@ -175,9 +177,10 @@ public class PersonController {
     public String updateComment(@ModelAttribute FormPerson formPerson, Model model) throws FileNotFoundException, IOException {
         String personId = formPerson.getPk();
         Person person = peopleService.getPerson(personId);
-        String message = String.format("person(%s) old(%s) new(%s)", personId, person.getComment(), formPerson.getValue());
+        String comment = formPerson.getValue().replaceAll(",", ";");
+        String message = String.format("person(%s) old(%s) new(%s)", personId, person.getComment(), comment);
         changeService.logChange("update_comment", message);
-        person.setComment(formPerson.getValue());
+        person.setComment(comment);
         peopleService.write();
         return person.getComment();
     }

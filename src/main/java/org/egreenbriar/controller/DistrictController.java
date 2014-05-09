@@ -64,7 +64,8 @@ public class DistrictController {
     @ResponseBody
     public String updateRepresentative(@ModelAttribute FormDistrict formDistrict, Model model) throws FileNotFoundException, IOException {
         final String districtName = formDistrict.getPk();
-        final String representativeName = formDistrict.getValue();
+        String representativeName = formDistrict.getValue();
+        representativeName = representativeName.replaceAll(",", "&");
         String message = String.format("district(%s) old(%s) new(%s)", districtName, officierService.getDistrictRepresentative(districtName), representativeName);
         changeService.logChange("update_representative", message);
         officierService.updateDistrictRepresentative(districtName, formDistrict.getValue());

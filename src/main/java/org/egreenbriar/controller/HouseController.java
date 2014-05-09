@@ -75,11 +75,11 @@ public class HouseController {
         person.setBlockName(blockName);
         person.setHouseNumber(house.getHouseNumber());
         person.setStreetName(house.getStreetName());
-        person.setLast(form.getLastName());
-        person.setFirst(form.getFirstName());
+        person.setLast(form.getLastName().replaceAll(",", "&"));
+        person.setFirst(form.getFirstName().replaceAll(",", "&"));
         person.setPhone(form.getPhone());
         person.setEmail(form.getEmail());
-        person.setComment(form.getComments());
+        person.setComment(form.getComments().replaceAll(",", ";"));
         person.setUnlisted(form.getUnlisted().equals("1"));
         person.setNoDirectory(form.getNodirectory().equals("1"));
         

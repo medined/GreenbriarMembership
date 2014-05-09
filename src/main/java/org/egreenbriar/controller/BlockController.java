@@ -110,6 +110,7 @@ public class BlockController {
     @ResponseBody
     public void updateCaptain(@ModelAttribute FormBlock formBlock, Model model) throws FileNotFoundException, IOException {
         String captainName = blockCaptainService.getCaptainName(formBlock.getPk());
+        captainName = captainName.replaceAll(",", "&");
         String message = String.format("block(%s) old(%s) new(%s)", formBlock.getPk(), captainName, formBlock.getValue());
         changeService.logChange("update_captain", message);
         blockCaptainService.update(formBlock.getPk(), formBlock.getValue());
