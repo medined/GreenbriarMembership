@@ -33,19 +33,23 @@
     <tr><td>Email</td><td><input type="text" name="email" value=""></td></tr>
     <tr><td>Comments</td><td><input type="text" name="comments" value=""></td></tr>
     <tr><td>Phone is Unlisted</td><td>
-<select name="unlisted">
-  <option value="1">Yes</option>
-  <option value="0">No</option>
-</select> 
+        <select name="unlisted">
+          <option value="1">Yes</option>
+          <option value="0">No</option>
+        </select> 
     </td></tr>
     <tr><td>List in Greenbriar Directory</td><td>
-<!-- notice the boolean values are reversed from the label. -->
-<select name="nodirectory">
-  <option value="0">Yes</option>
-  <option value="1" selected>No</option>
-</select> 
+        <!-- notice the boolean values are reversed from the label. -->
+        <select name="nodirectory">
+          <option value="0">Yes</option>
+          <option value="1" selected>No</option>
+        </select> 
     </td></tr>
-    <tr colspan="2" align="center"><td><input type="submit" value="Submit"></td></tr>
+    <tr colspan="2" align="center"><td>
+            <input type="submit" value="Submit">
+            &nbsp;&nbsp;
+            <a href="javascript:history.back()">Cancel</a>
+        </td></tr>
   </table>
 </form>
 
