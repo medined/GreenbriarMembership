@@ -27,11 +27,11 @@
   <table cellpadding="2" bgcolor="#CCCCCC" style="padding: 25px">
     <tr><td>House Number</td><td><c:out value="${house.getHouseNumber()}"/></td></tr>
     <tr><td>Street Name</td><td><c:out value="${house.getStreetName()}"/></td></tr>
-    <tr><td>Last Name</td><td><input type="text" name="lastName" value="aalast"></td></tr>
-    <tr><td>First Name</td><td><input type="text" name="firstName" value="bbfirst"></td></tr>
-    <tr><td>Phone</td><td><input type="text" name="phone" value="ccphone"></td></tr>
-    <tr><td>Email</td><td><input type="text" name="email" value="ddemail"></td></tr>
-    <tr><td>Comments</td><td><input type="text" name="comments" value="eecomments"></td></tr>
+    <tr><td>Last Name</td><td><input type="text" name="lastName" value=""></td></tr>
+    <tr><td>First Name</td><td><input type="text" name="firstName" value=""></td></tr>
+    <tr><td>Phone</td><td><input type="text" name="phone" value=""></td></tr>
+    <tr><td>Email</td><td><input type="text" name="email" value=""></td></tr>
+    <tr><td>Comments</td><td><input type="text" name="comments" value=""></td></tr>
     <tr><td>Phone is Unlisted</td><td>
 <select name="unlisted">
   <option value="1">Yes</option>
