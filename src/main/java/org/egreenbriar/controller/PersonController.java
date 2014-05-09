@@ -2,6 +2,10 @@ package org.egreenbriar.controller;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.TreeSet;
 import org.egreenbriar.form.FormPerson;
 import org.egreenbriar.model.Person;
 import org.egreenbriar.service.BreadcrumbService;
@@ -22,11 +26,49 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class PersonController {
 
     @Autowired
+    private BreadcrumbService breadcrumbService = null;
+    
+    @Autowired
     private PeopleService peopleService = null;
 
     @Autowired
     private ChangeService changeService = null;
 
+    @RequestMapping("/person/emails")
+    public String emails(Model model) {
+        Set<String> emails = new TreeSet<>();
+        
+        model.addAttribute("peopleService", peopleService);
+
+        Map<String, Person> people = peopleService.getPeople();
+        for (Entry<String, Person> entry : people.entrySet()) {
+            Person person = entry.getValue();
+            if (person.getEmail() != null && !person.getEmail().isEmpty() && person.getEmail().contains("@")) {
+                emails.add(person.getEmail());
+            }
+        }
+        model.addAttribute("emails", emails);
+        
+        breadcrumbService.clear();
+        breadcrumbService.put("Home", "/home");
+        breadcrumbService.put("Logout", "/j_spring_security_logout");        
+        model.addAttribute("breadcrumbs", breadcrumbService.getBreadcrumbs());
+
+        return "emails";
+    }
+    
+    @RequestMapping("/person/bad_emails")
+    public String bad_emails(Model model) {
+        model.addAttribute("peopleService", peopleService);
+
+        breadcrumbService.clear();
+        breadcrumbService.put("Home", "/home");
+        breadcrumbService.put("Logout", "/j_spring_security_logout");        
+        model.addAttribute("breadcrumbs", breadcrumbService.getBreadcrumbs());
+
+        return "badEmails";
+    }
+    
     @RequestMapping("/person/delete/{personId}")
     public String deletePerson(Model model, @PathVariable String personId) throws FileNotFoundException, IOException {
         Person person = peopleService.getPerson(personId);
@@ -146,6 +188,10 @@ public class PersonController {
 
     public void setPeopleService(PeopleService peopleService) {
         this.peopleService = peopleService;
+    }
+
+    public void setBreadcrumbService(BreadcrumbService breadcrumbService) {
+        this.breadcrumbService = breadcrumbService;
     }
 
 }

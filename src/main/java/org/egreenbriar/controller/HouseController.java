@@ -7,12 +7,10 @@ import org.egreenbriar.form.FormNewPerson;
 import org.egreenbriar.model.Block;
 import org.egreenbriar.model.House;
 import org.egreenbriar.model.Person;
-import org.egreenbriar.service.BlockCaptainService;
 import org.egreenbriar.service.BlockService;
 import org.egreenbriar.service.BreadcrumbService;
 import org.egreenbriar.service.ChangeService;
 import org.egreenbriar.service.HouseService;
-import org.egreenbriar.service.OfficierService;
 import org.egreenbriar.service.PeopleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -38,12 +36,6 @@ public class HouseController {
     private HouseService houseService = null;
 
     @Autowired
-    private BlockCaptainService blockCaptainService = null;
-
-    @Autowired
-    private OfficierService officierService = null;
-
-    @Autowired
     private PeopleService peopleService = null;
 
     @Autowired
@@ -59,7 +51,7 @@ public class HouseController {
         model.addAttribute("districtName", house.getDistrictName());
 
         breadcrumbService.clear();
-        breadcrumbService.put("Home", "/");
+        breadcrumbService.put("Home", "/home");
         breadcrumbService.put("Districts", "/districts");
         breadcrumbService.put(block.getDistrictName(), "/district/" + block.getDistrictName());
         breadcrumbService.put(house.getBlockName(), "");
@@ -127,14 +119,6 @@ public class HouseController {
 
     public void setChangeService(ChangeService changeService) {
         this.changeService = changeService;
-    }
-
-    public void setBlockCaptainService(BlockCaptainService blockCaptainService) {
-        this.blockCaptainService = blockCaptainService;
-    }
-
-    public void setOfficierService(OfficierService officierService) {
-        this.officierService = officierService;
     }
 
     public void setPeopleService(PeopleService peopleService) {

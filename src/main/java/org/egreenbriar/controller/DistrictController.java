@@ -51,7 +51,7 @@ public class DistrictController {
         model.addAttribute("districtRepresentative", officierService.getDistrictRepresentative(districtName));
 
         breadcrumbService.clear();
-        breadcrumbService.put("Home", "/");
+        breadcrumbService.put("Home", "/home");
         breadcrumbService.put("Districts", "/districts");
         breadcrumbService.put(districtName, "");
         breadcrumbService.put("Logout", "/j_spring_security_logout");
@@ -88,18 +88,16 @@ public class DistrictController {
         this.blockService = blockService;
     }
 
-    /**
-     * @param blockCaptainService the blockCaptainService to set
-     */
     public void setBlockCaptainService(BlockCaptainService blockCaptainService) {
         this.blockCaptainService = blockCaptainService;
     }
 
-    /**
-     * @param houseService the houseService to set
-     */
     public void setHouseService(HouseService houseService) {
         this.houseService = houseService;
+    }
+
+    public void setBreadcrumbService(BreadcrumbService breadcrumbService) {
+        this.breadcrumbService = breadcrumbService;
     }
 
 }

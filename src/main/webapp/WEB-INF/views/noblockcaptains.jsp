@@ -20,7 +20,8 @@
     <body>
         <%@include file="header.jsp" %>
 
-        <h1><fmt:formatNumber value="${blocks.size()}" /> Blocks Without Captains</h1>
+        <h1><fmt:formatNumber value="${blocks.size()}" /> of <fmt:formatNumber value="${blockService.getNumberOfBlocks()}" /> Blocks Have No Captains</h1>
+        <p> Blocks</p>
 
         <p>If you live on one of the listed blocks, please consider becoming a Block Captain.</p>
 

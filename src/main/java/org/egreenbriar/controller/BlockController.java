@@ -3,7 +3,6 @@ package org.egreenbriar.controller;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import org.egreenbriar.form.FormBlock;
-import org.egreenbriar.form.FormNewPerson;
 import org.egreenbriar.model.Block;
 import org.egreenbriar.service.BlockCaptainService;
 import org.egreenbriar.service.BlockService;
@@ -66,7 +65,7 @@ public class BlockController {
         model.addAttribute("block", block);
         
         breadcrumbService.clear();
-        breadcrumbService.put("Home", "/");
+        breadcrumbService.put("Home", "/home");
         breadcrumbService.put("Districts", "/districts");
         breadcrumbService.put(block.getDistrictName(), "/district/" + block.getDistrictName());
         breadcrumbService.put(blockName, "");
@@ -96,7 +95,7 @@ public class BlockController {
         model.addAttribute("block", block);
         
         breadcrumbService.clear();
-        breadcrumbService.put("Home", "/");
+        breadcrumbService.put("Home", "/home");
         breadcrumbService.put("Districts", "/districts");
         breadcrumbService.put(block.getDistrictName(), "/district/" + block.getDistrictName());
         breadcrumbService.put(blockName, "");
@@ -138,6 +137,10 @@ public class BlockController {
 
     public void setPeopleService(PeopleService peopleService) {
         this.peopleService = peopleService;
+    }
+
+    public void setBreadcrumbService(BreadcrumbService breadcrumbService) {
+        this.breadcrumbService = breadcrumbService;
     }
 
 }

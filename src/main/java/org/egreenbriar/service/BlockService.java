@@ -20,23 +20,30 @@ public class BlockService {
     private final Set<Block> blocks = new TreeSet<>();
 
     @PostConstruct
-    public void read() throws FileNotFoundException, IOException {
-        String[] components = null;
+    public void read() {
+        String[] components;
         int lineCount = 0;
 
-        CSVReader reader = new CSVReader(new FileReader(housesFile));
-        while ((components = reader.readNext()) != null) {
-            if (lineCount != 0) {
-                String districtName = components[1];
-                String blockName = components[2];
-                Block block = new Block();
-                block.setDistrictName(districtName);
-                block.setBlockName(blockName);
-                blocks.add(block);
+        CSVReader reader;
+        try {
+            reader = new CSVReader(new FileReader(housesFile));
+            while ((components = reader.readNext()) != null) {
+                if (lineCount != 0) {
+                    String districtName = components[1];
+                    String blockName = components[2];
+                    Block block = new Block();
+                    block.setDistrictName(districtName);
+                    block.setBlockName(blockName);
+                    blocks.add(block);
+                }
+                lineCount++;
             }
-            lineCount++;
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException("Unable to open " + housesFile, e);
+        } catch (IOException e) {
+            throw new RuntimeException("Unable to read " + housesFile, e);
         }
-        
+
     }
 
     public String getDistrictName(final String blockName) {
@@ -47,7 +54,7 @@ public class BlockService {
         }
         return "";
     }
-    
+
     public Block getBlock(final String blockName) {
         Block rv = null;
         for (Block block : blocks) {
@@ -57,20 +64,23 @@ public class BlockService {
         }
         return rv;
     }
-    
+
     public Set<Block> getBlocks() {
         return blocks;
     }
 
+    public int getNumberOfBlocks() {
+        return blocks.size();
+    }
     public Set<Block> getBlocks(final String districtName) {
         Set<Block> rv = new TreeSet<>();
-        
+
         for (Block block : blocks) {
             if (block.getDistrictName().equals(districtName)) {
                 rv.add(block);
             }
         }
-        
+
         return rv;
     }
 }

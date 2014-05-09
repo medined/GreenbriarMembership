@@ -4,7 +4,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import org.egreenbriar.service.BreadcrumbService;
 import org.egreenbriar.service.DistrictService;
-import org.egreenbriar.service.HouseService;
 import org.egreenbriar.service.OfficierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -32,7 +31,7 @@ public class DistrictsController {
         model.addAttribute("districts", districtService.getDistricts());
         
         breadcrumbService.clear();
-        breadcrumbService.put("Home", "/");
+        breadcrumbService.put("Home", "/home");
         breadcrumbService.put("Logout", "/j_spring_security_logout");        
         model.addAttribute("breadcrumbs", breadcrumbService.getBreadcrumbs());
 
@@ -45,6 +44,14 @@ public class DistrictsController {
 
     public void setOfficierService(OfficierService officierService) {
         this.officierService = officierService;
+    }
+
+    public void setDistrictService(DistrictService districtService) {
+        this.districtService = districtService;
+    }
+
+    public void setBreadcrumbService(BreadcrumbService breadcrumbService) {
+        this.breadcrumbService = breadcrumbService;
     }
 
 }

@@ -34,7 +34,7 @@ public class BlockCaptainController {
         model.addAttribute("captains", blockCaptainService.getCaptains());
 
         breadcrumbService.clear();
-        breadcrumbService.put("Home", "/");
+        breadcrumbService.put("Home", "/home");
         breadcrumbService.put("Logout", "/j_spring_security_logout");        
         model.addAttribute("breadcrumbs", breadcrumbService.getBreadcrumbs());
         
@@ -48,7 +48,7 @@ public class BlockCaptainController {
         model.addAttribute("blocks", blockCaptainService.getBlocksWithoutCaptains());
 
         breadcrumbService.getBreadcrumbs().clear();
-        breadcrumbService.getBreadcrumbs().put("Home", "/");
+        breadcrumbService.getBreadcrumbs().put("Home", "/home");
         breadcrumbService.getBreadcrumbs().put("Logout", "/j_spring_security_logout");        
         model.addAttribute("breadcrumbs", breadcrumbService.getBreadcrumbs());
         

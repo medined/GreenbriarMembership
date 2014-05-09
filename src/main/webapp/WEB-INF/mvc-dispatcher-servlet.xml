@@ -21,7 +21,7 @@
     <!-- configures the @Controller programming model. -->
     <mvc:annotation-driven />
     
-    <mvc:view-controller path="/" view-name="home" />
+    <mvc:view-controller path="/" view-name="welcome" />
     
     <!-- configures basic interceptors -->
     <mvc:interceptors>

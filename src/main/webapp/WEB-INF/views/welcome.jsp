@@ -8,11 +8,7 @@
     <body>
         <%@include file="header.jsp" %>
         <ul>
-            <li><a href='/districts'>District List</a></li>
-            <li><a href='/blockcaptains'>Block Captain List</a></li>
-            <li><a href='/noblockcaptains'>Blocks without Captain List</a></li>
-            <li><a href='/person/emails'>Email List</a></li>
-            <li><a href='/person/bad_emails'>Bad Email List</a></li>
+            <li><a href='/home'>Home</a></li>
             <sec:authorize access="isAuthenticated()">  
                 <li><a href="/j_spring_security_logout">Logout</a></li>
             </sec:authorize>

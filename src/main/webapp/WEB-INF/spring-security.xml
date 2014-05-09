@@ -11,9 +11,11 @@
       http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
  
     <http auto-config="true" use-expressions="true">
+        <intercept-url pattern="/home" access="hasAnyRole('ROLE_ADMIN','ROLE_USER')" />
         <intercept-url pattern="/districts" access="hasAnyRole('ROLE_ADMIN','ROLE_USER')" />
         <intercept-url pattern="/blockcaptains" access="hasAnyRole('ROLE_ADMIN','ROLE_USER')" />
         <intercept-url pattern="/noblockcaptains" access="hasAnyRole('ROLE_ADMIN','ROLE_USER')" />
+        <intercept-url pattern="/person" access="hasAnyRole('ROLE_ADMIN')" />
         <logout logout-success-url="/" />
         <session-management invalid-session-url="/" >
             <concurrency-control max-sessions="1" error-if-maximum-exceeded="true"/>
