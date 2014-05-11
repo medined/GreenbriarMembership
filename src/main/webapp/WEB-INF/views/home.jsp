@@ -10,7 +10,7 @@
         <ul>
             <li><a href='/districts'>District List</a></li>
             <li><a href='/blockcaptains'>Block Captain List</a></li>
-            <sec:authorize access="hasRole('ROLE_USER')">
+            <sec:authorize access="hasRole('ROLE_REPORT')">
                     <li><a href='/blockcaptains/pdf'>Block Captain Renewal Report</a></li>
             </sec:authorize>
             <li><a href='/noblockcaptains'>Blocks without Captain List</a></li>
