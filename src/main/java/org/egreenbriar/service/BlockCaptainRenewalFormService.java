@@ -53,7 +53,7 @@ public class BlockCaptainRenewalFormService {
         final String title = "GCA Membership; Block Captain Work Sheet";
 
         Date now = new Date();
-        SimpleDateFormat dataFormat = new SimpleDateFormat("YYYY-MMM-DD");
+        SimpleDateFormat dataFormat = new SimpleDateFormat("yyyy-MMM-dd");
 
         PDDocument document = new PDDocument();
 

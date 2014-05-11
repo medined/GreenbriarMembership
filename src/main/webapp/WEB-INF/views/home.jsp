@@ -7,15 +7,21 @@
     </head>
     <body>
         <%@include file="header.jsp" %>
-        <ul>
+        <ul style='line-height: 24px; list-style-type: none;'>
             <li><a href='/districts'>District List</a></li>
+            <li>&nbsp;</li>
+            <li><a href='/houses'>House Lookup</a></li>
+            <li><a href='/people'>Person Lookup</a></li>
+            <li>&nbsp;</li>
             <li><a href='/blockcaptains'>Block Captain List</a></li>
+            <li><a href='/noblockcaptains'>Blocks without Captain List</a></li>
             <sec:authorize access="hasRole('ROLE_REPORT')">
                     <li><a href='/blockcaptains/pdf'>Block Captain Renewal Report</a></li>
             </sec:authorize>
-            <li><a href='/noblockcaptains'>Blocks without Captain List</a></li>
+            <li>&nbsp;</li>
             <li><a href='/person/emails'>Email List</a></li>
             <li><a href='/person/bad_emails'>Bad Email List</a></li>
+            <li>&nbsp;</li>
             <sec:authorize access="isAuthenticated()">  
                 <li><a href="/j_spring_security_logout">Logout</a></li>
             </sec:authorize>

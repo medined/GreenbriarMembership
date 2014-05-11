@@ -5,10 +5,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 import javax.annotation.PostConstruct;
 import org.egreenbriar.model.House;
@@ -21,7 +21,7 @@ public class HouseService {
     @Value("${houses.csv.file}")
     String housesFile = null;
 
-    private final Map<String, House> houses = new HashMap<>();
+    private final Map<String, House> houses = new TreeMap<>();
 
     @PostConstruct
     public void read() throws FileNotFoundException, IOException {

@@ -40,6 +40,12 @@ public class BlockCaptainController {
         } catch (COSVisitorException e) {
             throw new RuntimeException("Unable to write PDF file", e);
         }
+        
+        breadcrumbService.getBreadcrumbs().clear();
+        breadcrumbService.getBreadcrumbs().put("Home", "/home");
+        breadcrumbService.getBreadcrumbs().put("Logout", "/j_spring_security_logout");        
+        model.addAttribute("breadcrumbs", breadcrumbService.getBreadcrumbs());
+
         return "blockcaptainspdf";
     }
 

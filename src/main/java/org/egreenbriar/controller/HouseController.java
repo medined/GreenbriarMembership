@@ -2,6 +2,8 @@ package org.egreenbriar.controller;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.UUID;
 import org.egreenbriar.form.FormNewPerson;
 import org.egreenbriar.model.Block;
@@ -41,6 +43,25 @@ public class HouseController {
     @Autowired
     private ChangeService changeService = null;
 
+    @RequestMapping(value = "/houses", method = RequestMethod.GET)
+    public String houses(Model model) {
+
+        final Map<String, House> sortedHouses = new TreeMap<>();
+
+        for (House house : houseService.getHouses().values()) {
+            String key = house.getDistrictName() + house.getBlockName() + house.getStreetName() + house.getHouseNumber();
+            sortedHouses.put(key, house);
+        }
+        model.addAttribute("houses", sortedHouses);
+        
+        breadcrumbService.clear();
+        breadcrumbService.put("Home", "/home");
+        breadcrumbService.put("Logout", "/j_spring_security_logout");
+        model.addAttribute("breadcrumbs", breadcrumbService.getBreadcrumbs());
+
+        return "houses";
+    }
+    
     @RequestMapping(value = "/house/add_person/{houseUuid}", method = RequestMethod.GET)
     public String addPersonForm(Model model, @PathVariable String houseUuid) throws FileNotFoundException, IOException {
         House house = houseService.getHouse(houseUuid);
