@@ -2,6 +2,8 @@ package org.egreenbriar.controller;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import org.apache.pdfbox.exceptions.COSVisitorException;
+import org.egreenbriar.service.BlockCaptainRenewalFormService;
 import org.egreenbriar.service.BlockCaptainService;
 import org.egreenbriar.service.BlockService;
 import org.egreenbriar.service.BreadcrumbService;
@@ -27,9 +29,22 @@ public class BlockCaptainController {
 
     @Autowired
     private BlockService blockService = null;
+    
+    @Autowired
+    private BlockCaptainRenewalFormService blockCaptainRenewalFormService = null;
+
+    @RequestMapping("/blockcaptains/pdf")
+    public String pdfHandler(Model model) throws FileNotFoundException, IOException {
+        try {
+            blockCaptainRenewalFormService.process();
+        } catch (COSVisitorException e) {
+            throw new RuntimeException("Unable to write PDF file", e);
+        }
+        return "blockcaptainspdf";
+    }
 
     @RequestMapping("/blockcaptains")
-    public String listHandler(Model model) throws FileNotFoundException, IOException {
+    public String blockCaptainHandler(Model model) throws FileNotFoundException, IOException {
         model.addAttribute("blockService", blockService);
         model.addAttribute("captains", blockCaptainService.getCaptains());
 
@@ -69,6 +84,10 @@ public class BlockCaptainController {
 
     public void setHouseService(HouseService houseService) {
         this.houseService = houseService;
+    }
+
+    public void setBlockCaptainRenewalFormService(BlockCaptainRenewalFormService blockCaptainRenewalFormService) {
+        this.blockCaptainRenewalFormService = blockCaptainRenewalFormService;
     }
 
 }

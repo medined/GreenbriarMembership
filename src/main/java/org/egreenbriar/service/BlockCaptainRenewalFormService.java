@@ -1,8 +1,10 @@
-package org.egreenbriar;
+package org.egreenbriar.service;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import org.apache.pdfbox.exceptions.COSVisitorException;
@@ -12,16 +14,16 @@ import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.egreenbriar.model.Block;
+import org.egreenbriar.model.District;
 import org.egreenbriar.model.House;
 import org.egreenbriar.model.Person;
-import org.egreenbriar.service.BlockCaptainService;
-import org.egreenbriar.service.HouseService;
-import org.egreenbriar.service.PeopleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-public class ReadMembershipDatabaseDriver {
+@Service
+public class BlockCaptainRenewalFormService {
 
-    String pdfFileName = "2014_gca_membership_drive.pdf";
+    String pdfFileName = "../2014_gca_membership_drive.pdf";
 
     // (0,0)      lower left
     // (612, 792) upper right
@@ -34,32 +36,67 @@ public class ReadMembershipDatabaseDriver {
     private BlockCaptainService blockCaptainService = null;
 
     @Autowired
+    private BlockService blockService = null;
+
+    @Autowired
+    private DistrictService districtService = null;
+
+    @Autowired
     private PeopleService peopleService = null;
 
     @Autowired
     private HouseService houseService = null;
 
-    public static void main(String[] args) throws FileNotFoundException, IOException, COSVisitorException {
-        ReadMembershipDatabaseDriver driver = new ReadMembershipDatabaseDriver();
-        driver.process();
-    }
-
-    private void process() throws FileNotFoundException, IOException, COSVisitorException {
-
+    public void process() throws FileNotFoundException, IOException, COSVisitorException {
         new File(pdfFileName).delete();
-        
-        //Gson gson = new GsonBuilder().serializeNulls().create();
-        //String json = gson.toJson(peopleService.getCommunity());
-        //try (PrintWriter writer = new PrintWriter("greenbriar_membership.json")) {
-        //    writer.println(json);
-        //}
+
+        final String title = "GCA Membership; Block Captain Work Sheet";
+
+        Date now = new Date();
+        SimpleDateFormat dataFormat = new SimpleDateFormat("YYYY-MMM-DD");
+
+        PDDocument document = new PDDocument();
+
+        for (District district : districtService.getDistricts()) {
+            Set<Block> blocks = blockService.getBlocks(district.getName());
+            for (Block block : blocks) {
+                Set<House> houses = houseService.getHousesInBlock(block.getBlockName());
+                PDPage page = addReportPage(document);
+
+                drawHeader(document, page, title);
+                drawPrintedAt(document, page, dataFormat.format(now));
+                drawDistrictName(document, page, district.getName());
+                drawBlockName(document, page, block.getBlockName());
+                drawBlockCaptain(document, page, block);
+                drawHouseCount(document, page, houses.size());
+                drawSeparatorLine(document, page);
+
+                float x = 25;
+                float y = PDPage.PAGE_SIZE_LETTER.getUpperRightY() - 100;
+                String[][] content = generateBlockContent(document, page, block.getBlockName(), houses, x, y);
+                
+                int houseWidth = 115;
+                int nameWidth = 190;
+                int phoneWidth = 75;
+                int paidWidth = 30;
+                int commentWidth = 45;
+                float[] widths = {houseWidth, nameWidth, phoneWidth, paidWidth, paidWidth, paidWidth, commentWidth};
+                PDPageContentStream stream = new PDPageContentStream(document, page, true, true);
+                drawTable(page, stream, y, 10, widths, content);
+                stream.close();
+            }
+        }
+
+        document.save(pdfFileName);
+
+        document.close();
     }
 
-    private float drawHouse(final PDDocument document, final PDPage page, final Set<House> houses, float x, float y) throws IOException {
-        // how many people are in a block?
+    private String[][] generateBlockContent(final PDDocument document, final PDPage page, final String blockName, final Set<House> houses, float x, float y) throws IOException {
         int personCount = 0;
         for (House house : houses) {
-            personCount += house.getPeople().size();
+            Set<Person> peopleInHouse = peopleService.getPeopleInHouse(house.getHouseNumber(), house.getStreetName());
+            personCount += peopleInHouse.size();
         }
         personCount++; // account for heading
         personCount++; // account for totals
@@ -81,11 +118,12 @@ public class ReadMembershipDatabaseDriver {
 
         for (House house : houses) {
             String housePlace = house.getHouseNumber() + " " + house.getStreetName();
-            float textWidth = 0;
+            float textWidth;
 
             boolean firstPerson = true;
 
-            for (Person person : house.getPeople()) {
+            Set<Person> peopleInHouse = peopleService.getPeopleInHouse(house.getHouseNumber(), house.getStreetName());
+            for (Person person : peopleInHouse) {
 
                 textWidth = tableFont.getStringWidth(person.getFirst()) / 1000 * tableFontSize;
                 maxTextWidth = Math.max(maxTextWidth, textWidth);
@@ -95,7 +133,11 @@ public class ReadMembershipDatabaseDriver {
                 } else {
                     content[personIndex][0] = "";
                 }
-                content[personIndex][1] = person.getLast() + ", " + person.getFirst();
+                StringBuilder name = new StringBuilder(person.getLast());
+                if (person.getFirst() != null && false == person.getFirst().isEmpty()) {
+                    name.append(",").append(person.getFirst());
+                }
+                content[personIndex][1] = name.toString();
                 if (person.getEmail() != null && !person.getEmail().isEmpty()) {
                     content[personIndex][1] += "_" + person.getEmail();
                 }
@@ -124,7 +166,7 @@ public class ReadMembershipDatabaseDriver {
             }
         }
         // Add totals to the table.
-        content[personIndex][0] = "";
+        content[personIndex][0] = "Totals";
         content[personIndex][1] = "";
         content[personIndex][2] = "";
         content[personIndex][3] = String.format("%d", count2012);
@@ -132,17 +174,7 @@ public class ReadMembershipDatabaseDriver {
         content[personIndex][5] = "";
         content[personIndex][6] = "";
 
-        int houseWidth = 115;
-        int nameWidth = 190;
-        int phoneWidth = 75;
-        int paidWidth = 30;
-        int commentWidth = 45;
-        float[] widths = {houseWidth, nameWidth, phoneWidth, paidWidth, paidWidth, paidWidth, commentWidth};
-        PDPageContentStream stream = new PDPageContentStream(document, page, true, true);
-        y = drawTable(page, stream, y, 10, widths, content);
-        stream.close();
-
-        return y;
+        return content;
     }
 
     private void drawDistrictName(final PDDocument document, final PDPage page, final String districtName) throws IOException {
@@ -178,27 +210,13 @@ public class ReadMembershipDatabaseDriver {
         float x = 300f;
         float y = PDPage.PAGE_SIZE_LETTER.getUpperRightY() - 45;
         drawGrayString(document, page, font, fontSize, x, y, "Captain: ");
-        String captainNameA = null;
-        String captainNameB = null;
-        /*
-        if (block.getCaptainName() == null) {
+        String captainName = blockCaptainService.getCaptainName(block.getBlockName());
+
+        if (captainName == null) {
             drawRedString(document, page, font, fontSize, x + 50, y, "None");
         } else {
-            captainNameA = blockCaptainService.getCaptainName(block.getBlockName());
-            captainNameB = block.getCaptainName() == null ? null : block.getCaptainName();
-            drawString(document, page, font, fontSize, x + 50, y, block.getCaptainName());
+            drawString(document, page, font, fontSize, x + 50, y, captainName);
         }
-        */
-        if (captainNameA == null && captainNameB == null) {
-            // both empty
-        } else if (captainNameA == null && captainNameB != null) {
-            System.out.println("1 Spreadsheet [" + captainNameA + "]  BC Sheet [" + captainNameB + "]");
-        } else if (captainNameA != null && captainNameB == null) {
-            System.out.println("2 Spreadsheet [" + captainNameA + "]  BC Sheet [" + captainNameB + "]");
-        } else if (captainNameA != null && !captainNameA.equals(captainNameB)) {
-            System.out.println("3 Spreadsheet [" + captainNameA + "]  BC Sheet [" + captainNameB + "]");
-        }
-        
     }
 
     private void drawRedString(final PDDocument document, final PDPage page, final PDFont font, final float fontSize, final float x, final float y, final String s) throws IOException {
@@ -265,8 +283,7 @@ public class ReadMembershipDatabaseDriver {
         float fontSize = 10;
         float titleWidth = font.getStringWidth(title) / 1000 * fontSize;
         float titleHeight = font.getFontDescriptor().getFontBoundingBox().getHeight() / 1000 * fontSize;
-        PDPageContentStream contentStream = null;
-        contentStream = new PDPageContentStream(document, page, true, true);
+        PDPageContentStream contentStream = new PDPageContentStream(document, page, true, true);
         contentStream.beginText();
         contentStream.setFont(font, fontSize);
         contentStream.moveTextPositionByAmount((page.getMediaBox().getWidth() - titleWidth) / 2, page.getMediaBox().getHeight() - marginTop - titleHeight);
@@ -286,8 +303,7 @@ public class ReadMembershipDatabaseDriver {
         float titleHeight = font.getFontDescriptor().getFontBoundingBox().getHeight() / 1000 * fontSize;
         float x = page.getMediaBox().getWidth() - titleWidth - marginRight;
         float y = page.getMediaBox().getHeight() - marginTop - titleHeight;
-        PDPageContentStream contentStream = null;
-        contentStream = new PDPageContentStream(document, page, true, true);
+        PDPageContentStream contentStream = new PDPageContentStream(document, page, true, true);
         contentStream.beginText();
         contentStream.setFont(font, fontSize);
         contentStream.moveTextPositionByAmount(x, y);
@@ -379,7 +395,7 @@ public class ReadMembershipDatabaseDriver {
                         } else {
                             contentStream.drawString(cell);
                         }
-                        
+
                     }
                     contentStream.endText();
                 }
@@ -400,5 +416,17 @@ public class ReadMembershipDatabaseDriver {
 
     public void setHouseService(HouseService houseService) {
         this.houseService = houseService;
+    }
+
+    public void setPeopleService(PeopleService peopleService) {
+        this.peopleService = peopleService;
+    }
+
+    public void setDistrictService(DistrictService districtService) {
+        this.districtService = districtService;
+    }
+
+    public void setBlockService(BlockService blockService) {
+        this.blockService = blockService;
     }
 }
