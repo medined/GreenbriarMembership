@@ -5,8 +5,10 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 import org.egreenbriar.form.FormPerson;
+import org.egreenbriar.model.House;
 import org.egreenbriar.model.Person;
 import org.egreenbriar.service.BreadcrumbService;
 import org.egreenbriar.service.ChangeService;
@@ -34,6 +36,28 @@ public class PersonController {
     @Autowired
     private ChangeService changeService = null;
 
+    @RequestMapping("/people")
+    public String people(Model model) {
+
+        final Map<String, Person> sortedPeople = new TreeMap<>();
+
+        for (Person person : peopleService.getPeople().values()) {
+            String name = person.getLast() + person.getFirst();
+            if (false == name.trim().isEmpty()) {
+                String key = person.getLast() + person.getFirst() + person.getDistrictName() + person.getBlockName();
+                sortedPeople.put(key, person);
+            }
+        }
+        model.addAttribute("people", sortedPeople);
+        
+        breadcrumbService.clear();
+        breadcrumbService.put("Home", "/home");
+        breadcrumbService.put("Logout", "/j_spring_security_logout");        
+        model.addAttribute("breadcrumbs", breadcrumbService.getBreadcrumbs());
+
+        return "people";
+    }
+    
     @RequestMapping("/person/emails")
     public String emails(Model model) {
         Set<String> emails = new TreeSet<>();
