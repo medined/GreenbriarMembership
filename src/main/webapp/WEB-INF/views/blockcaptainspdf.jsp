@@ -8,8 +8,8 @@
     </head>
     <body>
         <%@include file="header.jsp" %>
-        <sec:authorize access="hasRole('ROLE_ADMIN')">
-            link to pdf file.
+        <sec:authorize access="hasRole('ROLE_REPORT')">
+            Go look for the PDF file on the server.
         </sec:authorize>
     </body>
 </html>
