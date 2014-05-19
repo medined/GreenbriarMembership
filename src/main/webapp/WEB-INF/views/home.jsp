@@ -15,6 +15,7 @@
             <li>&nbsp;</li>
             <li><a href='/blockcaptains'>Block Captain List</a></li>
             <li><a href='/noblockcaptains'>Blocks without Captain List</a></li>
+            <li><a href='/simplenoblockcaptains'>Simple Blocks without Captain List</a></li>
             <sec:authorize access="hasRole('ROLE_REPORT')">
                     <li><a href='/blockcaptains/pdf'>Block Captain Renewal Report</a></li>
             </sec:authorize>

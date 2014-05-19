@@ -76,6 +76,20 @@ public class BlockCaptainController {
         return "noblockcaptains";
     }
 
+    @RequestMapping("/simplenoblockcaptains")
+    public String simpleNoBlockCaptainHandler(Model model) throws FileNotFoundException, IOException {
+        model.addAttribute("blockService", blockService);
+        model.addAttribute("houseService", houseService);
+        model.addAttribute("blocks", blockCaptainService.getBlocksWithoutCaptains());
+
+        breadcrumbService.getBreadcrumbs().clear();
+        breadcrumbService.getBreadcrumbs().put("Home", "/home");
+        breadcrumbService.getBreadcrumbs().put("Logout", "/j_spring_security_logout");        
+        model.addAttribute("breadcrumbs", breadcrumbService.getBreadcrumbs());
+        
+        return "simplenoblockcaptains";
+    }
+
     public void setBreadcrumbService(BreadcrumbService breadcrumbService) {
         this.breadcrumbService = breadcrumbService;
     }
