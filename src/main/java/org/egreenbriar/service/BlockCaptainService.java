@@ -26,16 +26,31 @@ public class BlockCaptainService {
     private ChangeService changeService = null;
 
     @PostConstruct
-    public void read() throws FileNotFoundException, IOException {
+    public void read() {
         String[] components = null;
         
-        CSVReader cvsReader = new CSVReader(new FileReader(captainFile));
-        
-        while ((components = cvsReader.readNext()) != null) {
-            String blockName = components[0];
-            String captainName = components[1];
-            captains.put(blockName, captainName);
+        CSVReader cvsReader = null;
+        try {
+            cvsReader = new CSVReader(new FileReader(captainFile));
+            while ((components = cvsReader.readNext()) != null) {
+                String blockName = components[0];
+                String captainName = components[1];
+                captains.put(blockName, captainName);
+            }
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (cvsReader != null) {
+                try {
+                    cvsReader.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
+        
 
     }
     

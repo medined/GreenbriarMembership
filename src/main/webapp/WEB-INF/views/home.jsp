@@ -13,6 +13,8 @@
             <li><a href='/houses'>House Lookup</a></li>
             <li><a href='/people'>Person Lookup</a></li>
             <li>&nbsp;</li>
+            <li><a href='/districtrepreport'>District Representative Report</a></li>
+            <li>&nbsp;</li>
             <li><a href='/blockcaptains'>Block Captain List</a></li>
             <li><a href='/noblockcaptains'>Blocks without Captain List</a></li>
             <li><a href='/simplenoblockcaptains'>Simple Blocks without Captain List</a></li>

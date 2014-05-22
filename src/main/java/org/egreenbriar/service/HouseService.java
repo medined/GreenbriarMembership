@@ -24,34 +24,49 @@ public class HouseService {
     private final Map<String, House> houses = new TreeMap<>();
 
     @PostConstruct
-    public void read() throws FileNotFoundException, IOException {
-        String[] components = null;
+    public void read() {
+        String[] components;
         int lineCount = 0;
 
-        CSVReader reader = new CSVReader(new FileReader(housesFile));
-        while ((components = reader.readNext()) != null) {
-            if (lineCount != 0) {
-                String id = components[0];
-                String districtName = components[1];
-                String blockName = components[2];
-                String houseNumber = components[3];
-                String streetName = components[4];
-                String y2012 = components[5];
-                String y2013 = components[6];
-                String y2014 = components[7];
+        CSVReader reader = null;
+        try {
+            reader = new CSVReader(new FileReader(housesFile));
+            while ((components = reader.readNext()) != null) {
+                if (lineCount != 0) {
+                    String id = components[0];
+                    String districtName = components[1];
+                    String blockName = components[2];
+                    String houseNumber = components[3];
+                    String streetName = components[4];
+                    String y2012 = components[5];
+                    String y2013 = components[6];
+                    String y2014 = components[7];
 
-                House house = new House();
-                house.setId(id);
-                house.setDistrictName(districtName);
-                house.setBlockName(blockName);
-                house.setHouseNumber(houseNumber);
-                house.setStreetName(streetName);
-                house.setMember2012(Boolean.parseBoolean(y2012));
-                house.setMember2013(Boolean.parseBoolean(y2013));
-                house.setMember2014(Boolean.parseBoolean(y2014));
-                houses.put(id, house);
+                    House house = new House();
+                    house.setId(id);
+                    house.setDistrictName(districtName);
+                    house.setBlockName(blockName);
+                    house.setHouseNumber(houseNumber);
+                    house.setStreetName(streetName);
+                    house.setMember2012(Boolean.parseBoolean(y2012));
+                    house.setMember2013(Boolean.parseBoolean(y2013));
+                    house.setMember2014(Boolean.parseBoolean(y2014));
+                    houses.put(id, house);
+                }
+                lineCount++;
             }
-            lineCount++;
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
         
     }
@@ -64,6 +79,10 @@ public class HouseService {
         return houses;
     }
 
+    public int getNumberOfHousesInBlock(final String blockName) {
+        return getHousesInBlock(blockName).size();
+    }
+    
     public Set<House> getHousesInBlock(final String blockName) {
         Set<House> rv = new TreeSet<>();
         for (Entry<String, House> entry : houses.entrySet()) {

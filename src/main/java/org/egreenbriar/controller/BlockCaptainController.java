@@ -7,7 +7,9 @@ import org.egreenbriar.service.BlockCaptainRenewalFormService;
 import org.egreenbriar.service.BlockCaptainService;
 import org.egreenbriar.service.BlockService;
 import org.egreenbriar.service.BreadcrumbService;
+import org.egreenbriar.service.DistrictService;
 import org.egreenbriar.service.HouseService;
+import org.egreenbriar.service.OfficierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
@@ -23,6 +25,12 @@ public class BlockCaptainController {
     
     @Autowired
     private BlockCaptainService blockCaptainService = null;
+
+    @Autowired
+    private DistrictService districtService = null;
+
+    @Autowired
+    private OfficierService officerService = null;
 
     @Autowired
     private HouseService houseService = null;
@@ -47,6 +55,22 @@ public class BlockCaptainController {
         model.addAttribute("breadcrumbs", breadcrumbService.getBreadcrumbs());
 
         return "blockcaptainspdf";
+    }
+
+    @RequestMapping("/districtrepreport")
+    public String districtRepReport(Model model) throws FileNotFoundException, IOException {
+        model.addAttribute("blockService", blockService);
+        model.addAttribute("blockCaptainService", blockCaptainService);
+        model.addAttribute("districtService", districtService);
+        model.addAttribute("houseService", houseService);
+        model.addAttribute("officerService", officerService);
+        
+        breadcrumbService.clear();
+        breadcrumbService.put("Home", "/home");
+        breadcrumbService.put("Logout", "/j_spring_security_logout");        
+        model.addAttribute("breadcrumbs", breadcrumbService.getBreadcrumbs());
+        
+        return "districtrepreport";
     }
 
     @RequestMapping("/blockcaptains")
@@ -108,6 +132,22 @@ public class BlockCaptainController {
 
     public void setBlockCaptainRenewalFormService(BlockCaptainRenewalFormService blockCaptainRenewalFormService) {
         this.blockCaptainRenewalFormService = blockCaptainRenewalFormService;
+    }
+
+    public DistrictService getDistrictService() {
+        return districtService;
+    }
+
+    public void setDistrictService(DistrictService districtService) {
+        this.districtService = districtService;
+    }
+
+    public OfficierService getOfficerService() {
+        return officerService;
+    }
+
+    public void setOfficerService(OfficierService officerService) {
+        this.officerService = officerService;
     }
 
 }
