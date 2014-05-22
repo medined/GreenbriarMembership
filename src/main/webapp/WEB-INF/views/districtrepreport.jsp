@@ -43,12 +43,12 @@
                     </tr>
                     <c:forEach items="${blockService.getBlocks(district.getName())}" var="block">
                     <tr>
-                        <td><c:out value="${district.getName()}"/></td>
-                        <td><c:out value="${block.getBlockName()}"/></td>
-                        <td align="right"><c:out value="${houseService.getNumberOfHousesInBlock(block.getBlockName())}"/></td>
-                        <td><c:out value="${blockCaptainService.getCaptainName(block.getBlockName())}"/></td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
+                        <td style="font-size:small"><c:out value="${district.getName()}"/></td>
+                        <td style="font-size:small"><c:out value="${block.getBlockName()}"/></td>
+                        <td style="font-size:small" align="right"><c:out value="${houseService.getNumberOfHousesInBlock(block.getBlockName())}"/></td>
+                        <td style="font-size:small"><c:out value="${blockCaptainService.getCaptainName(block.getBlockName())}"/></td>
+                        <td style="font-size:small">&nbsp;</td>
+                        <td style="font-size:small">&nbsp;</td>
                     </tr>
                     </c:forEach>
                 </table>
