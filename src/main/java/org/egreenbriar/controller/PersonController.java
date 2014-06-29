@@ -3,12 +3,10 @@ package org.egreenbriar.controller;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import org.egreenbriar.form.FormPerson;
-import org.egreenbriar.model.House;
 import org.egreenbriar.model.Person;
 import org.egreenbriar.service.BreadcrumbService;
 import org.egreenbriar.service.ChangeService;
@@ -41,7 +39,8 @@ public class PersonController {
 
         final Map<String, Person> sortedPeople = new TreeMap<>();
 
-        for (Person person : peopleService.getPeople().values()) {
+        for (String personId : peopleService.getPeople()) {
+            Person person = peopleService.getPerson(personId);
             String name = person.getLast() + person.getFirst();
             if (false == name.trim().isEmpty()) {
                 String key = person.getLast() + person.getFirst() + person.getDistrictName() + person.getBlockName();
@@ -64,9 +63,8 @@ public class PersonController {
         
         model.addAttribute("peopleService", peopleService);
 
-        Map<String, Person> people = peopleService.getPeople();
-        for (Entry<String, Person> entry : people.entrySet()) {
-            Person person = entry.getValue();
+        for (String personId : peopleService.getPeople()) {
+            Person person = peopleService.getPerson(personId);
             if (person.getEmail() != null && !person.getEmail().isEmpty() && person.getEmail().contains("@")) {
                 emails.add(person.getEmail());
             }
