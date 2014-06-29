@@ -8,6 +8,7 @@ import org.egreenbriar.service.BlockCaptainService;
 import org.egreenbriar.service.BlockService;
 import org.egreenbriar.service.BreadcrumbService;
 import org.egreenbriar.service.ChangeService;
+import org.egreenbriar.service.DistrictService;
 import org.egreenbriar.service.HouseService;
 import org.egreenbriar.service.OfficierService;
 import org.egreenbriar.service.PeopleService;
@@ -35,6 +36,9 @@ public class BlockController {
     private BlockCaptainService blockCaptainService = null;
 
     @Autowired
+    private DistrictService districtService = null;
+
+    @Autowired
     private HouseService houseService = null;
 
     @Autowired
@@ -46,6 +50,23 @@ public class BlockController {
     @Autowired
     private ChangeService changeService = null;
 
+    @RequestMapping(value="/editeveryhouse", method=RequestMethod.GET)
+    public String editeveryhouse(Model model) throws FileNotFoundException, IOException {
+        model.addAttribute("blockService", blockService);
+        model.addAttribute("blockCaptainService", blockCaptainService);
+        model.addAttribute("districtService", districtService);
+        model.addAttribute("houseService", houseService);
+        model.addAttribute("officierService", officierService);
+        model.addAttribute("peopleService", peopleService);
+                
+        breadcrumbService.clear();
+        breadcrumbService.put("Home", "/home");
+        breadcrumbService.put("Logout", "/j_spring_security_logout");        
+        model.addAttribute("breadcrumbs", breadcrumbService.getBreadcrumbs());
+
+        return "editeveryhouse";
+    }
+    
     @RequestMapping(value="/block/{blockName}", method=RequestMethod.GET)
     public String displayBlock01(Model model, @PathVariable String blockName) throws FileNotFoundException, IOException {
         model.addAttribute("blockService", blockService);
@@ -72,7 +93,7 @@ public class BlockController {
         breadcrumbService.put("Logout", "/j_spring_security_logout");        
         model.addAttribute("breadcrumbs", breadcrumbService.getBreadcrumbs());
 
-        return "block";
+        return "editeveryhouse";
     }
 
     @RequestMapping(value="/block", method=RequestMethod.GET)
@@ -142,6 +163,10 @@ public class BlockController {
 
     public void setBreadcrumbService(BreadcrumbService breadcrumbService) {
         this.breadcrumbService = breadcrumbService;
+    }
+
+    public void setDistrictService(DistrictService districtService) {
+        this.districtService = districtService;
     }
 
 }

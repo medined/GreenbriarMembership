@@ -63,7 +63,7 @@ public class PeopleService {
                     person.setNoDirectory(Boolean.parseBoolean(noDirectory));
                     person.setUnlisted(Boolean.parseBoolean(unlisted));
 
-                    getPeople().put(person.getPk(), person);
+                    people.put(person.getPk(), person);
                 }
                 lineCount++;
             }
@@ -77,16 +77,16 @@ public class PeopleService {
     }
 
     public void addPerson(final Person person) {
-        getPeople().put(person.getPk(), person);
+        people.put(person.getPk(), person);
     }
 
     public Person getPerson(String personUuid) {
-        return getPeople().get(personUuid);
+        return people.get(personUuid);
     }
 
     public Set<Person> getPeopleInBlock(final String blockName) {
         Set<Person> peopleInBlock = new TreeSet<>();
-        for (Entry<String, Person> entry : getPeople().entrySet()) {
+        for (Entry<String, Person> entry : people.entrySet()) {
             Person person = entry.getValue();
             if (person.getBlockName().equals(blockName)) {
                 peopleInBlock.add(person);
@@ -97,7 +97,7 @@ public class PeopleService {
 
     public Set<Person> getPeopleInHouse(final String houseNumber, final String streetName) {
         Set<Person> peopleInHouse = new TreeSet<>();
-        for (Entry<String, Person> entry : getPeople().entrySet()) {
+        for (Entry<String, Person> entry : people.entrySet()) {
             Person person = entry.getValue();
             if (person.inHouse(houseNumber, streetName)) {
                 peopleInHouse.add(person);
@@ -109,7 +109,7 @@ public class PeopleService {
     public void write() throws FileNotFoundException {
         try (PrintWriter writer = new PrintWriter(peopleFile)) {
             writer.println("PersonID, District,Block,HouseNumber,StreetName,LastName,FirstName,PhoneNumber,EmailAddress,UnlistedPhone,NoDirectory,Comments");
-            for (Entry<String, Person> entry : getPeople().entrySet()) {
+            for (Entry<String, Person> entry : people.entrySet()) {
                 Person person = entry.getValue();
                 final String id = person.getPk();
                 final String districtName = person.getDistrictName();
@@ -145,8 +145,8 @@ public class PeopleService {
         getPeople().remove(person.getPk());
     }
 
-    public Map<String, Person> getPeople() {
-        return people;
+    public Set<String> getPeople() {
+        return people.keySet();
     }
 
 }
