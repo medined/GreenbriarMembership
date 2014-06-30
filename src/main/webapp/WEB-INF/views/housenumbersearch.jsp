@@ -7,6 +7,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <%@ page import="java.util.Set" %>
+<%@ page import="org.egreenbriar.model.House" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html> 
     <head>
@@ -18,6 +19,7 @@
         <title>Greenbriar Membership Management</title>
     </head>
     <body>
+
 <sec:authorize access="hasRole('ROLE_ADMIN')">  
 <script>
  function toggleListed( personUuid ) {
@@ -41,72 +43,35 @@ function toggle2014Membership( houseUuid ) {
 $.fn.editable.defaults.mode = 'inline';
 
 $(document).ready(function() {
-    $('#captain_<c:out value="${blockName}"/>').editable();
-    $('#representative_<c:out value="${districtName}"/>').editable();
-    <c:forEach items="${peopleService.getPeopleInBlock(blockName)}" var="person">
-        $('#lastname_<c:out value="${person.getPk()}"/>').editable();
-        $('#firstname_<c:out value="${person.getPk()}"/>').editable();
-        $('#phone_<c:out value="${person.getPk()}"/>').editable();
-        $('#email_<c:out value="${person.getPk()}"/>').editable();
-        $('#comment_<c:out value="${person.getPk()}"/>').editable();
+    <c:forEach items="${houses}" var="entry">
+        <c:forEach items="${peopleService.getPeopleInHouse(entry.value.getHouseNumber(), entry.value.getStreetName())}" var="person" varStatus="loop">
+            $('#lastname_<c:out value="${person.getPk()}"/>').editable();
+            $('#firstname_<c:out value="${person.getPk()}"/>').editable();
+            $('#phone_<c:out value="${person.getPk()}"/>').editable();
+            $('#email_<c:out value="${person.getPk()}"/>').editable();
+            $('#comment_<c:out value="${person.getPk()}"/>').editable();
+        </c:forEach>
     </c:forEach>
 });
 </script>
 </sec:authorize>
-    <%@include file="header.jsp" %>
+        
+        <%@include file="header.jsp" %>
 
-        <table cellpadding="5" cellspacing="0" border="1" style="margin-top: 15px; margin-left: 15px;">
-            <tr>
-                <td>Houses</td>
-                <td><c:out value="${houseService.getHousesInBlock(blockName).size()}" /></td>
-            </tr>
-            <tr>
-                <td>Captain</td>
-                <td>
-                    <div class='value editable' id='captain_<c:out value="${blockName}"/>' data-type="text" data-url='/block/update_captain' data-pk='<c:out value="${blockName}"/>' data-name='captain'>
-                    <c:out value='${blockCaptain}' />
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>Representative</td>
-                <td>
-                    <div class='value editable' id='representative_<c:out value="${districtName}"/>' data-type="text" data-url='/district/update_representative' data-pk='<c:out value="${districtName}"/>' data-name='representative'>
-                    <c:out value='${districtRepresentative}' />
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>Percent Membership</td>
-                <td>
-                    <table cellpadding="5" cellspacing="0" border="1" style="margin-top: 15px; margin-left: 15px;">
-                        <tr>
-                            <th>2012</th>
-                            <th>2013</th>
-                            <th>2014</th>
-                        </tr>
-                        <tr>
-                            <td align="right"><c:out value='${houseService.getPercentMembership(block.getBlockName(), "2012")}' />%</td>
-                            <td align="right"><c:out value='${houseService.getPercentMembership(block.getBlockName(), "2013")}' />%</td>
-                            <td align="right"><c:out value='${houseService.getPercentMembership(block.getBlockName(), "2014")}' />%</td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
+        <h2>House Number <c:out value="${houseNumber}"/> Search Results</h2>
         
         <table border="0" cellpadding="3" cellspacing="3">
-            <c:forEach items="${houseService.getHousesInBlock(blockName)}" var="house">
+            <c:forEach items="${houses}" var="entry">
                 <tr height="10px"><td></td></tr>
                 <tr>
-                    <td valign="top"><c:out value="${house.getHouseNumber()}"/> <c:out value="${house.getStreetName()}"/></td>
+                    <td valign="top"><c:out value="${entry.value.getHouseNumber()}"/> <c:out value="${entry.value.getStreetName()}"/></td>
                     <td>
 
 <sec:authorize access="hasRole('ROLE_ADMIN')">  
-                        <div style="height: 20px;"><a href="/house/add_person/<c:out value="${house.getId()}"/>">Add Person</a></div>
+                        <div style="height: 20px;"><a href="/house/add_person/<c:out value="${entry.value.getId()}"/>">Add Person</a></div>
 </sec:authorize>
 
-                        <c:forEach items="${peopleService.getPeopleInHouse(house.getHouseNumber(), house.getStreetName())}" var="person" varStatus="loop">
+                        <c:forEach items="${peopleService.getPeopleInHouse(entry.value.getHouseNumber(), entry.value.getStreetName())}" var="person" varStatus="loop">
                             
                             <table cellpadding="0" border="0" cellspacing="0">
                                 <tr>
@@ -184,13 +149,13 @@ $(document).ready(function() {
                                         <div class="editable-click">
                                             <!-- only the first person in the house shows the membership status -->
                                             <c:if test="${loop.index == 0}">
-                                                <span class='<c:out value="${house.memberInYear2012Style()}"/>' style='width:50px; margin-left: 5px;'>
+                                                <span class='<c:out value="${entry.value.memberInYear2012Style()}"/>' style='width:50px; margin-left: 5px;'>
                                                     2012
                                                 </span>
-                                                <span class='<c:out value="${house.memberInYear2013Style()}"/>' style='width:50px; margin-left: 5px;'>
+                                                <span class='<c:out value="${entry.value.memberInYear2013Style()}"/>' style='width:50px; margin-left: 5px;'>
                                                     2013
                                                 </span>
-                                                <span id="2014_<c:out value="${house.getId()}"/>" onclick="toggle2014Membership('<c:out value="${house.getId()}"/>'); return false;"  class='<c:out value="${house.memberInYear2014Style()}"/>' style='width:50px; margin-left: 5px;'>
+                                                <span id="2014_<c:out value="${entry.value.getId()}"/>" onclick="toggle2014Membership('<c:out value="${entry.value.getId()}"/>'); return false;"  class='<c:out value="${entry.value.memberInYear2014Style()}"/>' style='width:50px; margin-left: 5px;'>
                                                     2014
                                                 </span>
                                             </c:if>
@@ -201,6 +166,6 @@ $(document).ready(function() {
                     </td>
                 </tr>
             </c:forEach>
-        </table>
+        </table>            
     </body>
 </html>

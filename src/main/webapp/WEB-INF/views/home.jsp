@@ -7,6 +7,7 @@
     </head>
     <body>
         <%@include file="header.jsp" %>
+
         <ul style='line-height: 24px; list-style-type: none;'>
             <li><a href='/districts'>District List</a></li>
             <li>&nbsp;</li>

@@ -3,8 +3,10 @@ package org.egreenbriar.controller;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 import java.util.UUID;
+import org.egreenbriar.form.FormHouseNumberSearch;
 import org.egreenbriar.form.FormNewPerson;
 import org.egreenbriar.model.Block;
 import org.egreenbriar.model.House;
@@ -42,6 +44,30 @@ public class HouseController {
 
     @Autowired
     private ChangeService changeService = null;
+
+    @RequestMapping(value = "/housenumbersearch", method = RequestMethod.POST)
+    public String housenumbersearch(@ModelAttribute FormHouseNumberSearch form, Model model) {
+
+        model.addAttribute("peopleService", peopleService);
+        model.addAttribute("houseNumber", form.getHousenumber());
+
+        Map<String, House> houses = new TreeMap<>();
+        
+        for (Entry<String, House> entry : houseService.getHouses().entrySet()) {
+            House house = entry.getValue();
+            if (house.getHouseNumber().equals(form.getHousenumber())) {
+                houses.put(house.getHouseNumber() + " " + house.getStreetName(), house);
+            }
+        }
+        model.addAttribute("houses", houses.entrySet());
+
+        breadcrumbService.clear();
+        breadcrumbService.put("Home", "/home");
+        breadcrumbService.put("Logout", "/j_spring_security_logout");
+        model.addAttribute("breadcrumbs", breadcrumbService.getBreadcrumbs());
+
+        return "housenumbersearch";
+    }
 
     @RequestMapping(value = "/houses", method = RequestMethod.GET)
     public String houses(Model model) {
