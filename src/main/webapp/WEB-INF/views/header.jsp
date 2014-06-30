@@ -9,11 +9,13 @@
         User: <strong><sec:authentication property="principal.username"/></strong>
     </sec:authorize>
 </div>
+<sec:authorize access="isAuthenticated()">  
 <div style="margin-left: 10px">
     <form action="/housenumbersearch" method="post">
          House Number Search: <input type="text" name="housenumber" />
      </form>
 </div>
+</sec:authorize>
 <div class="breadcrumbs" style="margin-left: 10px">
 <c:forEach items="${breadcrumbs}" var="breadcrumb">
     <c:if test="${breadcrumb.value.isEmpty()}">
