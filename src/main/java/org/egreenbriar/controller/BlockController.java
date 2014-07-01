@@ -93,7 +93,7 @@ public class BlockController {
         breadcrumbService.put("Logout", "/j_spring_security_logout");        
         model.addAttribute("breadcrumbs", breadcrumbService.getBreadcrumbs());
 
-        return "editeveryhouse";
+        return "block";
     }
 
     @RequestMapping(value="/block", method=RequestMethod.GET)
