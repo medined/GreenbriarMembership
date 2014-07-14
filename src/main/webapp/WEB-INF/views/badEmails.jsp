@@ -10,17 +10,13 @@
     </head>
     <body>
         <%@include file="header.jsp" %>
-        <h1>Bad Emails</h1>
+        <h1>Bad Email Values</h1>
 
         <ul>
-            <c:forEach items="${peopleService.getPeople()}" var="entry">
-                    <c:if test="${not entry.value.getEmail().isEmpty()}">
-                        <c:if test='${not entry.value.getEmail().contains("@")}'>
-                            <li>
-                                <a href="/block/<c:out value='${entry.value.getBlockName()}' />"><c:out value='${entry.value.getEmail()}' /></a>
-                            </li>
-                            </c:if>
-                    </c:if>
+            <c:forEach items="${peopleService.getPeopleWithBadEmails()}" var="person">
+                <a href="/person/editform/<c:out value='${person.getPk()}' />">
+                    <c:out value='${person.getEmail()}' />
+                </a><br/>
             </c:forEach>
         </ul>
     </body>

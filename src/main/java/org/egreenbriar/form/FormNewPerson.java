@@ -2,6 +2,7 @@ package org.egreenbriar.form;
 
 public class FormNewPerson {
 
+    private String personId = null;
     private String districtName = null;
     private String blockName = null;
     private String houseId = null;
@@ -147,5 +148,18 @@ public class FormNewPerson {
         this.districtName = districtName;
     }
 
+    /**
+     * @return the personId
+     */
+    public String getPersonId() {
+        return personId;
+    }
+
+    /**
+     * @param personId the personId to set
+     */
+    public void setPersonId(String personId) {
+        this.personId = personId;
+    }
 
 }

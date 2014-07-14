@@ -80,6 +80,11 @@ public class PeopleService {
         people.put(person.getPk(), person);
     }
 
+    // overlay previous information.
+    public void updatePerson(final Person person) {
+        people.put(person.getPk(), person);
+    }
+
     public Person getPerson(String personUuid) {
         return people.get(personUuid);
     }
@@ -147,6 +152,17 @@ public class PeopleService {
 
     public Set<String> getPeople() {
         return people.keySet();
+    }
+
+    public Set<Person> getPeopleWithBadEmails() {
+        Set<Person> peopleWithBadEmails = new TreeSet<>();
+        for (String personId : people.keySet()) {
+            Person person = getPerson(personId);
+            if (person.hasBadEmail()) {
+                peopleWithBadEmails.add(person);
+            }
+        }
+        return peopleWithBadEmails;
     }
 
 }

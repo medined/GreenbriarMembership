@@ -6,10 +6,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.UUID;
+import org.egreenbriar.form.FormNewPerson;
 import org.egreenbriar.form.FormPerson;
+import org.egreenbriar.model.House;
 import org.egreenbriar.model.Person;
 import org.egreenbriar.service.BreadcrumbService;
 import org.egreenbriar.service.ChangeService;
+import org.egreenbriar.service.HouseService;
 import org.egreenbriar.service.PeopleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -30,6 +34,9 @@ public class PersonController {
     
     @Autowired
     private PeopleService peopleService = null;
+
+    @Autowired
+    private HouseService houseService = null;
 
     @Autowired
     private ChangeService changeService = null;
@@ -91,6 +98,51 @@ public class PersonController {
         return "badEmails";
     }
     
+    @RequestMapping("/person/editform/{personId}")
+    public String editPerson(Model model, @PathVariable String personId) {
+        Person person = peopleService.getPerson(personId);
+        House house = houseService.getHouse(person.getHouseNumber(), person.getStreetName());
+
+        model.addAttribute("blockName", person.getBlockName());
+        model.addAttribute("districtName", person.getDistrictName());
+        model.addAttribute("houseId", house.getId());
+        model.addAttribute("peopleService", peopleService);
+        model.addAttribute("person", person);
+
+        breadcrumbService.clear();
+        breadcrumbService.put("Home", "/home");
+        breadcrumbService.put("Logout", "/j_spring_security_logout");        
+        model.addAttribute("breadcrumbs", breadcrumbService.getBreadcrumbs());
+
+        return "editpersonform";
+    }
+    
+    // name=last, value=<new_value>
+    @RequestMapping(value="/person/update", method = RequestMethod.POST)
+    public String updatePerson(@ModelAttribute FormNewPerson form, Model model) throws FileNotFoundException, IOException {
+
+        Person person = peopleService.getPerson(form.getPersonId());
+
+        person.setLast(form.getLastName().replaceAll(",", "/"));
+        person.setFirst(form.getFirstName().replaceAll(",", "/"));
+        person.setPhone(form.getPhone());
+        person.setEmail(form.getEmail());
+        person.setComment(form.getComments().replaceAll(",", ";"));
+        person.setUnlisted(form.getUnlisted().equals("1"));
+        person.setNoDirectory(form.getNodirectory().equals("1"));
+        
+        String personFormat = "house(%s) first(%s) last(%s) phone(%s) email(%s) comments(%s)";
+        String message = String.format(personFormat, form.getHouseId(), person.getFirst(), person.getLast(), person.getPhone(), person.getEmail(), person.getComment());
+        changeService.logChange("newperson", message);
+
+        peopleService.updatePerson(person);
+        peopleService.write();
+
+        String blockName = form.getBlockName();
+        model.addAttribute("blockName", blockName);
+        
+        return "redirect:/block";
+    }    
     @RequestMapping("/person/delete/{personId}")
     public String deletePerson(Model model, @PathVariable String personId) throws FileNotFoundException, IOException {
         Person person = peopleService.getPerson(personId);
@@ -217,6 +269,20 @@ public class PersonController {
 
     public void setBreadcrumbService(BreadcrumbService breadcrumbService) {
         this.breadcrumbService = breadcrumbService;
+    }
+
+    /**
+     * @return the houseService
+     */
+    public HouseService getHouseService() {
+        return houseService;
+    }
+
+    /**
+     * @param houseService the houseService to set
+     */
+    public void setHouseService(HouseService houseService) {
+        this.houseService = houseService;
     }
 
 }

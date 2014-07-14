@@ -133,4 +133,16 @@ public class HouseService {
         }
     }
 
+    public House getHouse(String houseNumber, String streetName) {
+        House rv = null;
+        for (Entry<String, House> entry : houses.entrySet()) {
+            House house = entry.getValue();
+            if (house.getHouseNumber().equals(houseNumber) && house.getStreetName().equals(streetName)) {
+                rv = house;
+                break;
+            }
+        }
+        return rv;
+    }
+
 }

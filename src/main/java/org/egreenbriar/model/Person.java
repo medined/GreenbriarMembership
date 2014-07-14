@@ -1,7 +1,5 @@
 package org.egreenbriar.model;
 
-import java.util.UUID;
-
 public class Person implements Comparable {
 
     public Person() {
@@ -258,5 +256,9 @@ public class Person implements Comparable {
      */
     public void setStreetName(String streetName) {
         this.streetName = streetName;
+    }
+    
+    public boolean hasBadEmail() {
+        return this.email != null && !this.email.trim().isEmpty() && !this.email.contains("@");
     }
 }
