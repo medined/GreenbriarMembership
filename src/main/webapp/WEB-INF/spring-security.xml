@@ -24,7 +24,10 @@
  
     <authentication-manager>
         <authentication-provider>
-            <user-service id="userDetailsService" properties="/WEB-INF/users.properties"/>
+            <!--
+            A users directory is used so that is can be supplied by a Docker volume.
+            -->
+            <user-service id="userDetailsService" properties="/WEB-INF/users/users.properties"/>
         </authentication-provider>            
     </authentication-manager>
          
