@@ -64,7 +64,7 @@ $(document).ready(function() {
             <c:forEach items="${houses}" var="entry">
                 <tr height="10px"><td></td></tr>
                 <tr>
-                    <td valign="top"><c:out value="${entry.value.getHouseNumber()}"/> <c:out value="${entry.value.getStreetName()}"/></td>
+                    <td valign="top"><c:out value="${entry.value.getBlockName()}"/> <c:out value="${entry.value.getHouseNumber()}"/> <c:out value="${entry.value.getStreetName()}"/></td>
                     <td>
 
 <sec:authorize access="hasRole('ROLE_ADMIN')">  
