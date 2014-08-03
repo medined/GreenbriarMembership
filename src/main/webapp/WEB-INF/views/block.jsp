@@ -127,6 +127,9 @@ $(document).ready(function() {
                                                     2014
                                                 </span>
                                             </c:if>
+                                            <c:if test="${loop.index != 0}">
+                                                <div>&nbsp;</div>
+                                            </c:if>
                                         </div>
                                     </td>
                                     <td class='last'>
