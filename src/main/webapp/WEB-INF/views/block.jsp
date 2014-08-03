@@ -110,6 +110,25 @@ $(document).ready(function() {
                             
                             <table cellpadding="0" border="0" cellspacing="0">
                                 <tr>
+                                    <td class='membership'>
+                                        <c:if test="${loop.index == 0}">
+                                            <div class='heading'>Member</div>
+                                        </c:if>
+                                        <div class="editable-click">
+                                            <!-- only the first person in the house shows the membership status -->
+                                            <c:if test="${loop.index == 0}">
+                                                <span class='<c:out value="${house.memberInYear2012Style()}"/>' style='width:50px; margin-left: 5px;'>
+                                                    2012
+                                                </span>
+                                                <span class='<c:out value="${house.memberInYear2013Style()}"/>' style='width:50px; margin-left: 5px;'>
+                                                    2013
+                                                </span>
+                                                <span id="2014_<c:out value="${house.getId()}"/>" onclick="toggle2014Membership('<c:out value="${house.getId()}"/>'); return false;"  class='<c:out value="${house.memberInYear2014Style()}"/>' style='width:50px; margin-left: 5px;'>
+                                                    2014
+                                                </span>
+                                            </c:if>
+                                        </div>
+                                    </td>
                                     <td class='last'>
                                         <c:if test="${loop.index == 0}">
                                             <div class='heading'>&nbsp;</div>
@@ -175,25 +194,6 @@ $(document).ready(function() {
                                         </c:if>
                                         <div class='value editable' id='comment_<c:out value="${person.getPk()}"/>' data-type="text" data-url='/person/update_comment' data-pk='<c:out value="${person.getPk()}"/>' data-name='comment'>
                                             <c:out value="${person.getComment()}"/>
-                                        </div>
-                                    </td>
-                                    <td class='membership'>
-                                        <c:if test="${loop.index == 0}">
-                                            <div class='heading'>Member</div>
-                                        </c:if>
-                                        <div class="editable-click">
-                                            <!-- only the first person in the house shows the membership status -->
-                                            <c:if test="${loop.index == 0}">
-                                                <span class='<c:out value="${house.memberInYear2012Style()}"/>' style='width:50px; margin-left: 5px;'>
-                                                    2012
-                                                </span>
-                                                <span class='<c:out value="${house.memberInYear2013Style()}"/>' style='width:50px; margin-left: 5px;'>
-                                                    2013
-                                                </span>
-                                                <span id="2014_<c:out value="${house.getId()}"/>" onclick="toggle2014Membership('<c:out value="${house.getId()}"/>'); return false;"  class='<c:out value="${house.memberInYear2014Style()}"/>' style='width:50px; margin-left: 5px;'>
-                                                    2014
-                                                </span>
-                                            </c:if>
                                         </div>
                                     </td>
                                 </tr></table>
