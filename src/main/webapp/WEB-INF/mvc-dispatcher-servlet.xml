@@ -9,7 +9,7 @@
                            http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="location" value="classpath:egreenbriar.properties"/>
+        <property name="location" value="classpath:properties/application.properties"/>
     </bean>
 
     <context:annotation-config/>
