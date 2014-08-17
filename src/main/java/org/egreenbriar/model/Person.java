@@ -163,7 +163,7 @@ public class Person implements Comparable {
     }
 
     public String listedStyle() {
-        return unlisted ? "button negate" : "button";
+        return unlisted ? "button red-border" : "button green-border";
     }
 
     public String directory() {
@@ -171,7 +171,7 @@ public class Person implements Comparable {
     }
 
     public String directoryStyle() {
-        return noDirectory ? "button negate" : "button";
+        return noDirectory ? "button red-border" : "button green-border";
     }
 
     public void setUnlisted(boolean unlisted) {

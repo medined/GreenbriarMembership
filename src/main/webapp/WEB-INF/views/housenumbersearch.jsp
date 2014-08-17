@@ -24,19 +24,22 @@
 <script>
  function toggleListed( personUuid ) {
   $.get( "/person/toggle_listed/" + personUuid, function( data ) {
-   $("#listed_" + personUuid).toggleClass('negate');
+   $("#listed_" + personUuid).toggleClass('red-border');
+   $("#listed_" + personUuid).toggleClass('green-border');
    $("#listed_" + personUuid).html(data);
   });
 }
 function toggleDirectory( personUuid ) {
   $.get( "/person/toggle_directory/" + personUuid, function( data ) {
-   $("#dir_" + personUuid).toggleClass('negate');
+   $("#dir_" + personUuid).toggleClass('red-border');
+   $("#dir_" + personUuid).toggleClass('green-border');
    $("#dir_" + personUuid).html(data);
   });
 }
 function toggle2014Membership( houseUuid ) {
   $.get( "/house/toggle_2014_membership/" + houseUuid, function( data ) {
-   $("#2014_" + houseUuid).toggleClass('negate');
+   $("#2014_" + houseUuid).toggleClass('red-border');
+   $("#2014_" + houseUuid).toggleClass('green-border');
   });
 }
 

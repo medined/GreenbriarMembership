@@ -131,15 +131,15 @@ public class House implements Comparable {
     }
 
     public String memberInYear2012Style() {
-        return member2012 ? "year_button" : "year_button negate";
+        return member2012 ? "year_button green-border" : "year_button red-border";
     }
     
     public String memberInYear2013Style() {
-        return member2013 ? "year_button" : "year_button negate";
+        return member2013 ? "year_button green-border" : "year_button red-border";
     }
     
     public String memberInYear2014Style() {
-        return member2014 ? "button" : "button negate";
+        return member2014 ? "button green-border" : "button red-border";
     }
     
     public boolean memberInYear(String year) {

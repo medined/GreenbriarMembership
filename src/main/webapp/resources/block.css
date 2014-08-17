@@ -59,17 +59,17 @@ a:active {
 
 .last .value {
     width: 12em;
-    height: 21px;
+    height: 29px;
 }
 
 .first .value {
     width: 10em;
-    height: 21px;
+    height: 29px;
 }
 
 .comment .value {
     width: 10em;
-    height: 21px;
+    height: 29px;
 }
 
 .membership .value {
@@ -150,9 +150,12 @@ a:active {
 	text-shadow:1px 1px 0px #ffffff;
 }
 
-
-.negate {
+.red-border {
     border: 1px solid red;
+}
+
+.green-border {
+    border: 1px solid rgba(78, 233, 78, 1);
 }
 
 .editable-click {

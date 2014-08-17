@@ -19,8 +19,15 @@ import org.springframework.stereotype.Service;
 public class HouseService {
 
     @Value("${houses.csv.file}")
-    String housesFile = null;
+    private String housesFile = null;
 
+    public HouseService() {
+    }
+    
+    public HouseService(final String housesFile) {
+        this.housesFile = housesFile;
+    }
+    
     private final Map<String, House> houses = new TreeMap<>();
 
     @PostConstruct
@@ -30,7 +37,7 @@ public class HouseService {
 
         CSVReader reader = null;
         try {
-            reader = new CSVReader(new FileReader(housesFile));
+            reader = new CSVReader(new FileReader(getHousesFile()));
             while ((components = reader.readNext()) != null) {
                 if (lineCount != 0) {
                     String id = components[0];
@@ -78,6 +85,10 @@ public class HouseService {
     public Map<String, House> getHouses() {
         return houses;
     }
+    
+    public int getNumberOfHouses() {
+        return getHouses().size();
+    }
 
     public int getNumberOfHousesInBlock(final String blockName) {
         return getHousesInBlock(blockName).size();
@@ -94,6 +105,17 @@ public class HouseService {
         return rv;
     }
 
+    public int getPercentMembership(String year) {
+        int numHouses = getNumberOfHouses();
+        int numMembers = 0;
+        for (House house : getHouses().values()) {
+            if (house.memberInYear(year)) {
+                numMembers++;
+            }
+        }
+        return (int)(((float)numMembers / (float)numHouses) * 100);
+    }
+
     public int getPercentMembership(final String blockName, String year) {
         Set<House> housesInBlock = getHousesInBlock(blockName);
         int numHouses = housesInBlock.size();
@@ -107,7 +129,7 @@ public class HouseService {
     }
 
     public void write() throws FileNotFoundException {
-        try (PrintWriter writer = new PrintWriter(housesFile)) {
+        try (PrintWriter writer = new PrintWriter(getHousesFile())) {
             writer.println("HouseId,DistrictName,BlockName,HouseNumber,StreetName,2012,2013,2014");
             for (Entry<String, House> entry : houses.entrySet()) {
                 House house = entry.getValue();
@@ -143,6 +165,14 @@ public class HouseService {
             }
         }
         return rv;
+    }
+
+    public String getHousesFile() {
+        return housesFile;
+    }
+
+    public void setHousesFile(String housesFile) {
+        this.housesFile = housesFile;
     }
 
 }
