@@ -31,5 +31,27 @@
                 <li><a href="/j_spring_security_logout">Logout</a></li>
             </sec:authorize>
         </ul>
+        
+        <h3>Backup Procedure</h3>
+
+        <ul>
+            <li>Connect to remote server.
+                <pre>ssh greenbriar@72.14.179.146</pre>
+            </li>
+            <li>Generate backup files, then leave remote server.
+                <pre>
+                /etc/cron.daily/greenbriar_membership_backup.sh
+                exit
+                </pre>
+            </li>
+            <li>
+                Copy files from remote server to local system.
+                <pre>
+                scp -r greenbriar@72.14.179.146:/home/greenbriar/storage /data/dropbox/Dropbox/eGreenbriar/membership
+                </pre>
+            </li>
+        </ul>
+        
+        </p>
     </body>
 </html>
