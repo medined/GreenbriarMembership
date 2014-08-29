@@ -24,7 +24,7 @@ public class CountMembers {
         for (String directory : directories) {
             String houseFile = getCountMembersService().getStorageDirectory() + "/" + directory + "/houses.csv";
             HouseService houseService = new HouseService(houseFile);
-            houseService.read();
+            houseService.initialize();
             int percent2012 = houseService.getPercentMembership("2012");
             int percent2013 = houseService.getPercentMembership("2013");
             int percent2014 = houseService.getPercentMembership("2014");

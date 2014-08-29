@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -20,15 +22,21 @@ public class OfficierService {
     private Map<String, String> officiers = new TreeMap<>();
 
     @PostConstruct
-    public void read() throws FileNotFoundException, IOException {
-        String[] components = null;
-        
-        CSVReader cvsReader = new CSVReader(new FileReader(officierFile));
-        
-        while ((components = cvsReader.readNext()) != null) {
-            String title = components[0];
-            String name = components[1];
-            officiers.put(title, name);
+    public void initialize() {
+        try {
+            String[] components = null;
+            
+            CSVReader cvsReader = new CSVReader(new FileReader(officierFile));
+            
+            while ((components = cvsReader.readNext()) != null) {
+                String title = components[0];
+                String name = components[1];
+                officiers.put(title, name);
+            }
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
     }

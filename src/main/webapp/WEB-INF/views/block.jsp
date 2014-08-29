@@ -106,7 +106,7 @@ $(document).ready(function() {
                     <td>
 
 <sec:authorize access="hasRole('ROLE_ADMIN')">  
-                        <div style="height: 30px;"><a href="/house/add_person/<c:out value="${house.getId()}"/>">Add Person</a></div>
+                        <div style="font-size: 15px; height: 30px;"><a href="/house/add_person/<c:out value="${house.getId()}"/>">Add Person</a></div>
 </sec:authorize>
 
                         <c:forEach items="${peopleService.getPeopleInHouse(house.getHouseNumber(), house.getStreetName())}" var="person" varStatus="loop">

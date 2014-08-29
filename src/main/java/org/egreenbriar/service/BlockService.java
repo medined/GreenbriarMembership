@@ -15,18 +15,18 @@ import org.springframework.stereotype.Service;
 public class BlockService {
 
     @Value("${houses.csv.file}")
-    String housesFile = null;
+    private String housesFile = null;
 
     private final Set<Block> blocks = new TreeSet<>();
 
     @PostConstruct
-    public void read() {
+    public void initialize() {
         String[] components;
         int lineCount = 0;
 
         CSVReader reader;
         try {
-            reader = new CSVReader(new FileReader(housesFile));
+            reader = new CSVReader(new FileReader(getHousesFile()));
             while ((components = reader.readNext()) != null) {
                 if (lineCount != 0) {
                     String districtName = components[1];
@@ -39,9 +39,9 @@ public class BlockService {
                 lineCount++;
             }
         } catch (FileNotFoundException e) {
-            throw new RuntimeException("Unable to open " + housesFile, e);
+            throw new RuntimeException("Unable to open " + getHousesFile(), e);
         } catch (IOException e) {
-            throw new RuntimeException("Unable to read " + housesFile, e);
+            throw new RuntimeException("Unable to read " + getHousesFile(), e);
         }
 
     }
@@ -82,5 +82,13 @@ public class BlockService {
         }
 
         return rv;
+    }
+
+    public String getHousesFile() {
+        return housesFile;
+    }
+
+    public void setHousesFile(String housesFile) {
+        this.housesFile = housesFile;
     }
 }

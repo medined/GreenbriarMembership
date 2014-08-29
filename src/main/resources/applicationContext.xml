@@ -12,12 +12,41 @@
         <property name="location" value="classpath:properties/application.properties"/>
     </bean>
 
-    <bean name="houseService" class="org.egreenbriar.service.HouseService">
+    <bean name="blockService" class="org.egreenbriar.service.BlockService" init-method="initialize">
         <property name="housesFile" value="${houses.csv.file}" />
+    </bean>
+
+    <bean name="blockCaptainService" class="org.egreenbriar.service.BlockCaptainService" init-method="initialize">
+        <property name="captainFile" value="${blockcaptain.csv.file}" />
+        <property name="changeService" ref="changeService" />
+    </bean>
+
+    <bean name="changeService" class="org.egreenbriar.service.ChangeService">
+        <property name="changesFile" value="${changes.file}" />
+    </bean>
+
+    <bean name="districtService" class="org.egreenbriar.service.DistrictService" init-method="initialize">
+        <property name="houseService" ref="houseService" />
+    </bean>
+
+    <bean name="houseService" class="org.egreenbriar.service.HouseService" init-method="initialize">
+        <property name="housesFile" value="${houses.csv.file}" />
+    </bean>
+
+    <bean name="officierService" class="org.egreenbriar.service.OfficierService" init-method="initialize">
+        <property name="officierFile" value="${officiers.csv.file}" />
     </bean>
 
     <bean name="countMembersService" class="org.egreenbriar.service.CountMembersService">
         <property name="storageDirectory" value="${storage.directory}" />
+    </bean>
+
+    <bean name="zeroBlocksService" class="org.egreenbriar.service.ZeroBlocksService">
+        <property name="blockService" ref="blockService" />
+        <property name="blockCaptainService" ref="blockCaptainService" />
+        <property name="districtService" ref="districtService" />
+        <property name="houseService" ref="houseService" />
+        <property name="officierService" ref="officierService" />
     </bean>
 
 </beans>

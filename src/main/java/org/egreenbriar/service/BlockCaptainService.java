@@ -26,7 +26,7 @@ public class BlockCaptainService {
     private ChangeService changeService = null;
 
     @PostConstruct
-    public void read() {
+    public void initialize() {
         String[] components = null;
         
         CSVReader cvsReader = null;

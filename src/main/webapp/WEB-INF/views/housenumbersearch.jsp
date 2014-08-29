@@ -67,11 +67,16 @@ $(document).ready(function() {
             <c:forEach items="${houses}" var="entry">
                 <tr height="10px"><td></td></tr>
                 <tr>
-                    <td valign="top"><c:out value="${entry.value.getBlockName()}"/> <c:out value="${entry.value.getHouseNumber()}"/> <c:out value="${entry.value.getStreetName()}"/></td>
+                    <td valign="top">
+                        <a href='/district/${entry.value.getDistrictName()}'><c:out value="${entry.value.getDistrictName()}"/></a>
+                        &nbsp;
+                        <a href='/block/${entry.value.getBlockName()}'><c:out value="${entry.value.getBlockName()}"/></a>
+                        &nbsp;
+                        <c:out value="${entry.value.getHouseNumber()}"/> <c:out value="${entry.value.getStreetName()}"/></td>
                     <td>
 
 <sec:authorize access="hasRole('ROLE_ADMIN')">  
-                        <div style="height: 20px;"><a href="/house/add_person/<c:out value="${entry.value.getId()}"/>">Add Person</a></div>
+                        <div style="font-size: 15px; height: 20px;"><a href="/house/add_person/<c:out value="${entry.value.getId()}"/>">Add Person</a></div>
 </sec:authorize>
 
                         <c:forEach items="${peopleService.getPeopleInHouse(entry.value.getHouseNumber(), entry.value.getStreetName())}" var="person" varStatus="loop">

@@ -14,7 +14,7 @@ public class ChangeService {
     @Value("${changes.file}")
     private String changesFile = null;
 
-    private SimpleDateFormat dateFormatter = new SimpleDateFormat("YYYY-MM-dd hh:mm:ss");
+    private final SimpleDateFormat dateFormatter = new SimpleDateFormat("YYYY-MM-dd hh:mm:ss");
     
     public synchronized void logChange(final String action, final String message) throws IOException {
         String now = dateFormatter.format(new Date());

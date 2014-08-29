@@ -31,7 +31,7 @@ public class HouseService {
     private final Map<String, House> houses = new TreeMap<>();
 
     @PostConstruct
-    public void read() {
+    public void initialize() {
         String[] components;
         int lineCount = 0;
 
