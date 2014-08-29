@@ -37,15 +37,17 @@
                         <th width="150px">District</th>
                         <th width="150px">Block</th>
                         <th width="175px">Number of Houses</th>
+                        <th width="175px">Percent Membership</th>
                         <th width="275px">Captain</th>
                         <th width="225px">Phone</th>
                         <th width="300px">House Info</th>
                     </tr>
                     <c:forEach items="${blockService.getBlocks(district.getName())}" var="block">
                     <tr>
-                        <td style="font-size:small"><c:out value="${district.getName()}"/></td>
-                        <td style="font-size:small"><c:out value="${block.getBlockName()}"/></td>
+                        <td style="font-size:small"><a href='/district/${district.getName()}'><c:out value="${district.getName()}"/></a></td>
+                        <td style="font-size:small"><a href='/block/${block.getBlockName()}'><c:out value="${block.getBlockName()}"/></a></td>
                         <td style="font-size:small" align="right"><c:out value="${houseService.getNumberOfHousesInBlock(block.getBlockName())}"/></td>
+                        <td style="font-size:small" align="right"><c:out value="${houseService.getPercentMembership(block.getBlockName(), houseService.getYear2014())}"/>%</td>
                         <td style="font-size:small"><c:out value="${blockCaptainService.getCaptainName(block.getBlockName())}"/></td>
                         <td style="font-size:small">&nbsp;</td>
                         <td style="font-size:small">&nbsp;</td>

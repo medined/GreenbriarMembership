@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class HouseService {
+    
+    private String year2014 = "2014";
 
     @Value("${houses.csv.file}")
     private String housesFile = null;
@@ -104,7 +106,7 @@ public class HouseService {
         }
         return rv;
     }
-
+    
     public int getPercentMembership(String year) {
         int numHouses = getNumberOfHouses();
         int numMembers = 0;
@@ -173,6 +175,13 @@ public class HouseService {
 
     public void setHousesFile(String housesFile) {
         this.housesFile = housesFile;
+    }
+
+    /**
+     * @return the year2014
+     */
+    public String getYear2014() {
+        return year2014;
     }
 
 }
