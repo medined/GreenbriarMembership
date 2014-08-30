@@ -83,5 +83,13 @@
                 </td>
             </tr>
         </table>
+
+        <h3><c:out value="${emails.size()}"/> Email Addresses</h3>
+        <c:forEach items="${emails}" var="email">
+            <c:if test="${not email.isEmpty()}">
+                    <c:out value='${email}' />,
+            </c:if>
+        </c:forEach>
+
     </body>
 </html>
