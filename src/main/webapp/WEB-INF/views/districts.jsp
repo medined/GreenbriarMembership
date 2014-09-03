@@ -52,6 +52,11 @@ $(document).ready(function() {
                             <td align="right"><c:out value='${districtService.getPercentMembership("2013")}' />%</td>
                             <td align="right"><c:out value='${districtService.getPercentMembership("2014")}' />%</td>
                         </tr>
+                        <tr>
+                            <td align="right"><fmt:formatNumber value='${districtService.getMembershipCount("2012")}' /></td>
+                            <td align="right"><fmt:formatNumber value='${districtService.getMembershipCount("2013")}' /></td>
+                            <td align="right"><fmt:formatNumber value='${districtService.getMembershipCount("2014")}' /></td>
+                        </tr>
                     </table>
                 </td>
             </tr>

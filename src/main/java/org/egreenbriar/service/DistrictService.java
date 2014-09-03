@@ -38,6 +38,18 @@ public class DistrictService {
         return (int) (((float) numMembers / (float) numHouses) * 100);
     }
 
+    public int getMembershipCount(final String year) {
+        int numHouses = houseService.getHouses().size();
+        int numMembers = 0;
+        for (Entry<String, House> entry : houseService.getHouses().entrySet()) {
+            House house = entry.getValue();
+            if (house.memberInYear(year)) {
+                numMembers++;
+            }
+        }
+        return numMembers;
+    }
+
     public int getPercentMembership(final String districtName, final String year) {
         int numHouses = 0;
         int numMembers = 0;
