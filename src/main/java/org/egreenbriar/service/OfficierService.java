@@ -7,15 +7,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class OfficierService {
-
+    
     @Value("${officiers.csv.file}")
     private String officierFile = null;
 

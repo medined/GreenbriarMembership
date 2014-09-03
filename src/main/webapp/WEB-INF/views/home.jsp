@@ -10,6 +10,7 @@
 
         <ul style='line-height: 24px; list-style-type: none;'>
             <li><a href='/districts'>District List</a></li>
+            <li><a href='/changes'>Changes List</a></li>
             <li>&nbsp;</li>
             <li><a href='/editeveryhouse'>Edit Every House</a></li>
             <li><a href='/houses'>House Lookup</a></li>
