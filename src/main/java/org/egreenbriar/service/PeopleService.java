@@ -20,12 +20,12 @@ import org.springframework.stereotype.Service;
 public class PeopleService {
 
     @Value("${people.csv.file}")
-    String peopleFile = null;
+    private String peopleFile = null;
 
     private final Map<String, Person> people = new HashMap<>();
 
     @PostConstruct
-    public void read() {
+    public void initialize() {
         String[] components;
 
         int lineCount = 0;
@@ -33,7 +33,7 @@ public class PeopleService {
         //PersonID, District,Block,HouseNumber,StreetName,LastName,FirstName,PhoneNumber,EmailAddress,UnlistedPhone,NoDirectory,Comments
         CSVReader reader = null;
         try {
-            reader = new CSVReader(new FileReader(peopleFile));
+            reader = new CSVReader(new FileReader(getPeopleFile()));
             while ((components = reader.readNext()) != null) {
                 if (lineCount != 0) {
                     String personId = components[0];
@@ -47,30 +47,34 @@ public class PeopleService {
                     String email = components[8];
                     String unlisted = components[9];
                     String noDirectory = components[10];
-                    String comment = components[11];
+                    String updatedBy = components[11];
+                    String dateUpdated = components[12];
+                    String comment = components[13];
 
                     Person person = new Person();
                     person.setPk(personId);
-                    person.setBlockName(blockName);
                     person.setDistrictName(districtName);
+                    person.setBlockName(blockName);
                     person.setHouseNumber(houseNumber);
                     person.setStreetName(streetName);
-                    person.setFirst(firstName);
-                    person.setEmail(email);
-                    person.setPhone(phone);
                     person.setLast(lastName);
-                    person.setComment(comment);
-                    person.setNoDirectory(Boolean.parseBoolean(noDirectory));
+                    person.setFirst(firstName);
+                    person.setPhone(phone);
+                    person.setEmail(email);
                     person.setUnlisted(Boolean.parseBoolean(unlisted));
+                    person.setNoDirectory(Boolean.parseBoolean(noDirectory));
+                    person.setUpdatedBy(updatedBy);
+                    person.setDateUpdated(dateUpdated);
+                    person.setComment(comment);
 
                     people.put(person.getPk(), person);
                 }
                 lineCount++;
             }
         } catch (FileNotFoundException e) {
-            throw new RuntimeException("Unable to open " + peopleFile, e);
+            throw new RuntimeException("Unable to open " + getPeopleFile(), e);
         } catch (IOException e) {
-            throw new RuntimeException("Unable to read " + peopleFile, e);
+            throw new RuntimeException("Unable to read " + getPeopleFile(), e);
         } finally {
             IOUtils.closeQuietly(reader);
         }
@@ -112,8 +116,8 @@ public class PeopleService {
     }
 
     public void write() throws FileNotFoundException {
-        try (PrintWriter writer = new PrintWriter(peopleFile)) {
-            writer.println("PersonID, District,Block,HouseNumber,StreetName,LastName,FirstName,PhoneNumber,EmailAddress,UnlistedPhone,NoDirectory,Comments");
+        try (PrintWriter writer = new PrintWriter(getPeopleFile())) {
+            writer.println("PersonID, District,Block,HouseNumber,StreetName,LastName,FirstName,PhoneNumber,EmailAddress,UnlistedPhone,NoDirectory,UpdatedBy,DateUpdated,Comments");
             for (Entry<String, Person> entry : people.entrySet()) {
                 Person person = entry.getValue();
                 final String id = person.getPk();
@@ -128,6 +132,8 @@ public class PeopleService {
                 final boolean unlisted = person.isUnlisted();
                 final boolean noDirectory = person.isNoDirectory();
                 final String comment = person.getComment();
+                final String updatedBy = person.getUpdatedBy();
+                final String dateUpdated = person.getDateUpdated();
                 StringBuilder buffer = new StringBuilder();
                 buffer.append(id).append(",");
                 buffer.append(districtName).append(",");
@@ -140,6 +146,8 @@ public class PeopleService {
                 buffer.append(email).append(",");
                 buffer.append(unlisted).append(",");
                 buffer.append(noDirectory).append(",");
+                buffer.append(updatedBy).append(",");
+                buffer.append(dateUpdated).append(",");
                 buffer.append(comment);
                 writer.println(buffer.toString());
             }
@@ -163,6 +171,14 @@ public class PeopleService {
             }
         }
         return peopleWithBadEmails;
+    }
+
+    public String getPeopleFile() {
+        return peopleFile;
+    }
+
+    public void setPeopleFile(String peopleFile) {
+        this.peopleFile = peopleFile;
     }
 
 }

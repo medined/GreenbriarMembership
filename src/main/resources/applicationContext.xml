@@ -37,6 +37,10 @@
         <property name="officierFile" value="${officiers.csv.file}" />
     </bean>
 
+    <bean name="peopleService" class="org.egreenbriar.service.PeopleService" init-method="initialize">
+        <property name="peopleFile" value="${people.csv.file}" />
+    </bean>
+
     <bean name="countMembersService" class="org.egreenbriar.service.CountMembersService">
         <property name="storageDirectory" value="${storage.directory}" />
     </bean>

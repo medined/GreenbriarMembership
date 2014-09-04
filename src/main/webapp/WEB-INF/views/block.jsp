@@ -131,7 +131,7 @@ $(document).ready(function() {
                                                 </span>
                                             </c:if>
                                             <c:if test="${loop.index != 0}">
-                                                <div>&nbsp;</div>
+                                                <div style="width: 185px">&nbsp;</div>
                                             </c:if>
                                         </div>
                                     </td>
@@ -172,7 +172,7 @@ $(document).ready(function() {
                                         <c:if test="${loop.index == 0}">
                                             <div class='heading'>Phone</div>
                                         </c:if>
-                                        <div class='value editable' id='phone_<c:out value="${person.getPk()}"/>' data-type="text" data-url='/person/update_phone' data-pk='<c:out value="${person.getPk()}"/>' data-name='phone'>
+                                        <div class='value editable' id='phone_<c:out value="${person.getPk()}"/>' data-type="text" data-url='/person/update_phone' data-pk='<c:out value="${person.getPk()}"/>' data-name='phone' style="height: 29px">
                                             <sec:authorize access="hasRole('ROLE_USER')">  
                                                 <c:if test="${person.listed().equals('Listed') == false}">
                                                     UNLISTED
@@ -190,9 +190,15 @@ $(document).ready(function() {
                                         <c:if test="${loop.index == 0}">
                                             <div class='heading'>Email</div>
                                         </c:if>
-                                        <div class='value editable' id='email_<c:out value="${person.getPk()}"/>' data-type="text" data-url='/person/update_email' data-pk='<c:out value="${person.getPk()}"/>' data-name='email'>
+                                        <div class='value editable' id='email_<c:out value="${person.getPk()}"/>' data-type="text" data-url='/person/update_email' data-pk='<c:out value="${person.getPk()}"/>' data-name='email' style="height: 29px">
                                             <c:out value="${person.getEmail()}"/>
                                         </div>
+                                    </td>
+                                    <td class='email' style="font-size: 8pt">
+                                        <c:if test="${loop.index == 0}">
+                                            <div class='heading'>Updated By</div>
+                                        </c:if>
+                                        <div style="height: 29px"><c:out value="${person.getUpdatedBy()}"/> on <c:out value="${person.getDateUpdated()}"/></div>
                                     </td>
                                     <td class='comment'>
                                         <c:if test="${loop.index == 0}">

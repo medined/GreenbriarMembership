@@ -45,4 +45,16 @@ public class ChangeService {
         this.changesFile = changesFile;
     }
 
+    public String findLastChangeForPerson(String personUuid) throws IOException {
+        String dateUpdated = "Unknown";
+        Set<String> changes = getChanges();
+        // the last change we see is the last change.
+        for (String change : changes) {
+            if (change.contains(personUuid)) {
+                dateUpdated = change.substring(0, 10);
+            }
+        }
+        return dateUpdated;
+    }
+
 }

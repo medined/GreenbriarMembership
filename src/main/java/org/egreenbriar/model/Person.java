@@ -17,6 +17,8 @@ public class Person implements Comparable {
     private boolean noDirectory = false;
     private boolean unlisted = false;
     private String comment = null;
+    private String updatedBy = null;
+    private String dateUpdated = null;
 
     public boolean isEmpty() {
         return getLast().isEmpty() && getFirst().isEmpty() && getPhone().isEmpty() & getEmail().isEmpty();
@@ -46,10 +48,7 @@ public class Person implements Comparable {
         if ((this.getLast() == null) ? (other.getLast() != null) : !this.last.equals(other.last)) {
             return false;
         }
-        if ((this.getFirst() == null) ? (other.getFirst() != null) : !this.first.equals(other.first)) {
-            return false;
-        }
-        return true;
+        return !((this.getFirst() == null) ? (other.getFirst() != null) : !this.first.equals(other.first));
     }
 
     @Override
@@ -260,5 +259,21 @@ public class Person implements Comparable {
     
     public boolean hasBadEmail() {
         return this.email != null && !this.email.trim().isEmpty() && !this.email.contains("@");
+    }
+
+    public String getDateUpdated() {
+        return dateUpdated;
+    }
+
+    public void setDateUpdated(String dateUpdated) {
+        this.dateUpdated = dateUpdated;
+    }
+
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
     }
 }
