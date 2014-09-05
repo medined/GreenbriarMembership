@@ -2,11 +2,12 @@ package org.egreenbriar.controller;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
-import java.util.UUID;
 import org.egreenbriar.form.FormNewPerson;
 import org.egreenbriar.form.FormPerson;
 import org.egreenbriar.model.House;
@@ -16,6 +17,8 @@ import org.egreenbriar.service.ChangeService;
 import org.egreenbriar.service.HouseService;
 import org.egreenbriar.service.PeopleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,9 +32,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Component
 public class PersonController {
 
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
     @Autowired
     private BreadcrumbService breadcrumbService = null;
-    
+
     @Autowired
     private PeopleService peopleService = null;
 
@@ -55,19 +60,19 @@ public class PersonController {
             }
         }
         model.addAttribute("people", sortedPeople);
-        
+
         breadcrumbService.clear();
         breadcrumbService.put("Home", "/home");
-        breadcrumbService.put("Logout", "/j_spring_security_logout");        
+        breadcrumbService.put("Logout", "/j_spring_security_logout");
         model.addAttribute("breadcrumbs", breadcrumbService.getBreadcrumbs());
 
         return "people";
     }
-    
+
     @RequestMapping("/person/emails")
     public String emails(Model model) {
         Set<String> emails = new TreeSet<>();
-        
+
         model.addAttribute("peopleService", peopleService);
 
         for (String personId : peopleService.getPeople()) {
@@ -77,27 +82,27 @@ public class PersonController {
             }
         }
         model.addAttribute("emails", emails);
-        
+
         breadcrumbService.clear();
         breadcrumbService.put("Home", "/home");
-        breadcrumbService.put("Logout", "/j_spring_security_logout");        
+        breadcrumbService.put("Logout", "/j_spring_security_logout");
         model.addAttribute("breadcrumbs", breadcrumbService.getBreadcrumbs());
 
         return "emails";
     }
-    
+
     @RequestMapping("/person/bad_emails")
     public String bad_emails(Model model) {
         model.addAttribute("peopleService", peopleService);
 
         breadcrumbService.clear();
         breadcrumbService.put("Home", "/home");
-        breadcrumbService.put("Logout", "/j_spring_security_logout");        
+        breadcrumbService.put("Logout", "/j_spring_security_logout");
         model.addAttribute("breadcrumbs", breadcrumbService.getBreadcrumbs());
 
         return "badEmails";
     }
-    
+
     @RequestMapping("/person/editform/{personId}")
     public String editPerson(Model model, @PathVariable String personId) {
         Person person = peopleService.getPerson(personId);
@@ -111,18 +116,17 @@ public class PersonController {
 
         breadcrumbService.clear();
         breadcrumbService.put("Home", "/home");
-        breadcrumbService.put("Logout", "/j_spring_security_logout");        
+        breadcrumbService.put("Logout", "/j_spring_security_logout");
         model.addAttribute("breadcrumbs", breadcrumbService.getBreadcrumbs());
 
         return "editpersonform";
     }
-    
+
     // name=last, value=<new_value>
-    @RequestMapping(value="/person/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/person/update", method = RequestMethod.POST)
     public String updatePerson(@ModelAttribute FormNewPerson form, Model model) throws FileNotFoundException, IOException {
 
         Person person = peopleService.getPerson(form.getPersonId());
-
         person.setLast(form.getLastName().replaceAll(",", "/"));
         person.setFirst(form.getFirstName().replaceAll(",", "/"));
         person.setPhone(form.getPhone());
@@ -130,7 +134,9 @@ public class PersonController {
         person.setComment(form.getComments().replaceAll(",", ";"));
         person.setUnlisted(form.getUnlisted().equals("1"));
         person.setNoDirectory(form.getNodirectory().equals("1"));
-        
+        person.setUpdatedBy(((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
+        person.setDateUpdated(sdf.format(new Date()));
+
         String personFormat = "house(%s) first(%s) last(%s) phone(%s) email(%s) comments(%s)";
         String message = String.format(personFormat, form.getHouseId(), person.getFirst(), person.getLast(), person.getPhone(), person.getEmail(), person.getComment());
         changeService.logChange("newperson", message);
@@ -140,13 +146,14 @@ public class PersonController {
 
         String blockName = form.getBlockName();
         model.addAttribute("blockName", blockName);
-        
+
         return "redirect:/block";
-    }    
+    }
+
     @RequestMapping("/person/delete/{personId}")
     public String deletePerson(Model model, @PathVariable String personId) throws FileNotFoundException, IOException {
         Person person = peopleService.getPerson(personId);
-        
+
         StringBuilder buffer = new StringBuilder();
         buffer.append(String.format("person(%s)", personId));
         buffer.append(String.format(" district(%s)", person.getDistrictName()));
@@ -160,12 +167,14 @@ public class PersonController {
         buffer.append(String.format(" comment(%s)", person.getComment()));
         buffer.append(String.format(" unlisted(%s)", person.isUnlisted()));
         buffer.append(String.format(" comment(%s)", person.getComment()));
+        buffer.append(String.format(" deletedby(%s)", person.getUpdatedBy()));
+        buffer.append(String.format(" deletedat(%s)", sdf.format(new Date())));
 
         changeService.logChange("deletePerson", buffer.toString());
         peopleService.deletePerson(person);
         peopleService.write();
         model.addAttribute("blockName", person.getBlockName());
-        
+
         return "redirect:/block";
     }
 
@@ -176,6 +185,8 @@ public class PersonController {
         String message = String.format("person(%s) current(%s)", personId, person.isListed());
         changeService.logChange("toggle_listed", message);
         person.toggleListed();
+        person.setUpdatedBy(((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
+        person.setDateUpdated(sdf.format(new Date()));
         peopleService.write();
         return person.listed();
     }
@@ -187,6 +198,8 @@ public class PersonController {
         String message = String.format("person(%s) current(%s)", personId, person.isNoDirectory());
         changeService.logChange("toggle_directory", message);
         person.toggleDirectory();
+        person.setUpdatedBy(((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
+        person.setDateUpdated(sdf.format(new Date()));
         peopleService.write();
         return person.directory();
     }
@@ -201,6 +214,8 @@ public class PersonController {
         String message = String.format("person(%s) old(%s) new(%s)", personId, person.getLast(), lastName);
         changeService.logChange("update_last", message);
         person.setLast(lastName);
+        person.setUpdatedBy(((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
+        person.setDateUpdated(sdf.format(new Date()));
         peopleService.write();
         return person.getLast();
     }
@@ -215,6 +230,8 @@ public class PersonController {
         String message = String.format("person(%s) old(%s) new(%s)", personId, person.getFirst(), firstName);
         changeService.logChange("update_first", message);
         person.setFirst(firstName);
+        person.setUpdatedBy(((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
+        person.setDateUpdated(sdf.format(new Date()));
         peopleService.write();
         return person.getFirst();
     }
@@ -228,6 +245,8 @@ public class PersonController {
         String message = String.format("person(%s) old(%s) new(%s)", personId, person.getPhone(), formPerson.getValue());
         changeService.logChange("update_phone", message);
         person.setPhone(formPerson.getValue());
+        person.setUpdatedBy(((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
+        person.setDateUpdated(sdf.format(new Date()));
         peopleService.write();
         return person.getPhone();
     }
@@ -241,6 +260,8 @@ public class PersonController {
         String message = String.format("person(%s) old(%s) new(%s)", personId, person.getEmail(), formPerson.getValue());
         changeService.logChange("update_email", message);
         person.setEmail(formPerson.getValue());
+        person.setUpdatedBy(((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
+        person.setDateUpdated(sdf.format(new Date()));
         peopleService.write();
         return person.getEmail();
     }
@@ -255,6 +276,8 @@ public class PersonController {
         String message = String.format("person(%s) old(%s) new(%s)", personId, person.getComment(), comment);
         changeService.logChange("update_comment", message);
         person.setComment(comment);
+        person.setUpdatedBy(((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
+        person.setDateUpdated(sdf.format(new Date()));
         peopleService.write();
         return person.getComment();
     }
@@ -271,16 +294,10 @@ public class PersonController {
         this.breadcrumbService = breadcrumbService;
     }
 
-    /**
-     * @return the houseService
-     */
     public HouseService getHouseService() {
         return houseService;
     }
 
-    /**
-     * @param houseService the houseService to set
-     */
     public void setHouseService(HouseService houseService) {
         this.houseService = houseService;
     }
