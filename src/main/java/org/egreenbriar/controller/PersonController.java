@@ -4,10 +4,13 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import org.egreenbriar.form.FormEmailSearch;
+import org.egreenbriar.form.FormHouseNumberSearch;
 import org.egreenbriar.form.FormNewPerson;
 import org.egreenbriar.form.FormPerson;
 import org.egreenbriar.model.House;
@@ -45,6 +48,22 @@ public class PersonController {
 
     @Autowired
     private ChangeService changeService = null;
+
+    @RequestMapping(value = "/emailsearch", method = RequestMethod.POST)
+    public String emailsearch(@ModelAttribute FormEmailSearch form, Model model) {
+        
+        List<Person> people = peopleService.getPeopleWithEmail(form.getEmail());
+
+        model.addAttribute("people", people);
+        model.addAttribute("email", form.getEmail());
+        
+        breadcrumbService.clear();
+        breadcrumbService.put("Home", "/home");
+        breadcrumbService.put("Logout", "/j_spring_security_logout");
+        model.addAttribute("breadcrumbs", breadcrumbService.getBreadcrumbs());
+        
+        return "email_search_results";
+    }
 
     @RequestMapping("/people")
     public String people(Model model) {

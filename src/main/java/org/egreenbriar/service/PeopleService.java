@@ -5,7 +5,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -179,6 +181,17 @@ public class PeopleService {
 
     public void setPeopleFile(String peopleFile) {
         this.peopleFile = peopleFile;
+    }
+
+    public List<Person> getPeopleWithEmail(String email) {
+        List<Person> peopleWithEmail = new ArrayList<>();
+        for (Entry<String, Person> entry : people.entrySet()) {
+            Person person = entry.getValue();
+            if (person.getEmail().equals(email)) {
+                peopleWithEmail.add(person);
+            }
+        }
+        return peopleWithEmail;
     }
 
 }

@@ -27,6 +27,11 @@
             <li>&nbsp;</li>
             <li><a href='/person/emails'>Email List</a></li>
             <li><a href='/person/bad_emails'>Bad Email List</a></li>
+            <div>
+                <form action="/emailsearch" method="post">
+                     Email Search: <input type="text" name="email" />
+                 </form>
+            </div>
             <li>&nbsp;</li>
             <sec:authorize access="isAuthenticated()">  
                 <li><a href="/j_spring_security_logout">Logout</a></li>
