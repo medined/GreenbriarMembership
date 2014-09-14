@@ -106,6 +106,9 @@ public class PersonController {
     @RequestMapping("/person/editform/{personId}")
     public String editPerson(Model model, @PathVariable String personId) {
         Person person = peopleService.getPerson(personId);
+        person.setUpdatedBy(((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
+        person.setDateUpdated(sdf.format(new Date()));
+
         House house = houseService.getHouse(person.getHouseNumber(), person.getStreetName());
 
         model.addAttribute("blockName", person.getBlockName());

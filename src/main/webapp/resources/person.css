@@ -1,0 +1,40 @@
+.person tr th {
+    font-size: 11px;
+    vertical-align:text-top;
+    padding-top: 1px;
+    padding-left: 2px;
+    padding-bottom: 2px;
+    background: grey;
+    color: white;
+    border-right: 1px solid gray;
+    text-align: left;
+    height: 19px;
+}            
+
+th.flags {
+    width: 18em;
+}
+
+th.last_name {
+    width: 15em;
+}
+
+th.first_name {
+    width: 15em;
+}
+
+th.phone {
+    width: 13em;
+}
+
+th.email {
+    width: 20em;
+}
+
+th.updated_by {
+    width: 15em;
+}
+
+th.comment {
+    width: 20em;
+}
