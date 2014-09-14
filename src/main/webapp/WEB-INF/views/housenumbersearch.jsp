@@ -16,6 +16,7 @@
         <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/jquery-editable/css/jquery-editable.css" rel="stylesheet"/>
         <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/jquery-editable/js/jquery-editable-poshytip.min.js"></script>
         <link rel="stylesheet" type="text/css" href="/resources/block.css">
+        <link rel="stylesheet" type="text/css" href="/resources/person.css">
         <title>Greenbriar Membership Management</title>
     </head>
     <body>
@@ -46,8 +47,8 @@ function toggle2014Membership( houseUuid ) {
 $.fn.editable.defaults.mode = 'inline';
 
 $(document).ready(function() {
-    <c:forEach items="${houses}" var="entry">
-        <c:forEach items="${peopleService.getPeopleInHouse(entry.value.getHouseNumber(), entry.value.getStreetName())}" var="person" varStatus="loop">
+    <c:forEach items="${houses}" var="house">
+        <c:forEach items="${peopleService.getPeopleInHouse(house.getHouseNumber(), house.getStreetName())}" var="person" varStatus="loop">
             $('#lastname_<c:out value="${person.getPk()}"/>').editable();
             $('#firstname_<c:out value="${person.getPk()}"/>').editable();
             $('#phone_<c:out value="${person.getPk()}"/>').editable();
@@ -61,118 +62,12 @@ $(document).ready(function() {
         
         <%@include file="header.jsp" %>
 
-        <h2>House Number <c:out value="${houseNumber}"/> Search Results</h2>
+        <h2 style='margin: 0px'>House Number <c:out value="${houseNumber}"/> Search Results</h2>
+        <p style='font-size: 10pt; margin: 0px'>Hover over Street Number for District and Block information. Click Street Number for Block page.</p>
         
         <table border="0" cellpadding="3" cellspacing="3">
-            <c:forEach items="${houses}" var="entry">
-                <tr height="10px"><td></td></tr>
-                <tr>
-                    <td valign="top">
-                        <a href='/district/${entry.value.getDistrictName()}'><c:out value="${entry.value.getDistrictName()}"/></a>
-                        &nbsp;
-                        <a href='/block/${entry.value.getBlockName()}'><c:out value="${entry.value.getBlockName()}"/></a>
-                        &nbsp;
-                        <c:out value="${entry.value.getHouseNumber()}"/> <c:out value="${entry.value.getStreetName()}"/></td>
-                    <td>
-
-<sec:authorize access="hasRole('ROLE_ADMIN')">  
-                        <div style="font-size: 15px; height: 20px;"><a href="/house/add_person/<c:out value="${entry.value.getId()}"/>">Add Person</a></div>
-</sec:authorize>
-
-                        <c:forEach items="${peopleService.getPeopleInHouse(entry.value.getHouseNumber(), entry.value.getStreetName())}" var="person" varStatus="loop">
-                            
-                            <table cellpadding="0" border="0" cellspacing="0">
-                                <tr>
-                                    <td class='last'>
-                                        <c:if test="${loop.index == 0}">
-                                            <div class='heading'>&nbsp;</div>
-                                        </c:if>
-                                        <div class="editable-click">
-<sec:authorize access="hasRole('ROLE_ADMIN')">  
-<a onclick="return confirm('Do you really want to remove [<c:out value="${person.getFirst()}"/> <c:out value="${person.getLast()}"/>]?')" href="/person/delete/<c:out value="${person.getPk()}"/>"><img src="/resources/remove-icon.png" height="15" width="25"></a>
-</sec:authorize>
-                                        <span id="listed_<c:out value="${person.getPk()}"/>" onclick="toggleListed('<c:out value="${person.getPk()}"/>'); return false;" class="<c:out value="${person.listedStyle()}"/>">
-                                            <c:out value="${person.listed()}"/>
-                                        </span>
-                                        <span id="dir_<c:out value="${person.getPk()}"/>" onclick="toggleDirectory('<c:out value="${person.getPk()}"/>'); return false;" class="<c:out value="${person.directoryStyle()}"/>">
-                                            <c:out value="${person.directory()}"/>
-                                        </span>
-                                        </div>
-                                    </td>
-
-                                    <td class='membership'>
-                                        <c:if test="${loop.index == 0}">
-                                            <div class='heading'>Member</div>
-                                        </c:if>
-                                        <div class="editable-click">
-                                            <!-- only the first person in the house shows the membership status -->
-                                            <c:if test="${loop.index == 0}">
-                                                <span class='<c:out value="${entry.value.memberInYear2012Style()}"/>' style='width:50px; margin-left: 5px;'>
-                                                    2012
-                                                </span>
-                                                <span class='<c:out value="${entry.value.memberInYear2013Style()}"/>' style='width:50px; margin-left: 5px;'>
-                                                    2013
-                                                </span>
-                                                <span id="2014_<c:out value="${entry.value.getId()}"/>" onclick="toggle2014Membership('<c:out value="${entry.value.getId()}"/>'); return false;"  class='<c:out value="${entry.value.memberInYear2014Style()}"/>' style='width:50px; margin-left: 5px;'>
-                                                    2014
-                                                </span>
-                                            </c:if>
-                                        </div>
-                                    </td>
-                                    <td class='last'>
-                                        <c:if test="${loop.index == 0}">
-                                            <div class='heading'>Last Name</div>
-                                        </c:if>
-                                        <div class='value editable' id='lastname_<c:out value="${person.getPk()}"/>' data-type="text" data-url='/person/update_last' data-pk='<c:out value="${person.getPk()}"/>' data-name='last'>
-                                            <c:out value="${person.getLast()}"/>
-                                        </div>
-                                    </td>
-                                    <td class='first'>
-                                        <c:if test="${loop.index == 0}">
-                                            <div class='heading'>First Name</div>
-                                        </c:if>
-                                        <div class='value editable' id='firstname_<c:out value="${person.getPk()}"/>' data-type="text" data-url='/person/update_first' data-pk='<c:out value="${person.getPk()}"/>' data-name='first'>
-                                            <c:out value="${person.getFirst()}"/>
-                                        </div>
-                                    </td>
-                                    <td class='phone'>
-                                        <c:if test="${loop.index == 0}">
-                                            <div class='heading'>Phone</div>
-                                        </c:if>
-                                        <div class='value editable' id='phone_<c:out value="${person.getPk()}"/>' data-type="text" data-url='/person/update_phone' data-pk='<c:out value="${person.getPk()}"/>' data-name='phone'>
-                                            <sec:authorize access="hasRole('ROLE_USER')">  
-                                                <c:if test="${person.listed().equals('Listed') == false}">
-                                                    UNLISTED
-                                                </c:if>
-                                                <c:if test="${person.listed().equals('Listed')}">
-                                                    <c:out value="${person.getPhone()}"/>
-                                                </c:if>
-                                            </sec:authorize>
-                                            <sec:authorize access="hasRole('ROLE_ADMIN')">  
-                                                <c:out value="${person.getPhone()}"/>
-                                            </sec:authorize>
-                                        </div>
-                                    </td>
-                                    <td class='email'>
-                                        <c:if test="${loop.index == 0}">
-                                            <div class='heading'>Email</div>
-                                        </c:if>
-                                        <div class='value editable' id='email_<c:out value="${person.getPk()}"/>' data-type="text" data-url='/person/update_email' data-pk='<c:out value="${person.getPk()}"/>' data-name='email'>
-                                            <c:out value="${person.getEmail()}"/>
-                                        </div>
-                                    </td>
-                                    <td class='comment'>
-                                        <c:if test="${loop.index == 0}">
-                                            <div class='heading'>Comment</div>
-                                        </c:if>
-                                        <div class='value editable' id='comment_<c:out value="${person.getPk()}"/>' data-type="text" data-url='/person/update_comment' data-pk='<c:out value="${person.getPk()}"/>' data-name='comment'>
-                                            <c:out value="${person.getComment()}"/>
-                                        </div>
-                                    </td>
-                                </tr></table>
-                            </c:forEach>
-                    </td>
-                </tr>
+            <c:forEach items="${houses}" var="house">
+                <%@include file="one_house.jsp" %>
             </c:forEach>
         </table>            
     </body>

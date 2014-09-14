@@ -1,7 +1,13 @@
-                <tr height="10px"><td></td></tr>
+<tr height="10px">
+    <td>
+        <a name='<c:out value="${house.getId()}"/>'/>
+    </td>
+</tr>
                 <tr>
                     <td valign="top">
+                        <a title='District: <c:out value="${house.getDistrictName()}"/> Block: <c:out value="${house.getBlockName()}"/>' href="http://localhost:8080/block/<c:out value="${house.getBlockName()}"/>#<c:out value="${house.getId()}"/>">
                         <c:out value="${house.getHouseNumber()}"/> <c:out value="${house.getStreetName()}"/>
+                        </a>
                         <div><span class='<c:out value="${house.memberInYear2012Style()}"/>'>2012</span>
                             <span class='<c:out value="${house.memberInYear2013Style()}"/>'>2013</span>
                             <span id="2014_<c:out value="${house.getId()}"/>" onclick="toggle2014Membership('<c:out value="${house.getId()}"/>'); return false;"  class='<c:out value="${house.memberInYear2014Style()}"/>'>2014</span>
@@ -81,3 +87,7 @@
                         </table>
                     </td>
                 </tr>
+<tr height="20px">
+    <td>
+    </td>
+</tr>

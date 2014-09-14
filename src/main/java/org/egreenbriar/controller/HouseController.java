@@ -2,6 +2,8 @@ package org.egreenbriar.controller;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
@@ -51,15 +53,15 @@ public class HouseController {
         model.addAttribute("peopleService", peopleService);
         model.addAttribute("houseNumber", form.getHousenumber());
 
-        Map<String, House> houses = new TreeMap<>();
+        List<House> houses = new ArrayList<>();
         
         for (Entry<String, House> entry : houseService.getHouses().entrySet()) {
             House house = entry.getValue();
             if (house.getHouseNumber().equals(form.getHousenumber())) {
-                houses.put(house.getHouseNumber() + " " + house.getStreetName(), house);
+                houses.add(house);
             }
         }
-        model.addAttribute("houses", houses.entrySet());
+        model.addAttribute("houses", houses);
 
         breadcrumbService.clear();
         breadcrumbService.put("Home", "/home");
