@@ -27,7 +27,7 @@
             <!--
             A users directory is used so that is can be supplied by a Docker volume.
             -->
-            <user-service id="userDetailsService" properties="/WEB-INF/users/users.properties"/>
+            <user-service id="userDetailsService" properties="file:///home/greenbriar/Dropbox/resources/users.properties"/>
         </authentication-provider>            
     </authentication-manager>
          
