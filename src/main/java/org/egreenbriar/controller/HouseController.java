@@ -144,7 +144,7 @@ public class HouseController {
         return "redirect:/block";
     }
 
-    @RequestMapping("/house/toggle_2014_membership/{houseUuid}")
+    @RequestMapping("/house/toggle_2015_membership/{houseUuid}")
     @ResponseBody
     public void toggle2015Membership(Model model, @PathVariable String houseUuid) throws FileNotFoundException, IOException {
         House house = houseService.getHouse(houseUuid);
