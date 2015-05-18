@@ -37,10 +37,10 @@ function toggleDirectory( personUuid ) {
    $("#dir_" + personUuid).html(data);
   });
 }
-function toggle2014Membership( houseUuid ) {
-  $.get( "/house/toggle_2014_membership/" + houseUuid, function( data ) {
-   $("#2014_" + houseUuid).toggleClass('red-border');
-   $("#2014_" + houseUuid).toggleClass('green-border');
+function toggle2015Membership( houseUuid ) {
+  $.get( "/house/toggle_2015_membership/" + houseUuid, function( data ) {
+   $("#2015_" + houseUuid).toggleClass('red-border');
+   $("#2015_" + houseUuid).toggleClass('green-border');
   });
 }
 

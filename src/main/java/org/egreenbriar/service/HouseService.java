@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class HouseService {
     
-    private String year2014 = "2014";
+    private String year2015 = "2015";
 
     @Value("${houses.csv.file}")
     private String housesFile = null;
@@ -50,6 +50,7 @@ public class HouseService {
                     String y2012 = components[5];
                     String y2013 = components[6];
                     String y2014 = components[7];
+                    String y2015 = components[8];
 
                     House house = new House();
                     house.setId(id);
@@ -60,6 +61,7 @@ public class HouseService {
                     house.setMember2012(Boolean.parseBoolean(y2012));
                     house.setMember2013(Boolean.parseBoolean(y2013));
                     house.setMember2014(Boolean.parseBoolean(y2014));
+                    house.setMember2015(Boolean.parseBoolean(y2015));
                     houses.put(id, house);
                 }
                 lineCount++;
@@ -143,6 +145,7 @@ public class HouseService {
                 final boolean member2012 = house.isMember2012();
                 final boolean member2013 = house.isMember2013();
                 final boolean member2014 = house.isMember2014();
+                final boolean member2015 = house.isMember2015();
                 StringBuilder buffer = new StringBuilder();
                 buffer.append(id).append(",");
                 buffer.append(districtName).append(",");
@@ -151,7 +154,8 @@ public class HouseService {
                 buffer.append(streetName).append(",");
                 buffer.append(member2012).append(",");
                 buffer.append(member2013).append(",");
-                buffer.append(member2014);
+                buffer.append(member2014).append(",");
+                buffer.append(member2015);
                 writer.println(buffer.toString());
             }
         }
@@ -177,11 +181,8 @@ public class HouseService {
         this.housesFile = housesFile;
     }
 
-    /**
-     * @return the year2014
-     */
-    public String getYear2014() {
-        return year2014;
+    public String getYear2015() {
+        return year2015;
     }
 
 }

@@ -34,10 +34,10 @@ function toggleDirectory( personUuid ) {
    $("#dir_" + personUuid).html(data);
   });
 }
-function toggle2014Membership( houseUuid ) {
-  $.get( "/house/toggle_2014_membership/" + houseUuid, function( data ) {
-   $("#2014_" + houseUuid).toggleClass('red-border');
-   $("#2014_" + houseUuid).toggleClass('green-border');
+function toggle2015Membership( houseUuid ) {
+  $.get( "/house/toggle_2015_membership/" + houseUuid, function( data ) {
+   $("#2015_" + houseUuid).toggleClass('red-border');
+   $("#2015_" + houseUuid).toggleClass('green-border');
   });
 }
 
@@ -84,14 +84,14 @@ $(document).ready(function() {
                 <td>
                     <table cellpadding="5" cellspacing="0" border="1" style="margin-top: 15px; margin-left: 15px;">
                         <tr>
-                            <th>2012</th>
                             <th>2013</th>
                             <th>2014</th>
+                            <th>2015</th>
                         </tr>
                         <tr>
-                            <td align="right"><c:out value='${houseService.getPercentMembership(block.getBlockName(), "2012")}' />%</td>
                             <td align="right"><c:out value='${houseService.getPercentMembership(block.getBlockName(), "2013")}' />%</td>
                             <td align="right"><c:out value='${houseService.getPercentMembership(block.getBlockName(), "2014")}' />%</td>
+                            <td align="right"><c:out value='${houseService.getPercentMembership(block.getBlockName(), "2015")}' />%</td>
                         </tr>
                     </table>
                 </td>

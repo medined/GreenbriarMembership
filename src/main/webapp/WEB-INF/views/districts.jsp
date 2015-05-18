@@ -43,19 +43,19 @@ $(document).ready(function() {
                 <td>
                     <table cellpadding="5" cellspacing="0" border="1" style="margin-top: 15px; margin-left: 15px;">
                         <tr>
-                            <th>2012</th>
                             <th>2013</th>
                             <th>2014</th>
+                            <th>2015</th>
                         </tr>
                         <tr>
-                            <td align="right"><c:out value='${districtService.getPercentMembership("2012")}' />%</td>
                             <td align="right"><c:out value='${districtService.getPercentMembership("2013")}' />%</td>
                             <td align="right"><c:out value='${districtService.getPercentMembership("2014")}' />%</td>
+                            <td align="right"><c:out value='${districtService.getPercentMembership("2015")}' />%</td>
                         </tr>
                         <tr>
-                            <td align="right"><fmt:formatNumber value='${districtService.getMembershipCount("2012")}' /></td>
                             <td align="right"><fmt:formatNumber value='${districtService.getMembershipCount("2013")}' /></td>
                             <td align="right"><fmt:formatNumber value='${districtService.getMembershipCount("2014")}' /></td>
+                            <td align="right"><fmt:formatNumber value='${districtService.getMembershipCount("2015")}' /></td>
                         </tr>
                     </table>
                 </td>
@@ -71,9 +71,9 @@ $(document).ready(function() {
                 <th colspan="3" valign="top">Membership</th>
             </tr>
             <tr>
-                <th>2012</th>
                 <th>2013</th>
                 <th>2014</th>
+                <th>2015</th>
             </tr>
             <c:forEach items="${districts}" var="district">
                 <tr>
@@ -85,9 +85,9 @@ $(document).ready(function() {
                             <c:out value="${officierService.getDistrictRepresentative(district.name)}" />
                         </div>
                     </td>
-                    <td align="right"><c:out value='${districtService.getPercentMembership(district.name, "2012")}' />%</td>
                     <td align="right"><c:out value='${districtService.getPercentMembership(district.name, "2013")}' />%</td>
                     <td align="right"><c:out value='${districtService.getPercentMembership(district.name, "2014")}' />%</td>
+                    <td align="right"><c:out value='${districtService.getPercentMembership(district.name, "2015")}' />%</td>
                 </tr>
             </c:forEach>
         </table>

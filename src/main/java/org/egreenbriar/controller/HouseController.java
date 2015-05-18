@@ -146,11 +146,11 @@ public class HouseController {
 
     @RequestMapping("/house/toggle_2014_membership/{houseUuid}")
     @ResponseBody
-    public void toggle2014Membership(Model model, @PathVariable String houseUuid) throws FileNotFoundException, IOException {
+    public void toggle2015Membership(Model model, @PathVariable String houseUuid) throws FileNotFoundException, IOException {
         House house = houseService.getHouse(houseUuid);
-        String message = String.format("houseNumber(%s) streetName(%s) current(%b)", house.getHouseNumber(), house.getStreetName(), house.isMember2014());
-        changeService.logChange("toggle_2014_membership", message);
-        house.toggle2014Membership();
+        String message = String.format("houseNumber(%s) streetName(%s) current(%b)", house.getHouseNumber(), house.getStreetName(), house.isMember2015());
+        changeService.logChange("toggle_2015_membership", message);
+        house.toggle2015Membership();
         houseService.write();
     }
 
