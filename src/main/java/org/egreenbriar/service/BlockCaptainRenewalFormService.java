@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class BlockCaptainRenewalFormService {
 
-    String pdfFileName = "../2014_gca_membership_drive.pdf";
+    String pdfFileName = "/home/greenbriar/Dropbox/2015_gca_membership_drive.pdf";
 
     // (0,0)      lower left
     // (612, 792) upper right
@@ -105,16 +105,16 @@ public class BlockCaptainRenewalFormService {
         content[0][0] = "House";
         content[0][1] = "Person";
         content[0][2] = "Phone";
-        content[0][3] = "2012";
-        content[0][4] = "2013";
-        content[0][5] = "2014";
+        content[0][3] = "2013";
+        content[0][4] = "2014";
+        content[0][5] = "2015";
         content[0][6] = "Comments";
 
         int personIndex = 1;
 
-        int count2012 = 0;
         int count2013 = 0;
         int count2014 = 0;
+        int count2015 = 0;
 
         for (House house : houses) {
             String housePlace = house.getHouseNumber() + " " + house.getStreetName();
@@ -146,17 +146,17 @@ public class BlockCaptainRenewalFormService {
                 content[personIndex][4] = "";
                 content[personIndex][5] = "";
                 if (firstPerson) {
-                    if (house.memberInYear("2012")) {
-                        content[personIndex][3] = "X";
-                        count2012++;
-                    }
                     if (house.memberInYear("2013")) {
-                        content[personIndex][4] = "X";
+                        content[personIndex][3] = "X";
                         count2013++;
                     }
                     if (house.memberInYear("2014")) {
-                        content[personIndex][5] = "X";
+                        content[personIndex][4] = "X";
                         count2014++;
+                    }
+                    if (house.memberInYear("2015")) {
+                        content[personIndex][5] = "X";
+                        count2015++;
                     }
                 }
                 content[personIndex][5] = "";
@@ -169,8 +169,8 @@ public class BlockCaptainRenewalFormService {
         content[personIndex][0] = "Totals";
         content[personIndex][1] = "";
         content[personIndex][2] = "";
-        content[personIndex][3] = String.format("%d", count2012);
-        content[personIndex][4] = String.format("%d", count2013);
+        content[personIndex][3] = String.format("%d", count2013);
+        content[personIndex][4] = String.format("%d", count2014);
         content[personIndex][5] = "";
         content[personIndex][6] = "";
 
