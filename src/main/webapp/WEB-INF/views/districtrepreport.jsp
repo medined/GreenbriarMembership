@@ -47,7 +47,7 @@
                         <td style="font-size:small"><a href='/district/${district.getName()}'><c:out value="${district.getName()}"/></a></td>
                         <td style="font-size:small"><a href='/block/${block.getBlockName()}'><c:out value="${block.getBlockName()}"/></a></td>
                         <td style="font-size:small" align="right"><c:out value="${houseService.getNumberOfHousesInBlock(block.getBlockName())}"/></td>
-                        <td style="font-size:small" align="right"><c:out value="${houseService.getPercentMembership(block.getBlockName(), houseService.getYear2014())}"/>%</td>
+                        <td style="font-size:small" align="right"><c:out value="${houseService.getPercentMembership(block.getBlockName(), houseService.getYear2015())}"/>%</td>
                         <td style="font-size:small"><c:out value="${blockCaptainService.getCaptainName(block.getBlockName())}"/></td>
                         <td style="font-size:small">&nbsp;</td>
                         <td style="font-size:small">&nbsp;</td>
