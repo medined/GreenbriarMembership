@@ -23,7 +23,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class BlockCaptainRenewalFormService {
 
-    String pdfFileName = "/home/greenbriar/Dropbox/2015_gca_membership_drive.pdf";
+//    String pdfFileName = "/home/greenbriar/Dropbox/2015_gca_membership_drive.pdf";
+        String pdfFileName = "\\gbmTestData\\2015_gca_membership_drive.pdf";
 
     // (0,0)      lower left
     // (612, 792) upper right
@@ -95,7 +96,7 @@ public class BlockCaptainRenewalFormService {
     private String[][] generateBlockContent(final PDDocument document, final PDPage page, final String blockName, final Set<House> houses, float x, float y) throws IOException {
         int personCount = 0;
         for (House house : houses) {
-            Set<Person> peopleInHouse = peopleService.getPeopleInHouse(house.getHouseNumber(), house.getStreetName());
+            Set<Person> peopleInHouse = peopleService.getPeopleInHouse(house.getHouseNumber(), house.getStreetName(), true);
             personCount += peopleInHouse.size();
         }
         personCount++; // account for heading
@@ -122,7 +123,7 @@ public class BlockCaptainRenewalFormService {
 
             boolean firstPerson = true;
 
-            Set<Person> peopleInHouse = peopleService.getPeopleInHouse(house.getHouseNumber(), house.getStreetName());
+            Set<Person> peopleInHouse = peopleService.getPeopleInHouse(house.getHouseNumber(), house.getStreetName(), true);
             for (Person person : peopleInHouse) {
 
                 textWidth = tableFont.getStringWidth(person.getFirst()) / 1000 * tableFontSize;
@@ -159,7 +160,7 @@ public class BlockCaptainRenewalFormService {
                         count2015++;
                     }
                 }
-                content[personIndex][5] = "";
+                //content[personIndex][5] = "";
                 content[personIndex][6] = person.getComment();
                 firstPerson = false;
                 personIndex++;
@@ -171,7 +172,7 @@ public class BlockCaptainRenewalFormService {
         content[personIndex][2] = "";
         content[personIndex][3] = String.format("%d", count2013);
         content[personIndex][4] = String.format("%d", count2014);
-        content[personIndex][5] = "";
+        content[personIndex][5] = String.format("%d", count2015);
         content[personIndex][6] = "";
 
         return content;

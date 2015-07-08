@@ -48,7 +48,7 @@ $.fn.editable.defaults.mode = 'inline';
 
 $(document).ready(function() {
     <c:forEach items="${houses}" var="house">
-        <c:forEach items="${peopleService.getPeopleInHouse(house.getHouseNumber(), house.getStreetName())}" var="person" varStatus="loop">
+        <c:forEach items="${peopleService.getPeopleInHouse(house.getHouseNumber(), house.getStreetName(), false)}" var="person" varStatus="loop">
             $('#lastname_<c:out value="${person.getPk()}"/>').editable();
             $('#firstname_<c:out value="${person.getPk()}"/>').editable();
             $('#phone_<c:out value="${person.getPk()}"/>').editable();

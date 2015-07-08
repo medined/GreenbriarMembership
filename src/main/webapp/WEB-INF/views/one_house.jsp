@@ -27,7 +27,7 @@
                 <th class="comment">Comment</th>
             </tr>
 
-            <c:forEach items="${peopleService.getPeopleInHouse(house.getHouseNumber(), house.getStreetName())}" var="person" varStatus="loop">
+            <c:forEach items="${peopleService.getPeopleInHouse(house.getHouseNumber(), house.getStreetName(), false)}" var="person" varStatus="loop">
                 <%@include file="one_person.jsp" %>
             </c:forEach>
         </table>
