@@ -35,7 +35,7 @@ public class FindMemberWhoPaidLastYearButNotThisYearDriver {
             String houseNumber = entry.getValue().getHouseNumber();
             String streetName = entry.getValue().getStreetName();
             if (isMember2014 && !isMember2015) {
-                Set<Person> people = peopleService.getPeopleInHouse(houseNumber, streetName);
+                Set<Person> people = peopleService.getPeopleInHouse(houseNumber, streetName, false);
                 String email = null;
                 for (Person person : people) {
                     if (person.getEmail().isEmpty() == false) {

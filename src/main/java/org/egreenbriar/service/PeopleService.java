@@ -114,6 +114,9 @@ public class PeopleService {
                 peopleInHouse.add(person);
             }
         }
+        if (emptySetFlag && peopleInHouse.isEmpty()) {
+            peopleInHouse.add(personEmptySet());
+        }
         return peopleInHouse;
     }
 
@@ -193,5 +196,42 @@ public class PeopleService {
         }
         return peopleWithEmail;
     }
+    
+    private Person personEmptySet() {
+        
+                    String personId = " ";
+                    String districtName = " ";
+                    String blockName = " ";
+                    String houseNumber = " ";
+                    String streetName = " ";
+                    String lastName = " ";
+                    String firstName = " ";
+                    String phone = " ";
+                    String email = " ";
+                    String unlisted = " ";
+                    String noDirectory = " ";
+                    String updatedBy = " ";
+                    String dateUpdated = " ";
+                    String comment = " ";
 
+                    Person person = new Person();
+                    person.setPk(personId);
+                    person.setDistrictName(districtName);
+                    person.setBlockName(blockName);
+                    person.setHouseNumber(houseNumber);
+                    person.setStreetName(streetName);
+                    person.setLast(lastName);
+                    person.setFirst(firstName);
+                    person.setPhone(phone);
+                    person.setEmail(email);
+                    person.setUnlisted(Boolean.parseBoolean(unlisted));
+                    person.setNoDirectory(Boolean.parseBoolean(noDirectory));
+                    person.setUpdatedBy(updatedBy);
+                    person.setDateUpdated(dateUpdated);
+                    person.setComment(comment);
+
+                    //people.put(person.getPk(), person);
+                    
+                    return(person);
+                }
 }
