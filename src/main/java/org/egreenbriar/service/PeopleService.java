@@ -106,7 +106,7 @@ public class PeopleService {
         return peopleInBlock;
     }
 
-    public Set<Person> getPeopleInHouse(final String houseNumber, final String streetName) {
+    public Set<Person> getPeopleInHouse(final String houseNumber, final String streetName, final Boolean emptySetFlag) {
         Set<Person> peopleInHouse = new TreeSet<>();
         for (Entry<String, Person> entry : people.entrySet()) {
             Person person = entry.getValue();
