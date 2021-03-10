@@ -20,7 +20,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jetty.version>9.4.32.v20200930</jetty.version>
+        <jetty.version>11.0.1</jetty.version>
         <jetty.jsp.version>9.1.3.v20140225</jetty.jsp.version>
         <log4j.version>1.2.17</log4j.version>
         <spring.version>4.0.2.RELEASE</spring.version>
